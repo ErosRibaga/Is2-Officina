@@ -6,26 +6,46 @@
         <script type="module" src="./js/customers.js"></script>
     </head>
     <body>
-        <div class="container">
-            <div>
-                <h1>Clienti</h1>
+        <div class="container row align-items-start">
+        </div>
+        <div class="row align-items-start">
+            <div class="container col-2" id="sidebar">
+                <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+                    <ul class="nav nav-pills flex-column mb-auto">
+                    <li><a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"><span class="fs-4">Nome Utente</span></a>
+                    <hr>
+                        <li class="nav-item"><a href="#" class="nav-link text-white" aria-current="page">Agenda</a></li>
+                        <li><a href="#" class="nav-link text-white">Cronologia Riparazioni</a></li>
+                        <li><a href="#" class="nav-link text-white">Auto</a></li>
+                        <li><a href="#" class="nav-link text-white active">Clienti</a></li>
+                        <hr>
+                        <li><a href="#" class="nav-link text-white">Account</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="container">
-                <table id="customer-table" class="table">
-                    <thead class="thead-dark">
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Cognome</th>
-                        <th scope="col">Codice Fiscale</th>
-                    </thead>
-                  <tbody>
-            
-                   </tbody>
-               </table>
-                </table>
+            <div class="col-8" id="customer-table">
+                <div>
+                    <h1>Clienti</h1>
+                </div>
+                <div class="container">
+                    <table id="customer-table" class="table">
+                        <thead class="thead-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cognome</th>
+                            <th scope="col">Codice Fiscale</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div >
+                    <button type="button" class="btn btn-dark">Aggiungi Cliente</button>
+                </div>
             </div>
-            <div>
-                <button type="button" class="btn btn-dark">Dark</button>
+            <div class="container col-2" id="data-count">
+                <div id="user-count"></div>
+                <div id="car-count"></div>
             </div>
         </div>
     </body>
