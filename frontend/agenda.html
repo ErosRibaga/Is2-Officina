@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+  <title>Calendar</title>
+
+  <link
+      href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css"
+      rel="stylesheet"
+    />
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+          integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+          crossorigin="anonymous"></script>
+
+  <link rel="stylesheet"
+        href="./css/style.css" />
+  <script src="./js/calendar.js"></script>
+  <script src="./js/agenda.js"></script>
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+</head>
+
+<body>
+  <div id='calendar'></div>
+
+  <!--Popup operation insert-->
+  <div class="loginPopup">
+    <div class="formPopup"
+         id="popupForm">
+      <form action="http://localhost:8080/api/v1/operations/"
+            method="post"
+            class="formContainer">
+        <h2>Aggiungi operazione</h2>
+        <label for="title">
+          <strong>Titolo</strong>
+        </label>
+        <input type="text"
+               id="title"
+               name="title"
+               required>
+        <br>
+        <label for="description">
+          <strong>Descrizione</strong>
+        </label>
+        <input type="text"
+               id="description"
+               name="description"
+               required>
+        <br>
+        <label for="startDate">
+          <strong>startDate</strong>
+        </label>
+        <input type="date"
+               id="startDate"
+               name="startDate"
+               required>
+        <br>
+        <label for="psw">
+          <strong>endDate</strong>
+        </label>
+        <input type="date"
+               id="endDate"
+               name="endDate"
+               required>
+        <br>
+        <label for="employee">
+          <strong>Dipendente</strong>
+        </label>
+        <input type="text"
+               id="employee"
+               name="employee"
+               required>
+        <br>
+        <label for="car">
+          <strong>Auto</strong>
+        </label>
+        <input type="text"
+               id="car"
+               name="car"
+               required>
+        <br>
+        <label for="customer">
+          <strong>Cliente</strong>
+        </label>
+        <input type="text"
+               id="customer"
+               name="customer"
+               required>
+        <br>
+        <button type="submit"
+                class="btn">Log in</button>
+        <button type="button"
+                class="btn cancel"
+                onclick="closeForm()">Close</button>
+      </form>
+    </div>
+</body>
+
+</html>
