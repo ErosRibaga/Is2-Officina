@@ -6,8 +6,7 @@
         <script type="module" src="./js/customers.js"></script>
     </head>
     <body>
-        <div class="container row align-items-start">
-        </div>
+        <div class="container row align-items-start"></div>
         <div class="row align-items-start">
             <div class="container col-2" id="sidebar">
                 <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
@@ -39,9 +38,14 @@
                         </tbody>
                     </table>
                 </div>
-                <div >
-                    <button type="button" class="btn btn-dark">Aggiungi Cliente</button>
-                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-dark">Aggiungi Cliente</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-dark">Rimuovi Cliente</button>
+                    </div>
+                </div> 
             </div>
             <div class="container col-2" id="data-count">
                 <div id="user-count"></div>
