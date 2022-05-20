@@ -50,6 +50,18 @@ router.get('/month/:month', async (req, res) => {
     ],
   });
 
+ //get a car by the Id
+router.get('/:id', async (req, res) => {
+  let operation = await Operation.findById(req.params.id);
+  res.status(200).json({
+    self: '/api/v1/cars/' + operation.id,
+    targa: car.targa,
+    modello: car.modello,
+    anno: car.anno,
+    proprietario: car.proprietario,
+  });
+});
+
   operations = operations.map((operation) => {
     return {
       self: '/api/v1/operations/' + operation.id,
