@@ -21,8 +21,8 @@ function loadOperations() {
       });
     })
     .then(() => {
+      calendar.removeAllEvents();
       calendar.addEventSource(operations);
-      //calendar.addEvent({ start: '2019-04-23' })
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
@@ -50,16 +50,43 @@ function addOperation(start, end, title) {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
-loadOperations();
-
 function openForm(start, end) {
+  //Add one day to the selected date, because the calendar selection set the start the day before the selected one
+  start = new Date(start);
+  start.setDate(start.getDate() + 1);
 
-  calendar.selectable = false;
-  
+  //Set the form datepickers values as the selected ones
   document.getElementById('startDate').valueAsDate = new Date(start);
   document.getElementById('endDate').valueAsDate = new Date(end);
-  document.getElementById('popupForm').style.display = 'block';
+  $('#popupForm').css('display', 'block');
 }
+
+function subForm() {
+  closeForm();
+}
+
 function closeForm() {
-  document.getElementById('popupForm').style.display = 'none';
+  $('#popupForm').css('display', 'none');
 }
+
+// wait for the DOM to be loaded
+$(document).ready(function () {
+  loadOperations();
+
+  $('#opForm').submit(function (e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+
+    var form = $(this);
+    var actionUrl = form.attr('action');
+    console.log(form)
+
+    $.ajax({
+      type: 'POST',
+      url: actionUrl,
+      data: form.serialize(), // serializes the form's elements.
+      success: function (data) { //wait for the response
+        loadOperations();
+      },
+    });
+  });
+});

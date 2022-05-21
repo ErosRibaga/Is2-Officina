@@ -85,3 +85,8 @@ body {
 .openButton:hover {
   opacity: 1;
 }
+
+.fc-event-main:hover{
+  background: rgba(0,0,0,.3);
+}
+
