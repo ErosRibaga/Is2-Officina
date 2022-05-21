@@ -7,6 +7,7 @@ const Operation = require('./models/operation');
 const port = 8080;
 
 const operations = require('./operations');
+const customers = require('./customers');
 
 //Set the parser in order to access the body request
 app.use(express.urlencoded({ extended: true }));
@@ -40,6 +41,9 @@ app.use(function (req, res, next) {
 
 //use express as middleware to run the specific requests and make the code more flexible
 app.use('/api/v1/operations', operations);
+
+//use express as middleware to run the specific requests and make the code more flexible
+app.use('/api/v1/customers', customers);
 
 //Default 404 handler
 app.use((req, res) => {
