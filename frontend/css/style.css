@@ -1,92 +1,75 @@
-html,
 body {
   margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+/*-- Sidebar --*/
+
+.sidebar {
+  margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  font-size: 14px;
+  width: 200px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
 }
 
-#calendar {
-  max-width: 700px;
-  margin: 40px auto;
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
-}
-.openBtn {
-  display: flex;
-  justify-content: left;
-}
-.openButton {
-  border: none;
-  border-radius: 5px;
-  background-color: #1c87c9;
+.sidebar a.active {
+  background-color: #04aa6d;
   color: white;
-  padding: 14px 20px;
-  cursor: pointer;
-  position: fixed;
-}
-.loginPopup {
-  position: relative;
-  text-align: center;
-  width: 100%;
-}
-.formPopup {
-  display: none;
-  position: fixed;
-  left: 45%;
-  top: 5%;
-  transform: translate(-50%, 5%);
-  border: 3px solid #999999;
-  z-index: 9;
-}
-.formContainer {
-  max-width: 300px;
-  padding: 20px;
-  background-color: #fff;
-}
-.formContainer input[type='text'],
-.formContainer input[type='password'] {
-  width: 100%;
-  padding: 5px;
-  margin: 5px 0 20px 0;
-  border: none;
-  background: #eee;
 }
 
-.formContainer input[type='date'],
-.formContainer input[type='password'] {
-  width: 100%;
-  margin: 5px;
-  margin: 5px 0 20px 0;
-  border: none;
-  background: #eee;
-}
-.formContainer input[type='text']:focus,
-.formContainer input[type='password']:focus {
-  background-color: #ddd;
-  outline: none;
-}
-.formContainer .btn {
-  padding: 12px 20px;
-  border: none;
-  background-color: #8ebf42;
-  color: #fff;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 15px;
-  opacity: 0.8;
-}
-.formContainer .cancel {
-  background-color: #cc0000;
-}
-.formContainer .btn:hover,
-.openButton:hover {
-  opacity: 1;
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
 }
 
-.fc-event-main:hover{
-  background: rgba(0,0,0,.3);
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {
+    float: left;
+  }
+  .container-fluid {
+    margin-left: 0 !important;
+  }
 }
 
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
+
+.container-fluid {
+  width: auto;
+  margin-right: 0;
+  margin-left: 200px ;
+}
+
+.inner {
+  background: brown;
+}
+
+i {
+  padding: 10px;
+}
+
+.column {
+  padding: 60px;
+}
+
+/*-- Lists --*/

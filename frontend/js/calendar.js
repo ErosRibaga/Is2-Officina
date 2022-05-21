@@ -27,15 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear',
     },
 
-    eventDidMount: (info) => {
-      var tooltip = new Tooltip(info.el, {
-        title: info.event.extendedProps.description,
-        placement: 'top',
-        trigger: 'hover',
-        container: 'body',
-      });
-    },
-
     eventClick: function (info) {
       console.log(info.event.extendedProps);
       alert(

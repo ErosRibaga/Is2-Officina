@@ -1,7 +1,4 @@
 function loadOperations() {
-  //const ul = document.getElementById('operations'); // Get the list where we will place our authors
-
-  //ul.textContent = '';
 
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
@@ -28,6 +25,7 @@ function loadOperations() {
 }
 
 function addOperation(start, end, title) {
+
   console.log(start);
 
   fetch('http://localhost:8080/api/v1/operations/', {
