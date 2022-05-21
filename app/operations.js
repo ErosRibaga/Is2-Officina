@@ -6,13 +6,14 @@ const Operation = require('./models/operation');
 router.get('/', async (req, res) => {
   let operations = await Operation.find({});
 
-  console.log(req.body);
-
   operations = operations.map((operation) => {
     return {
       self: '/api/v1/operations/' + operation.id,
       title: operation.title,
+      description: operation.description,
       employee: operation.employee,
+      startDate: new Date(operation.startDate),
+      endDate: new Date(operation.endDate),
       car: operation.car,
     };
   });
@@ -25,13 +26,17 @@ router.get('/:id', async (req, res) => {
   res.status(200).json({
     self: '/api/v1/operations/' + operation.id,
     title: operation.title,
+    description: operation.description,
+    employee: operation.employee,
+    startDate: new Date(operation.startDate),
+    endDate: new Date(operation.endDate),
+    car: operation.car,
   });
 });
 
 //get al the operations that start or end in the selected month
 router.get('/month/:month', async (req, res) => {
   let curYear = new Date().getFullYear();
-  console.log(curYear);
 
   let operations = await Operation.find({
     $or: [
@@ -54,7 +59,10 @@ router.get('/month/:month', async (req, res) => {
     return {
       self: '/api/v1/operations/' + operation.id,
       title: operation.title,
+      description: operation.description,
       employee: operation.employee,
+      startDate: new Date(operation.startDate),
+      endDate: new Date(operation.endDate),
       car: operation.car,
     };
   });
@@ -66,6 +74,7 @@ router.post('', async (req, res) => {
   let operation = new Operation({
     title: req.body.title,
     description: req.body.description,
+    startDate:  new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
     employee: req.body.employee,
     car: req.body.car,
