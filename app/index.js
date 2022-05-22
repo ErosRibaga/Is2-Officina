@@ -13,22 +13,48 @@ const port = 8080;
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      version: "1.0.0",
-      title: "API Officina",
-      description: "Informazioni API Officina",
+      version: '1.0.0',
+      title: 'API Officina',
+      description: 'Informazioni API Officina',
       contact: {
-        name: "Eros Ribaga"
+        name: 'Eros Ribaga',
       },
-      servers: ["http://127.0.0.1:8080"]
-    }
+      servers: ['http://127.0.0.1:8080'],
+    },
   },
   // ['.routes/*.js']
-  apis: ["*.js"]
+  apis: ['*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
+//Abilitate cors
+app.use(cors());
+
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+
+  // Request methods you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
+
+  // Request headers you wish to allow
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type'
+  );
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 //Set the parser in order to access the body request
 app.use(express.urlencoded({ extended: true }));
