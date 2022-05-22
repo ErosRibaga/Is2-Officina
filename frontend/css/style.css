@@ -3,6 +3,25 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
+p {
+  color: #6c757d;
+}
+
+hr {
+  margin-bottom: 2em;
+}
+
+.operazione {
+  background-color: #f1f1f1;
+  max-width: 600px;
+  border-radius: 117px;
+  margin: auto;
+}
+
+.btn {
+  max-width: 200px;
+}
+
 /*-- Sidebar --*/
 
 .sidebar {
@@ -32,7 +51,6 @@ body {
   color: white;
 }
 
-
 @media screen and (max-width: 700px) {
   .sidebar {
     width: 100%;
@@ -57,7 +75,7 @@ body {
 .container-fluid {
   width: auto;
   margin-right: 0;
-  margin-left: 200px ;
+  margin-left: 200px;
 }
 
 .inner {

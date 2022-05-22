@@ -38,45 +38,39 @@ body {
     background-color: #f1f1f1;
   }
   .formContainer {
-    max-width: 300px;
     padding: 20px;
    
   }
   .formContainer input[type='text'],
-  .formContainer input[type='password'] {
+  .formContainer input[type='date'] {
     width: 100%;
     padding: 5px;
-    margin: 5px 0 20px 0;
+    margin: 5px 0 10px 0;
     border: none;
-    background: #eee;
-  }
-  
-  .formContainer input[type='date'],
-  .formContainer input[type='password'] {
-    width: 100%;
-    margin: 5px;
-    margin: 5px 0 20px 0;
-    border: none;
-    background: #eee;
-  }
+    background: rgb(255, 255, 255);
+  }  
+ 
   .formContainer input[type='text']:focus,
   .formContainer input[type='password']:focus {
     background-color: #ddd;
     outline: none;
   }
+
   .formContainer .btn {
-    padding: 12px 20px;
+    padding: 12px 0px;
     border: none;
-    background-color: #8ebf42;
+    background-color: #04aa6d;
     color: #fff;
     cursor: pointer;
-    width: 100%;
+    width: 60%;
     margin-bottom: 15px;
     opacity: 0.8;
   }
+
   .formContainer .cancel {
     background-color: #cc0000;
   }
+  
   .formContainer .btn:hover,
   .openButton:hover {
     opacity: 1;

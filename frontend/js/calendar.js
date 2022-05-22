@@ -28,13 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
     },
 
     eventClick: function (info) {
-      console.log(info.event.extendedProps);
-      alert(
-        'Event: ' +
-          info.event.title +
-          '\nDescription: ' +
-          info.event.extendedProps.description
+      var id = info.event.extendedProps.self.substring(
+        info.event.extendedProps.self.lastIndexOf('/') + 1
       );
+      window.location.href = '/frontend/operation.html?id='+id;
     },
   });
 

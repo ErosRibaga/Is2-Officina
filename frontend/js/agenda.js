@@ -8,12 +8,12 @@ function loadOperations() {
     .then((data) => {
       return data.map((operation) => {
         var obj = {
+          self: operation.self,
           title: operation.title,
           description: operation.description,
           start: operation.startDate,
           end: operation.endDate,
         };
-        console.log(operation.description);
         operations.push(obj);
       });
     })
@@ -59,9 +59,6 @@ function openForm(start, end) {
   $('#popupForm').css('display', 'block');
 }
 
-function subForm() {
-  closeForm();
-}
 
 function closeForm() {
   $('#popupForm').css('display', 'none');
@@ -84,6 +81,7 @@ $(document).ready(function () {
       data: form.serialize(), // serializes the form's elements.
       success: function (data) { //wait for the response
         loadOperations();
+        closeForm();
       },
     });
   });
