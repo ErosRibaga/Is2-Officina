@@ -21,17 +21,28 @@ function initUpdateOperation(data) {
   $('#title').val(data.title);
   $('#description').val(data.description);
 
-  $('#startDate').val(new Date(data.startDate).toISOString().split('T')[0]);
-  $('#endDate').val(new Date(data.endDate).toISOString().split('T')[0]);
+  var start = new Date(data.startDate).toISOString().split('T')[0];
+  var end = new Date(data.endDate).toISOString().split('T')[0];
+  var today = new Date().toISOString().split('T')[0];
+
+  //Set startDate datapicker
+  $('#startDate').val(start);
+  $('#startDate').attr('min', today);
+  $('#startDate').change(() => {
+    $('#endDate').attr('min', $('#startDate').val());
+  });
+
+  //Set endDate datapicker
+  $('#endDate').val(end);
+  $('#endDate').attr('min', start);
 }
 
 function updateOperation() {
   var title = $('#title').val();
   var description = $('#description').val();
 
-  var startDate = $('#startDate').val(); 
+  var startDate = $('#startDate').val();
   var endDate = $('#endDate').val();
-
 
   fetch('http://localhost:8080/api/v1/operations/' + getID(), {
     method: 'PUT',

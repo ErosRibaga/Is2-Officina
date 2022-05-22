@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     initialDate: new Date(),
+    displayEventTime : false,
     firstDay: 1, //set monday as the first day of the week
     height: 650,
     selectable: true,
