@@ -2,23 +2,46 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-const Operation = require('./models/operation');
-const port = 8080;
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
 
 const operations = require('./operations');
+
+const port = 8080;
+
+// Extended: https://swagger.io/specification/#infoObject
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      version: "1.0.0",
+      title: "API Officina",
+      description: "Informazioni API Officina",
+      contact: {
+        name: "Eros Ribaga"
+      },
+      servers: ["http://127.0.0.1:8080"]
+    }
+  },
+  // ['.routes/*.js']
+  apis: ["*.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 
 //Set the parser in order to access the body request
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//use express as middleware to run the specific requests and make the code more flexible
-app.use('/api/v1/operations', operations);
-
-//Default 404 handler
+//Default 404 handler - it needs to be before defined before routing to the api urls
 app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
 });
+
+//use express as middleware to run the specific requests and make the code more flexible
+app.use('/api/v1/operations', operations);
 
 //connection to the mongodb server
 //start the server on the port 8080
@@ -36,5 +59,3 @@ mongoose
   .catch((err) => {
     console.log('Non connesso - ' + err);
   });
-
-
