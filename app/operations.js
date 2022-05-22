@@ -20,6 +20,23 @@ router.get('/', async (req, res) => {
   res.status(200).json(operations);
 });
 
+//Update an new operation
+router.put('/:id', async (req, res) => {
+  let operation = await Operation.findByIdAndUpdate(req.params.id, {
+    title: req.body.title,
+    description: req.body.description,
+    employee: req.body.employee,
+    startDate: new Date(req.body.startDate),
+    endDate: new Date(req.body.endDate),
+    car: req.body.car,
+  });
+
+  res
+    .location('/api/v1/operations/' + req.params.id)
+    .status(204)
+    .send();
+});
+
 //get an operation by the Id
 router.get('/:id', async (req, res) => {
   let operation = await Operation.findById(req.params.id);
@@ -74,7 +91,7 @@ router.post('', async (req, res) => {
   let operation = new Operation({
     title: req.body.title,
     description: req.body.description,
-    startDate:  new Date(req.body.startDate),
+    startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
     employee: req.body.employee,
     car: req.body.car,
