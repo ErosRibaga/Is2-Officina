@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Operation = require('./models/customer');
+const Customer = require('./models/customer');
 
 router.post('', async (req, res) => {
-
     let customer = new Customer({
       nome: req.body.nome,
       cognome: req.body.cognome,
       codiceFiscale: req.body.codiceFiscale,
-      car: req.body.car,
     });
   
     customer = await customer.save();
@@ -16,26 +14,26 @@ router.post('', async (req, res) => {
     let customerId = customer.id;
   
     res
-      .location('/api/v1/customer/' + customerId)
+      .location('/api/v1/customers/' + customerId)
       .status(201)
       .send();
   });
 
   router.get('/', async (req, res) => {
     
-    let operations = await Operation.find({});
+    let customers = await Customer.find({});
   
     console.log(req.body);
   
-    operations = operations.map((operation) => {
+    customers = customers.map((customer) => {
       return {
-        self: '/api/v1/operations/' + operation.id,
-        title: operation.title,
-        employee: operation.employee,
-        car: operation.car,
+        self: '/api/v1/customer/' + customer.id,
+        nome: customer.nome,
+        cognome: customer.cognome,
+        codiceFiscale: customer.codiceFiscale,
       };
     });
-    res.status(200).json(operations);
+    res.status(200).json(customers);
   });
 
   /*
