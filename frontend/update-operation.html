@@ -27,14 +27,14 @@
 <body>
     <div class="sidebar">
         <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-        <a class="active" href="#news"><i class="fa-solid fa-calendar"></i>Agenda</a>
+        <a class="active" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
         <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
         <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
         <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
     </div>
     <div class="container-fluid">
 
-        <form class="row">
+        <div class="row">
             <div class="col-sm-2"></div>
             <div class="px-5 col-sm-6">
                 <div class="operazione px-5 py-3 my-4 pt-md-5 pb-md-4 text-center ">
@@ -43,19 +43,15 @@
                     <input type="text" class="form-control form-control form-control-sm" id="title" name="title"
                         required>
                     <label>Descrizione</label>
-                    <input type="text" class="form-control form-control form-control-sm" id="description"
-                        name="description" required>
+                    <textarea type="text" class="form-control form-control form-control-sm" id="description"
+                        name="description" required></textarea>
                     <hr />
 
-                    <label for="startDate">
-                        startDate
-                    </label>
+                    <label>Data inizo</label>
                     <input type="date" class="form-control form-control form-control-sm" id="startDate" name="startDate"
                         required>
 
-                    <label for="endDate">
-                        endDate
-                    </label>
+                    <label>Data fine</label>
                     <input type="date" class="form-control form-control form-control-sm" id="endDate" name="endDate"
                         required>
 
@@ -80,15 +76,19 @@
             </div>
             <div class="col-sm-4 text-center align-self-center">
                 <div class="row  my-3">
-                    <button type="submit" class="btn btn-primary">Salva</button>
+                    <button type="submit" class="btn btn-primary" onclick="updateOperation()">Salva</button>
                 </div>
                 <div class="row ">
                     <button type="button" class="btn btn-danger"
                         onclick="redirect('/frontend/operation.html?id=' + getID())">Annulla</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
+    <script>
+        $(document).ready(function () { initOperation("update"); });
+    </script>
 </body>
 
 </html>

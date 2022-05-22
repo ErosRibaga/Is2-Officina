@@ -27,7 +27,7 @@
 <body>
     <div class="sidebar">
         <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-        <a class="active" href="#news"><i class="fa-solid fa-calendar"></i>Agenda</a>
+        <a class="active" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
         <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
         <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
         <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
@@ -68,7 +68,8 @@
             </div>
             <div class="col-sm-4 text-center align-self-center">
                 <div class="row  my-3">
-                    <button type="button" class="btn btn-primary" onclick="redirect('/frontend/edit-operation.html?id=' + getID())">Modifica</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="redirect('/frontend/update-operation.html?id=' + getID())">Modifica</button>
                 </div>
                 <div class="row ">
                     <button type="button" class="btn btn-danger" onclick="">Elimina</button>
@@ -76,6 +77,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () { initOperation("get"); });
+    </script>
 </body>
 
 </html>

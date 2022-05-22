@@ -1,6 +1,5 @@
+//Print the information about the operation
 function displayOperation(data) {
-  console.log(data);
-
   $('#title').text(data.title);
   $('#description').text(data.description);
 
@@ -18,11 +17,60 @@ function displayOperation(data) {
   $('#eSurname').append('cognome');
 }
 
-$(document).ready(function () {
+function initUpdateOperation(data) {
+  $('#title').val(data.title);
+  $('#description').val(data.description);
+
+  $('#startDate').val(new Date(data.startDate).toISOString().split('T')[0]);
+  $('#endDate').val(new Date(data.endDate).toISOString().split('T')[0]);
+}
+
+function updateOperation() {
+  var title = $('#title').val();
+  var description = $('#description').val();
+
+  var startDate = $('#startDate').val(); 
+  var endDate = $('#endDate').val();
+
+
+  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+    method: 'PUT',
+    body: JSON.stringify({
+      title: title,
+      description: description,
+      endDate: new Date(endDate),
+      startDate: new Date(startDate),
+      employee: 'Tiziano Ferro',
+      car: 'Peugeot 2008',
+    }),
+    headers: {
+      'Content-type': 'application/json',
+    },
+    mode: 'cors',
+  })
+    .then((data) => {
+      console.log(data);
+      redirect('/frontend/operation.html?id=' + getID());
+    })
+    .catch((error) => console.error(error)); // If there is any error you will catch them here
+
+  /*var title = $('#brand').val();
+  var title = $('#model').val();
+
+  var title = $('#cName').val();
+  var title = $('#cSurname').val();
+  var title = $('#cNumber').val();
+
+  var title = $('#eName').val();
+  var title = $('#eSurname').val();*/
+}
+
+function initOperation(type) {
   fetch('http://localhost:8080/api/v1/operations/' + getID())
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
-      displayOperation(data);
+      if (type == 'get') displayOperation(data);
+      else if (type == 'update') initUpdateOperation(data);
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
-});
+}
