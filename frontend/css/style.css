@@ -72,3 +72,6 @@ body {
     padding: 60px;
   }
   
+  .selected {
+    background-color: blueviolet;
+  }
