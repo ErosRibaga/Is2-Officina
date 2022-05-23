@@ -42,8 +42,7 @@ router.get('/', async (req, res) => {
  *        name: id
  *        required: true
  *        description: The operation's id
- *        schema:
- *          type: string
+ *        type: string
  *    responses:
  *      '204':
  *        description: Operation successfully removed
@@ -68,24 +67,24 @@ router.delete('/:id', async (req, res) => {
  *  put:
  *    tags: [operations]
  *    description: Use to update an operation.
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              title:
- *                type: string
- *                description: The operations's title.
- *                example: asd87658af
  *    parameters:
  *      - in: path
  *        name: id
  *        required: true
  *        description: The operation's id
+ *        type: string
+ *      - in: body
+ *        name: body
+ *        description: The operation to create
  *        schema:
- *          type: string
+ *          type: object
+ *          required: 
+ *            - 'title'
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: The operations's title.
+ *              example: asd87658af
  *    responses:
  *      '204':
  *        description: Operation successfully updated
@@ -119,8 +118,7 @@ router.put('/:id', async (req, res) => {
  *        name: id
  *        required: true
  *        description: The operation's id
- *        schema:
- *          type: string
+ *        type: string
  *    responses:
  *      '200':
  *        description: Operation successfully removed
@@ -146,17 +144,19 @@ router.get('/:id', async (req, res) => {
  *  post:
  *    tags: [operations]
  *    description: Use to insert a new operation.
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              title:
- *                type: string
- *                description: The operations's title.
- *                example: asd87658af
+ *    parameters:
+ *      - in: body
+ *        name: body
+ *        description: The operation to create
+ *        schema:
+ *          type: object
+ *          required: 
+ *            - 'title'
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: The operations's title.
+ *              example: asd87658af
  *    responses:
  *      '201':
  *        description: Operation successfully inserted

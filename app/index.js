@@ -14,13 +14,12 @@ const port = 8080;
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
-      version: '1.0.0',
+      version: '2.0.0',
       title: 'API Officina',
       description: 'Informazioni API Officina',
       contact: {
         name: 'Eros Ribaga',
       },
-      servers: ['http://127.0.0.1:8080'],
     },
   },
   // ['.routes/*.js']
@@ -28,6 +27,7 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDocs));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //Abilitate cors
