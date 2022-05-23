@@ -6,6 +6,47 @@ info:
     name: Eros Ribaga
 swagger: '2.0'
 paths:
+  /customers:
+    get:
+      tags:
+        - customers
+      description: Use to request all customers
+      responses:
+        '200':
+          description: A successful response
+        '404':
+          description: Operation not found
+  '/customers/{id}':
+    get:
+      tags:
+        - customers
+      description: Use to get a customer by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '200':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
+    delete:
+      tags:
+        - customers
+      description: Use to delete a customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '204':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
   /operations:
     get:
       tags:
