@@ -61,44 +61,14 @@ app.use(function (req, res, next) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//use express as middleware to run the specific requests and make the code more flexible
+app.use('/api/v1/operations', operations);
 
 //Default 404 handler - it needs to be before defined before routing to the api urls
 app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
 });
-
-app.use(cors());
-
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-
-  // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
-
-  // Request headers you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
-  );
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
-
-//use express as middleware to run the specific requests and make the code more flexible
-app.use('/api/v1/operations', operations);
-
-//use express as middleware to run the specific requests and make the code more flexible
-app.use('/api/v1/operations', operations);
 
 //connection to the mongodb server
 //start the server on the port 8080
