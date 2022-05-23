@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const customerSchema = new mongoose.Schema({
   nome: String, 
   cognome: String,
-  codiceFiscale: String,
+  telefono: String,
 });
 
 //Create and export the model based on the operation schema

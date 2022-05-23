@@ -8,7 +8,7 @@ router.post('', async (req, res) => {
   let customer = new Customer({
     nome: req.body.nome,
     cognome: req.body.cognome,
-    codiceFiscale: req.body.codiceFiscale,
+    telefono: req.body.telefono,
   });
 
   customer = await customer.save();
@@ -21,6 +21,18 @@ router.post('', async (req, res) => {
     .send();
 });
 
+/**
+ * @swagger
+ * /customers:
+ *  get:
+ *    tags: [customers]
+ *    description: Use to request all customers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: Operation not found
+ */
 router.get('/', async (req, res) => {
   
   let customers = await Customer.find({});
@@ -32,24 +44,60 @@ router.get('/', async (req, res) => {
       self: '/api/v1/customer/' + customer.id,
       nome: customer.nome,
       cognome: customer.cognome,
-      codiceFiscale: customer.codiceFiscale,
+      telefono: customer.telefono,
     };
   });
   res.status(200).json(customers);
 });
 
 
-//get a customer by the Id
+/**
+ * @swagger
+ * /customers/{id}:
+ *  get:
+ *    tags: [customers]
+ *    description: Use to get a customer by its id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The customer's id
+ *        type: string
+ *    responses:
+ *      '200':
+ *        description: Customer successfully removed
+ *      '404':
+ *        description: Customer not found
+ */
 router.get('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id);
   res.status(200).json({
     self: '/api/v1/operations/' + operation.id,
     nome: customer.nome,
     cognome: customer.cognome,
-    nome: customer.nome,
+    telefono: customer.telefono,
   });
 });
 
+
+/**
+ * @swagger
+ * /customers/{id}:
+ *  delete:
+ *    tags: [customers]
+ *    description: Use to delete a customer
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The customer's id
+ *        type: string
+ *    responses:
+ *      '204':
+ *        description: Customer successfully removed
+ *      '404':
+ *        description: Customer not found
+ */
 router.delete('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id).exec();
   if (!customer) {

@@ -9,6 +9,7 @@ const swaggerUI = require('swagger-ui-express');
 const operations = require('./operations');
 const customers = require('./customers');
 
+
 const port = 8080;
 
 // Extended: https://swagger.io/specification/#infoObject
@@ -62,45 +63,12 @@ app.use(function (req, res, next) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-//Default 404 handler - it needs to be before defined before routing to the api urls
-app.use((req, res) => {
-  res.status(404);
-  res.json({ error: 'Not found' });
-});
-
-app.use(cors());
-
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-
-  // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
-
-  // Request headers you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
-  );
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
-
-  // Pass to next layer of middleware
-  next();
-});
-
 //use express as middleware to run the specific requests and make the code more flexible
 app.use('/api/v1/operations', operations);
-
 app.use('/api/v1/customers', customers);
 
-//Default 404 handler
+
+//Default 404 handler - it needs to be before defined before routing to the api urls
 app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
@@ -122,3 +90,4 @@ mongoose
   .catch((err) => {
     console.log('Non connesso - ' + err);
   });
+

@@ -11,13 +11,13 @@ function loadCustomers(){
         id: customer.self,
         nome: customer.nome,
         cognome: customer.cognome,
-        codiceFiscale: customer.codiceFiscale,
+        telefono: customer.telefono,
       };
 
-      var tblRow = "<tr class='clickable'><td>  <p hidden>" + obj.id.substring(obj.id.lastIndexOf('/')+1) + "</p>" + obj.nome + "</td><td>" + obj.cognome + "</td><td>" + obj.codiceFiscale + "</td></tr>";
+      var tblRow = "<tr class='clickable'><td>  <p hidden>" + obj.id.substring(obj.id.lastIndexOf('/')+1) + "</p>" + obj.nome + "</td><td>" + obj.cognome + "</td><td>" + obj.telefono + "</td></tr>";
       $(tblRow).appendTo("#customer-table tbody");
 
-      $('#user-count').html('<p>Nume  ro di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
+      $('#user-count').html('<p>Numero di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
 
     });
   })
@@ -38,14 +38,14 @@ $(document).ready(function(){
     if(selecteditemid != -1){
       //chiamare api per la rimozione dal DB 
 
-      fetch("http://127.0.0.1:8080/api/v1/customers/", {
+      fetch("http://localhost:8080/api/v1/customers/" + selecteditemid, {
         method: "DELETE",
-        headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(selecteditemid)
       }).then(res => {
         console.log("Request complete! response:", res);
+      })
+      .catch(error => {
+        console.log(error);
       });
-
       selecteditemid = -1;
     }
   };
