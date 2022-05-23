@@ -7,6 +7,8 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 
 const operations = require('./operations');
+const customers = require('./customers');
+
 
 const port = 8080;
 
@@ -63,6 +65,7 @@ app.use(express.json());
 
 //use express as middleware to run the specific requests and make the code more flexible
 app.use('/api/v1/operations', operations);
+app.use('/api/v1/customers', customers);
 
 //Default 404 handler - it needs to be before defined before routing to the api urls
 app.use((req, res) => {
@@ -86,3 +89,4 @@ mongoose
   .catch((err) => {
     console.log('Non connesso - ' + err);
   });
+
