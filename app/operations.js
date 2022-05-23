@@ -2,7 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Operation = require('./models/operation');
 
-//get all the operations
+/**
+ * @swagger
+ * /operations:
+ *  get:
+ *    tags: [operations]
+ *    description: Use to request all operations
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: Operation not found
+ */
 router.get('/', async (req, res) => {
   let operations = await Operation.find({});
 
@@ -20,7 +31,66 @@ router.get('/', async (req, res) => {
   res.status(200).json(operations);
 });
 
-//Update an new operation
+/**
+ * @swagger
+ * /operations/{id}:
+ *  delete:
+ *    tags: [operations]
+ *    description: Use to delete an operation
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The operation's id
+ *        type: string
+ *    responses:
+ *      '204':
+ *        description: Operation successfully removed
+ *      '404':
+ *        description: Operation not found
+ */
+router.delete('/:id', async (req, res) => {
+  let operation = await Operation.findById(req.params.id).exec();
+  if (!operation) {
+    res.status(404).send();
+    console.log('Operation not found');
+    return;
+  }
+  await operation.deleteOne();
+  console.log('Operation removed');
+  res.status(204).send();
+});
+
+/**
+ * @swagger
+ * /operations/{id}:
+ *  put:
+ *    tags: [operations]
+ *    description: Use to update an operation.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The operation's id
+ *        type: string
+ *      - in: body
+ *        name: body
+ *        description: The operation to create
+ *        schema:
+ *          type: object
+ *          required: 
+ *            - 'title'
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: The operations's title.
+ *              example: asd87658af
+ *    responses:
+ *      '204':
+ *        description: Operation successfully updated
+ *      '404':
+ *        description: Operation not found
+ */
 router.put('/:id', async (req, res) => {
   let operation = await Operation.findByIdAndUpdate(req.params.id, {
     title: req.body.title,
@@ -37,7 +107,24 @@ router.put('/:id', async (req, res) => {
     .send();
 });
 
-//get an operation by the Id
+/**
+ * @swagger
+ * /operations/{id}:
+ *  get:
+ *    tags: [operations]
+ *    description: Use to get an operation by its id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The operation's id
+ *        type: string
+ *    responses:
+ *      '200':
+ *        description: Operation successfully removed
+ *      '404':
+ *        description: Operation not found
+ */
 router.get('/:id', async (req, res) => {
   let operation = await Operation.findById(req.params.id);
   res.status(200).json({
@@ -51,42 +138,29 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-//get al the operations that start or end in the selected month
-router.get('/month/:month', async (req, res) => {
-  let curYear = new Date().getFullYear();
-
-  let operations = await Operation.find({
-    $or: [
-      {
-        $and: [
-          { startDate: { $gt: curYear + '-' + req.params.month + '-01' } },
-          { startDate: { $lt: curYear + '-' + req.params.month + '-31' } },
-        ],
-      },
-      {
-        $and: [
-          { endDate: { $gt: curYear + '-' + req.params.month + '-01' } },
-          { endDate: { $lt: curYear + '-' + req.params.month + '-31' } },
-        ],
-      },
-    ],
-  });
-
-  operations = operations.map((operation) => {
-    return {
-      self: '/api/v1/operations/' + operation.id,
-      title: operation.title,
-      description: operation.description,
-      employee: operation.employee,
-      startDate: new Date(operation.startDate),
-      endDate: new Date(operation.endDate),
-      car: operation.car,
-    };
-  });
-  res.status(200).json(operations);
-});
-
-//Insert a new operation
+/**
+ * @swagger
+ * /operations:
+ *  post:
+ *    tags: [operations]
+ *    description: Use to insert a new operation.
+ *    parameters:
+ *      - in: body
+ *        name: body
+ *        description: The operation to create
+ *        schema:
+ *          type: object
+ *          required: 
+ *            - 'title'
+ *          properties:
+ *            title:
+ *              type: string
+ *              description: The operations's title.
+ *              example: asd87658af
+ *    responses:
+ *      '201':
+ *        description: Operation successfully inserted
+ */
 router.post('', async (req, res) => {
   let operation = new Operation({
     title: req.body.title,
