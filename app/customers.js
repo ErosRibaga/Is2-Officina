@@ -2,13 +2,98 @@ const express = require('express');
 const router = express.Router();
 const Customer = require('./models/customer');
 
-//insert put before GET
+/**
+ * @swagger
+ * /customer/{id}:
+ *  put:
+ *    tags: [customers]
+ *    description: Use to update a customer data.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The customer's id
+ *        type: string
+ *      - in: body
+ *        name: body
+ *        description: The customer to update
+ *        schema:
+ *          type: object
+ *          required: 
+ *            - 'name'
+ *            - 'surname'
+ *            - 'phone'
+ *          properties:
+ *            name:
+ *              type: string
+ *              description: The customer's name.
+ *              example: Paolo
+ *            surname:
+ *              type: string
+ *              description: The customer's surname.
+ *              example: Frinzi
+ *             phone:
+ *              type: string
+ *              description: The customer's phone number.
+ *              example: 3483493698
+ *    responses:
+ *      '204':
+ *        description: Customer successfully updated
+ *      '404':
+ *        description: Customer not found
+ */
+ router.put('/:id', async (req, res) => {
+  let customer = await Customer.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    surname: req.body.surname,
+    phone: req.body.phone,
+  });
 
+  res
+    .location('/api/v1/customers/' + req.params.id)
+    .status(204)
+    .send();
+});
+
+/**
+ * @swagger
+ * /customers:
+ *  post:
+ *    tags: [customers]
+ *    description: Use to insert a new customer.
+ *    parameters:
+ *      - in: body
+ *        name: body
+ *        description: The customer to create
+ *        schema:
+ *          type: object
+ *          required: 
+ *            - 'name'
+ *            - 'surname'
+ *            - 'phone'
+ *          properties:
+ *            name:
+ *              type: string
+ *              description: The customer's name.
+ *              example: Paolo
+ *            surname:
+ *              type: string
+ *              description: The customer's surname.
+ *              example: Frinzi
+ *             phone:
+ *              type: string
+ *              description: The customer's phone number.
+ *              example: 3483493698
+ *          
+ *    responses:
+ *      '201':
+ *        description: Customer successfully inserted
+ */
 router.post('', async (req, res) => {
   let customer = new Customer({
-    nome: req.body.nome,
-    cognome: req.body.cognome,
-    telefono: req.body.telefono,
+    name: req.body.name,
+    surname: req.body.surname,
+    phone: req.body.phone,
   });
 
   customer = await customer.save();
@@ -31,7 +116,7 @@ router.post('', async (req, res) => {
  *      '200':
  *        description: A successful response
  *      '404':
- *        description: Operation not found
+ *        description: Customer not found
  */
 router.get('/', async (req, res) => {
   
@@ -42,9 +127,9 @@ router.get('/', async (req, res) => {
   customers = customers.map((customer) => {
     return {
       self: '/api/v1/customer/' + customer.id,
-      nome: customer.nome,
-      cognome: customer.cognome,
-      telefono: customer.telefono,
+      name: customer.name,
+      surname: customer.surname,
+      phone: customer.phone,
     };
   });
   res.status(200).json(customers);
@@ -72,10 +157,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id);
   res.status(200).json({
-    self: '/api/v1/operations/' + operation.id,
-    nome: customer.nome,
-    cognome: customer.cognome,
-    telefono: customer.telefono,
+    self: '/api/v1/customer/' + customer.id,
+    name: customer.name,
+    surname: customer.surname,
+    phone: customer.phone,
   });
 });
 
@@ -110,38 +195,4 @@ router.delete('/:id', async (req, res) => {
   res.status(204).send();
 });
 
-  /*
-  router.get('/customer/:customer', async (req, res) => {
-    let curYear = new Date().getFullYear();
-    console.log(curYear);
-  
-    let operations = await Operation.find({
-      $or: [
-        {
-          $and: [
-            { startDate: { $gt: curYear + '-' + req.params.month + '-01' } },
-            { startDate: { $lt: curYear + '-' + req.params.month + '-31' } },
-          ],
-        },
-        {
-          $and: [
-            { endDate: { $gt: curYear + '-' + req.params.month + '-01' } },
-            { endDate: { $lt: curYear + '-' + req.params.month + '-31' } },
-          ],
-        },
-      ],
-    });
-  
-    operations = operations.map((operation) => {
-      return {
-        self: '/api/v1/operations/' + operation.id,
-        title: operation.title,
-        employee: operation.employee,
-        car: operation.car,
-      };
-    });
-    res.status(200).json(operations);
-  });*/
-
-  //aggiungerlo a index.js
-  module.exports = router;
+module.exports = router;
