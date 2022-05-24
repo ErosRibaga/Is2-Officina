@@ -67,7 +67,6 @@ app.use(express.json());
 app.use('/api/v1/operations', operations);
 app.use('/api/v1/customers', customers);
 
-
 //Default 404 handler - it needs to be before defined before routing to the api urls
 app.use((req, res) => {
   res.status(404);

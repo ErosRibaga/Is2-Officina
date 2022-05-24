@@ -76,6 +76,17 @@ function updateOperation() {
   var title = $('#eSurname').val();*/
 }
 
+function deleteOperation() {
+  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+    method: 'DELETE',
+  })
+    .then((data) => {
+      console.log(data);
+      redirect('/frontend/agenda.html');
+    })
+    .catch((error) => console.error(error)); // If there is any error you will catch them here
+}
+
 function initOperation(type) {
   fetch('http://localhost:8080/api/v1/operations/' + getID())
     .then((resp) => resp.json()) // Transform the data into json
