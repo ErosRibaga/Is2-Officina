@@ -1,34 +1,56 @@
+const express = require('express');
+const router = express.Router();
+const Car = require('./models/car');
+
 router.post('', async (req, res) => {
 
-	let car = new Car({
-        brand: req.body.brand,
-        model: req.body.model,
-        plate: req.body.plate,
-        description: req.body.description,
-        owner: req.body.owner
-    });
-    
-	car = await car.save();
-    
-    let carId = car.id;
+  let car = new Car({
+    brand: req.body.brand,
+    model: req.body.model,
+    plate: req.body.plate,
+    description: req.body.description,
+    owner: req.body.owner,
+  });
 
-    console.log('car saved successfully');
+  car = await car.save();
 
-    /**
-     * Link to the newly created resource is returned in the Location header
-     * https://www.restapitutorial.com/lessons/httpmethods.html
-     */
-    res.location("/api/v1/car/" + carId).status(201).send();
-}); 
+  let carId = car.id;
 
- //get a car by the Id
+  console.log('car saved successfully');
+  res
+    .location('/api/v1/cars/' + carId)
+    .status(201)
+    .send();
+});
+
+//get a car by the Id
 router.get('/:id', async (req, res) => {
-  let operation = await Operation.findById(req.params.id);
+  let car = await Car.findById(req.params.id);
   res.status(200).json({
-    self: '/api/v1/cars/' + operation.id,
-    targa: car.targa,
-    modello: car.modello,
-    anno: car.anno,
-    proprietario: car.proprietario,
+    self: '/api/v1/cars/' + car.id,
+    brand: car.brand,
+    model: car.model,
+    plate: car.plate,
+    description: car.description,
+    owner: car.owner,
   });
 });
+
+router.get('/', async (req, res) => {
+  let cars = await Car.find({});
+
+  cars = cars.map((car) => {
+    return {
+      self: '/api/v1/operations/' + car.id,
+      brand: car.brand,
+      model: car.model,
+      plate: car.plate,
+      description: car.description,
+      owner: car.owner,
+    };
+  });
+  res.status(200).json(cars);
+});
+
+//export the router to use it in the index.js
+module.exports = router;

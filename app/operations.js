@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Operation = require('./models/operation');
+const mongoose = require('mongoose');
 
 /**
  * @swagger
@@ -162,13 +163,15 @@ router.get('/:id', async (req, res) => {
  *        description: Operation successfully inserted
  */
 router.post('', async (req, res) => {
+
+  console.log(req.body.car);
   let operation = new Operation({
     title: req.body.title,
     description: req.body.description,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
     employee: req.body.employee,
-    car: req.body.car,
+    car: mongoose.Types.ObjectId(req.body.car),
   });
 
   operation = await operation.save();

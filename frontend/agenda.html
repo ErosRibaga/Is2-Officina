@@ -29,29 +29,33 @@
   <!-- Locals -->
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="stylesheet" href="./css/agenda.css" />
+  <script src="./js/index.js"></script>
   <script src="./js/calendar.js"></script>
   <script src="./js/agenda.js"></script>
+
+  <!-- Sidebar generation -->
+  <script>
+    $(document).ready(function () {
+      createSideBar("#sideAgenda");
+    });
+  </script>
 </head>
 
 <body>
   <div class="sidebar">
-    <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-    <a class="active" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
-    <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
-    <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
-    <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
+
   </div>
   <div class="container-fluid">
     <div class="row">
       <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-4 ">Agenda</h1>
+        <h1 class="display-6">Agenda</h1>
       </div>
     </div>
     <div class="row">
-      <div class="column col-sm-6">
+      <div class="col-sm-2"></div>
+      <div class="column col-sm-8">
 
         <div id='calendar'></div>
-
 
         <!-- Popup operation insert -->
         <div class="formPopup" id="popupForm">
@@ -60,6 +64,7 @@
             <div class="form-group">
               <div class="row">
                 <div class="col-sm-6">
+
                   <h2>Aggiungi operazione</h2>
                   Titolo
                   <input type="text" class="form-control form-control form-control-sm" id="title" name="title" required>
@@ -71,6 +76,7 @@
                   <input type="date" class="form-control form-control form-control-sm" id="startDate" name="startDate"
                     required>
                   <br>
+
                   <label for="endDate">
                     endDate
                   </label>
@@ -81,13 +87,14 @@
                   <label for="car">
                     Auto
                   </label>
-                  <input type="text" class="form-control form-control form-control-sm" id="car" name="car" required>
+                  <select name="car" id="cars">
+                  </select>
                   <br>
 
                 </div>
                 <div class="col-sm-6 align-self-center">
                   <span>
-                    <button type="submit" class="btn" onclick="subForm()">Aggiungi</button>
+                    <button type="submit" class="btn">Aggiungi</button>
                     <button type="button" class="btn cancel" onclick="closeForm()">Annulla</button>
                   </span>
                 </div>
@@ -96,24 +103,8 @@
         </div>
       </div>
 
+      <div class="col-sm-2"></div>
 
-    </div>
-    <div class="column col-sm-6 text-center">
-      <div>
-        <h4>Operazioni</h4>
-      </div>
-      <div class="container">
-        <table id="customer-table" class="table">
-          <thead class="thead-dark">
-            <th scope="col">ID</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Cognome</th>
-            <th scope="col">Codice Fiscale</th>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
   </div>

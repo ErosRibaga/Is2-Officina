@@ -1,4 +1,4 @@
-//Print the information about the operation
+//Print the information about the operation in the operation.html
 function displayOperation(data) {
   $('#title').text(data.title);
   $('#description').text(data.description);
@@ -6,8 +6,7 @@ function displayOperation(data) {
   $('#startDate').text(new Date(data.startDate).toDateString());
   $('#endDate').text(new Date(data.endDate).toDateString());
 
-  $('#brand').append(data.car);
-  $('#model').append('modello');
+
 
   $('#cName').append(data.customer);
   $('#cSurname').append('cognome');
@@ -15,8 +14,18 @@ function displayOperation(data) {
 
   $('#eName').append(data.employee);
   $('#eSurname').append('cognome');
+
+  //get car info
+  fetch('http://localhost:8080/api/v1/cars/' + data.car)
+  .then((resp) => resp.json()) // Transform the data into json
+  .then((car) => {
+    $('#brand').append(car.brand);
+    $('#model').append(car.model);
+    $('#plate').append(car.plate);
+  })
 }
 
+//Insert the old values inside the form inputs of the update-operation.html
 function initUpdateOperation(data) {
   $('#title').val(data.title);
   $('#description').val(data.description);
@@ -92,7 +101,7 @@ function initOperation(type) {
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
       if (type == 'get') displayOperation(data);
-      else if (type == 'update') initUpdateOperation(data);
+      else if (type == 'update') initUpdateOperation(data); //populate update-operation.html
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
