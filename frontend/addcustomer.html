@@ -3,6 +3,7 @@
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="./js/getidlink.js"></script>
         <script src="./js/addcustomers.js"></script>
         <link rel="stylesheet" href="./css/style.css" />
     </head>
@@ -21,20 +22,20 @@
                         <h1 class="display-4">Clienti</h1>
                     </div>
                     <div class="container"><!--  campi dati   -->
-                        <form method="post" name="customerform" id="customerform">
+                        <form method="post" action="./customers.html" name="customerform" id="customerform">
                             <div class="mb-3">
-                                <label for="inputNome" class="form-label">Nome</label>
-                                <input type="input" class="form-control" name="nome" id="textNome">
+                                <label for="inputname" class="form-label">Nome</label>
+                                <input type="input" class="form-control" name="name" id="textname">
                             </div>
                             <div class="mb-3">
-                                <label for="inputCognome" class="form-label">Cognome</label>
-                                <input type="input" class="form-control" name="cognome" id="textCognome">
+                                <label for="inputsurname" class="form-label">Cognome</label>
+                                <input type="input" class="form-control" name="surname" id="textsurname">
                             </div>
                             <div class="mb-3">
-                                <label for="inputTelefono" class="form-label">telefono</label>
-                                <input type="input" class="form-control" name="telefono" id="textTelefono">
+                                <label for="inputphone" class="form-label">Numero di Telefono</label>
+                                <input type="input" class="form-control" name="phone" id="textphone">
                             </div>
-                            <button id="addClient" type="button" class="btn btn-dark" onclick="insertCustomer()">Aggiungi Cliente</button>
+                            <button id="actionClient" type="button" class="btn btn-dark" onclick="actionCustomer()">Aggiungi Cliente</button>
                         </form>  
                     </div>
                 </div>

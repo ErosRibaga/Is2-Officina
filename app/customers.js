@@ -55,6 +55,68 @@ const Customer = require('./models/customer');
     .send();
 });
 
+
+/**
+ * @swagger
+ * /customers:
+ *  get:
+ *    tags: [customers]
+ *    description: Use to request all customers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ *      '404':
+ *        description: Customer not found
+ */
+ router.get('/', async (req, res) => {
+  
+  let customers = await Customer.find({});
+
+  console.log(req.body);
+
+  customers = customers.map((customer) => {
+    return {
+      self: '/api/v1/customer/' + customer.id,
+      name: customer.name,
+      surname: customer.surname,
+      phone: customer.phone,
+    };
+  });
+  res.status(200).json(customers);
+});
+
+
+/**
+ * @swagger
+ * /customers/{id}:
+ *  get:
+ *    tags: [customers]
+ *    description: Use to get a customer by its id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The customer's id
+ *        type: string
+ *    responses:
+ *      '200':
+ *        description: Customer successfully removed
+ *      '404':
+ *        description: Customer not found
+ */
+router.get('/:id', async (req, res) => {
+  let customer = await Customer.findById(req.params.id);
+  res.status(200).json({
+    self: '/api/v1/customer/' + customer.id,
+    name: customer.name,
+    surname: customer.surname,
+    phone: customer.phone,
+  });
+});
+
+
+
+
 /**
  * @swagger
  * /customers:
@@ -104,64 +166,6 @@ router.post('', async (req, res) => {
     .location('/api/v1/customers/' + customerId)
     .status(201)
     .send();
-});
-
-/**
- * @swagger
- * /customers:
- *  get:
- *    tags: [customers]
- *    description: Use to request all customers
- *    responses:
- *      '200':
- *        description: A successful response
- *      '404':
- *        description: Customer not found
- */
-router.get('/', async (req, res) => {
-  
-  let customers = await Customer.find({});
-
-  console.log(req.body);
-
-  customers = customers.map((customer) => {
-    return {
-      self: '/api/v1/customer/' + customer.id,
-      name: customer.name,
-      surname: customer.surname,
-      phone: customer.phone,
-    };
-  });
-  res.status(200).json(customers);
-});
-
-
-/**
- * @swagger
- * /customers/{id}:
- *  get:
- *    tags: [customers]
- *    description: Use to get a customer by its id
- *    parameters:
- *      - in: path
- *        name: id
- *        required: true
- *        description: The customer's id
- *        type: string
- *    responses:
- *      '200':
- *        description: Customer successfully removed
- *      '404':
- *        description: Customer not found
- */
-router.get('/:id', async (req, res) => {
-  let customer = await Customer.findById(req.params.id);
-  res.status(200).json({
-    self: '/api/v1/customer/' + customer.id,
-    name: customer.name,
-    surname: customer.surname,
-    phone: customer.phone,
-  });
 });
 
 
