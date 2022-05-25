@@ -32,7 +32,7 @@ const Customer = require('./models/customer');
  *              type: string
  *              description: The customer's surname.
  *              example: Frinzi
- *             phone:
+ *            phone:
  *              type: string
  *              description: The customer's phone number.
  *              example: 3483493698
