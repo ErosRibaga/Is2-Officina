@@ -9,12 +9,12 @@ function loadCustomers(){
     return data.map((customer) => {
       var obj = {
         id: customer.self,
-        nome: customer.nome,
-        cognome: customer.cognome,
-        telefono: customer.telefono,
+        name: customer.name,
+        surname: customer.surname,
+        phone: customer.phone,
       };
 
-      var tblRow = "<tr class='clickable'><td>  <p hidden>" + obj.id.substring(obj.id.lastIndexOf('/')+1) + "</p>" + obj.nome + "</td><td>" + obj.cognome + "</td><td>" + obj.telefono + "</td></tr>";
+      var tblRow = "<tr class='clickable'><td>  <p hidden>" + obj.id.substring(obj.id.lastIndexOf('/')+1) + "</p>" + obj.name + "</td><td>" + obj.surname + "</td><td>" + obj.phone + "</td></tr>";
       $(tblRow).appendTo("#customer-table tbody");
 
       $('#user-count').html('<p>Numero di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
@@ -24,14 +24,21 @@ function loadCustomers(){
   .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
-
+function changeLocation(){
+  if(selecteditemid != -1){
+    window.location.href = "http://127.0.0.1:5500/frontend/addcustomer.html?id=" + selecteditemid;
+  }
+  else{
+    alert("No customer selected");
+  }
+}
 
 var selecteditemid = -1 ;
 
 $(document).ready(function(){
   
   document.getElementById("addClient").onclick = function () {
-    location.href = "/frontend/add-customer.html"; //add link to addPage
+    location.href = "/frontend/addcustomer.html"; //add link to addPage
   };
 
   document.getElementById("remClient").onclick = function () {
@@ -50,17 +57,7 @@ $(document).ready(function(){
     }
   };
 
-  document.getElementById("modClient").onclick = function () {
-    if(selecteditemid != -1){
-      fetch("/frontend/mod-customer.html", {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(selecteditemid)
-      }).then(res => {
-        console.log("Request complete! response:", res);
-      });
-    }
-  };
+  document.getElementById("modClient").onclick = changeLocation;
 
   loadCustomers();
 
