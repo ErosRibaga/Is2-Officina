@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Customer = require('./models/car');
+const Car = require('./models/car');
 
 /**
  * @swagger
  * 
  */
  router.put('/:id', async (req, res) => {
-  let customer = await Customer.findByIdAndUpdate(req.params.id, {
+  let customer = await Car.findByIdAndUpdate(req.params.id, {
     brand: req.body.brand,
     model: req.body.model,
     plate: req.body.plate,
@@ -56,18 +56,18 @@ const Customer = require('./models/car');
  *        description: Customer successfully inserted
  */
 router.post('', async (req, res) => {
-  let customer = new Customer({
+  let car = new Car({
     name: req.body.name,
     surname: req.body.surname,
     phone: req.body.phone,
   });
 
-  customer = await customer.save();
+  car = await car.save();
 
-  let customerId = customer.id;
+  let carId = car.id;
 
   res
-    .location('/api/v1/customers/' + customerId)
+    .location('/api/v1/cars/' + carId)
     .status(201)
     .send();
 });
@@ -77,7 +77,7 @@ router.post('', async (req, res) => {
  */
 router.get('/', async (req, res) => {
   
-  let cars = await car.find({});
+  let cars = await Car.find({});
 
   console.log(req.body);
 
@@ -100,7 +100,7 @@ router.get('/', async (req, res) => {
  *
  */
 router.get('/:id', async (req, res) => {
-  let customer = await car.findById(req.params.id);
+  let car = await Car.findById(req.params.id);
   res.status(200).json({
     self: '/api/v1/car/' + car.id,
     brand: car.brand,
@@ -116,7 +116,7 @@ router.get('/:id', async (req, res) => {
  * @swagger
  */
 router.delete('/:id', async (req, res) => {
-  let car = await car.findById(req.params.id).exec();
+  let car = await Car.findById(req.params.id).exec();
   if (!car) {
       res.status(404).send();
       console.log('car not found');
