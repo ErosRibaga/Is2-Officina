@@ -1,0 +1,142 @@
+info:
+  version: 2.0.0
+  title: API Officina
+  description: Informazioni API Officina
+  contact:
+    name: Eros Ribaga
+swagger: '2.0'
+paths:
+  /customers:
+    get:
+      tags:
+        - customers
+      description: Use to request all customers
+      responses:
+        '200':
+          description: A successful response
+        '404':
+          description: Operation not found
+  '/customers/{id}':
+    get:
+      tags:
+        - customers
+      description: Use to get a customer by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '200':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
+    delete:
+      tags:
+        - customers
+      description: Use to delete a customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '204':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
+  /operations:
+    get:
+      tags:
+        - operations
+      description: Use to request all operations
+      responses:
+        '200':
+          description: A successful response
+        '404':
+          description: Operation not found
+    post:
+      tags:
+        - operations
+      description: Use to insert a new operation.
+      parameters:
+        - in: body
+          name: body
+          description: The operation to create
+          schema:
+            type: object
+            required:
+              - title
+            properties:
+              title:
+                type: string
+                description: The operations's title.
+                example: asd87658af
+      responses:
+        '201':
+          description: Operation successfully inserted
+  '/operations/{id}':
+    delete:
+      tags:
+        - operations
+      description: Use to delete an operation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+      responses:
+        '204':
+          description: Operation successfully removed
+        '404':
+          description: Operation not found
+    put:
+      tags:
+        - operations
+      description: Use to update an operation.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+        - in: body
+          name: body
+          description: The operation to create
+          schema:
+            type: object
+            required:
+              - title
+            properties:
+              title:
+                type: string
+                description: The operations's title.
+                example: asd87658af
+      responses:
+        '204':
+          description: Operation successfully updated
+        '404':
+          description: Operation not found
+    get:
+      tags:
+        - operations
+      description: Use to get an operation by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+      responses:
+        '200':
+          description: Operation successfully removed
+        '404':
+          description: Operation not found
+definitions: {}
+responses: {}
+parameters: {}
+securityDefinitions: {}
+tags: []
