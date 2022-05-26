@@ -1,3 +1,4 @@
+//Load the operations and populate the calendar
 function loadOperations() {
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
@@ -23,6 +24,7 @@ function loadOperations() {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
+
 function addOperation(start, end, title) {
   console.log(start);
 
@@ -46,6 +48,7 @@ function addOperation(start, end, title) {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
+//Open the form to create a new operation
 function openForm(start, end) {
   //Add one day to the selected date, because the calendar selection set the start the day before the selected one
   start = new Date(start);
@@ -66,6 +69,7 @@ function openForm(start, end) {
         var id = car.self.substring(
           car.self.lastIndexOf('/') + 1
         );
+
         $('#cars').append('<option value="' + id + '">' + car.brand + ' ' + car.model + '</option>');
 
       });

@@ -7,7 +7,7 @@ const operationSchema = new mongoose.Schema({
   startDate: { type: Date, default: new Date() },
   endDate: Date,
   comments: [{ author: String, body: String, date: Date }],
-  employee: {type: mongoose.Schema.Types.ObjectId, ref: 'employees'},
+  employee: String,
   car: {type: mongoose.Schema.Types.ObjectId, ref: 'cars'}
 });
 

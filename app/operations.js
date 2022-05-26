@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
  * @swagger
  * /operations:
  *  get:
- *    tags: [operations]
  *    description: Use to request all operations
  *    responses:
  *      '200':
@@ -36,7 +35,6 @@ router.get('/', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  delete:
- *    tags: [operations]
  *    description: Use to delete an operation
  *    parameters:
  *      - in: path
@@ -66,7 +64,6 @@ router.delete('/:id', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  put:
- *    tags: [operations]
  *    description: Use to update an operation.
  *    parameters:
  *      - in: path
@@ -99,7 +96,7 @@ router.put('/:id', async (req, res) => {
     employee: req.body.employee,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
-    car: req.body.car,
+    car: mongoose.Types.ObjectId(req.body.car),
   });
 
   res
@@ -112,7 +109,6 @@ router.put('/:id', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  get:
- *    tags: [operations]
  *    description: Use to get an operation by its id
  *    parameters:
  *      - in: path
@@ -143,7 +139,6 @@ router.get('/:id', async (req, res) => {
  * @swagger
  * /operations:
  *  post:
- *    tags: [operations]
  *    description: Use to insert a new operation.
  *    parameters:
  *      - in: body

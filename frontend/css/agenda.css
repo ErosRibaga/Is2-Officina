@@ -23,10 +23,10 @@
   .formPopup {
     display: none;
     position: fixed;
-    left: 45%;
+    left: 50%;
     top: 5%;
     text-align: center;
-    transform: translate(-50%, 5%);
+    transform: translate(-28%, 5%);
     border: 3px solid #999999;
     z-index: 9;
     background-color: #f1f1f1;

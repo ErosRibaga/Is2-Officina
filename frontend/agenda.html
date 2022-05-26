@@ -57,53 +57,64 @@
 
         <div id='calendar'></div>
 
-        <!-- Popup operation insert -->
-        <div class="formPopup" id="popupForm">
-          <form action="http://localhost:8080/api/v1/operations/" class="formContainer" method="post" target="#calendar"
-            id="opForm">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-sm-6">
-
-                  <h2>Aggiungi operazione</h2>
-                  Titolo
-                  <input type="text" class="form-control form-control form-control-sm" id="title" name="title" required>
-                  <br>
-
-                  <label for="startDate">
-                    startDate
-                  </label>
-                  <input type="date" class="form-control form-control form-control-sm" id="startDate" name="startDate"
-                    required>
-                  <br>
-
-                  <label for="endDate">
-                    endDate
-                  </label>
-                  <input type="date" class="form-control form-control form-control-sm" id="endDate" name="endDate"
-                    required>
-                  <br>
-
-                  <label for="car">
-                    Auto
-                  </label>
-                  <select name="car" id="cars">
-                  </select>
-                  <br>
-
-                </div>
-                <div class="col-sm-6 align-self-center">
-                  <span>
-                    <button type="submit" class="btn">Aggiungi</button>
-                    <button type="button" class="btn cancel" onclick="closeForm()">Annulla</button>
-                  </span>
-                </div>
-              </div>
-          </form>
-        </div>
       </div>
-
       <div class="col-sm-2"></div>
+
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+
+          <!-- Popup operation insert -->
+          <div class="formPopup" id="popupForm">
+            <form action="http://localhost:8080/api/v1/operations/" class="formContainer" method="post"
+              target="#calendar" id="opForm">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-6">
+
+                    <h2>Aggiungi operazione</h2>
+                    <label for="title">
+                      Titolo
+                    </label>
+                    <input type="text" class="form-control form-control form-control-sm" id="title" name="title"
+                      required>
+                    <br>
+
+                    <label for="startDate">
+                      startDate
+                    </label>
+                    <input type="date" class="form-control form-control form-control-sm" id="startDate" name="startDate"
+                      required>
+                    <br>
+
+                    <label for="endDate">
+                      endDate
+                    </label>
+                    <input type="date" class="form-control form-control form-control-sm" id="endDate" name="endDate"
+                      required>
+                    <br>
+
+                    <label for="car">
+                      Auto
+                    </label>
+                    <select name="car" id="cars">
+                    </select>
+                    <br>
+
+                  </div>
+                  <div class="col-sm-6 align-self-center">
+                    <span>
+                      <button type="submit" class="btn">Aggiungi</button>
+                      <button type="button" class="btn cancel" onclick="closeForm()">Annulla</button>
+                    </span>
+                  </div>
+                </div>
+            </form>
+          </div>
+
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
 
     </div>
   </div>

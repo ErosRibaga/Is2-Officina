@@ -6,7 +6,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customer/{id}:
  *  put:
- *    tags: [customers]
  *    description: Use to update a customer data.
  *    parameters:
  *      - in: path
@@ -60,7 +59,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customers:
  *  get:
- *    tags: [customers]
  *    description: Use to request all customers
  *    responses:
  *      '200':
@@ -90,7 +88,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customers/{id}:
  *  get:
- *    tags: [customers]
  *    description: Use to get a customer by its id
  *    parameters:
  *      - in: path
@@ -121,7 +118,6 @@ router.get('/:id', async (req, res) => {
  * @swagger
  * /customers:
  *  post:
- *   tags: [customers]
  *   description: Use to insert a new customer.
  *   parameters:
  *     - in: body
@@ -172,7 +168,6 @@ router.post('', async (req, res) => {
  * @swagger
  * /customers/{id}:
  *  delete:
- *    tags: [customers]
  *    description: Use to delete a customer
  *    parameters:
  *      - in: path
