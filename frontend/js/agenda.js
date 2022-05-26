@@ -1,5 +1,5 @@
+//Load the operations and populate the calendar
 function loadOperations() {
-
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
 
@@ -24,8 +24,8 @@ function loadOperations() {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
-function addOperation(start, end, title) {
 
+function addOperation(start, end, title) {
   console.log(start);
 
   fetch('http://localhost:8080/api/v1/operations/', {
@@ -48,6 +48,7 @@ function addOperation(start, end, title) {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
 
+//Open the form to create a new operation
 function openForm(start, end) {
   //Add one day to the selected date, because the calendar selection set the start the day before the selected one
   start = new Date(start);
@@ -56,9 +57,27 @@ function openForm(start, end) {
   //Set the form datepickers values as the selected ones
   document.getElementById('startDate').valueAsDate = new Date(start);
   document.getElementById('endDate').valueAsDate = new Date(end);
+
+  //Populate cars select box  
+  fetch('http://localhost:8080/api/v1/cars/')  
+    .then((resp) => resp.json()) // Transform the data into json
+    .then((data) => {      
+
+      return data.map((car) => {
+        console.log(car);
+        //get car id
+        var id = car.self.substring(
+          car.self.lastIndexOf('/') + 1
+        );
+
+        $('#cars').append('<option value="' + id + '">' + car.brand + ' ' + car.model + '</option>');
+
+      });
+    })
+    .catch((error) => console.error(error)); // If there is any error you will catch them here
+
   $('#popupForm').css('display', 'block');
 }
-
 
 function closeForm() {
   $('#popupForm').css('display', 'none');
@@ -73,13 +92,14 @@ $(document).ready(function () {
 
     var form = $(this);
     var actionUrl = form.attr('action');
-    console.log(form)
 
     $.ajax({
       type: 'POST',
       url: actionUrl,
       data: form.serialize(), // serializes the form's elements.
-      success: function (data) { //wait for the response
+      success: function (data) {
+        console.log(data);
+        //wait for the response
         loadOperations();
         closeForm();
       },

@@ -8,6 +8,7 @@ const swaggerUI = require('swagger-ui-express');
 
 const operations = require('./operations');
 const customers = require('./customers');
+const cars = require('./cars');
 
 
 const port = 8080;
@@ -66,8 +67,9 @@ app.use(express.json());
 //use express as middleware to run the specific requests and make the code more flexible
 app.use('/api/v1/operations', operations);
 app.use('/api/v1/customers', customers);
+app.use('/api/v1/cars', cars);
 
-//Default 404 handler - it needs to be before defined before routing to the api urls
+//Default 404 handler 
 app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
