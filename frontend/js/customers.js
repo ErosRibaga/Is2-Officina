@@ -27,7 +27,7 @@ function loadCustomers(){
 
 function changeLocation(){
   if(selecteditemid != -1){
-    window.location.href = "http://127.0.0.1:5500/frontend/addcustomer.html?id=" + selecteditemid;
+    window.location.href = "http://127.0.0.1:5500/frontend/add-customer.html?id=" + selecteditemid;
   }
   else{
     alert("No customer selected");
@@ -41,7 +41,7 @@ $(document).ready(function(){
 console.log(cookieToken);
 
   document.getElementById("addClient").onclick = function () {
-    location.href = "/frontend/addcustomer.html"; //add link to addPage
+    location.href = "/frontend/add-customer.html"; //add link to addPage
   };
 
   document.getElementById("remClient").onclick = function () {

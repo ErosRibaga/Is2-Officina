@@ -6,7 +6,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customer/{id}:
  *  put:
- *    tags: [customers]
  *    description: Use to update a customer data.
  *    parameters:
  *      - in: path
@@ -60,7 +59,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customers:
  *  get:
- *    tags: [customers]
  *    description: Use to request all customers
  *    responses:
  *      '200':
@@ -90,7 +88,6 @@ const Customer = require('./models/customer');
  * @swagger
  * /customers/{id}:
  *  get:
- *    tags: [customers]
  *    description: Use to get a customer by its id
  *    parameters:
  *      - in: path
@@ -121,36 +118,34 @@ router.get('/:id', async (req, res) => {
  * @swagger
  * /customers:
  *  post:
- *    tags: [customers]
- *    description: Use to insert a new customer.
- *    parameters:
- *      - in: body
- *        name: body
- *        description: The customer to create
- *        schema:
- *          type: object
- *          required: 
- *            - 'name'
- *            - 'surname'
- *            - 'phone'
- *          properties:
- *            name:
- *              type: string
- *              description: The customer's name.
- *              example: Paolo
- *            surname:
- *              type: string
- *              description: The customer's surname.
- *              example: Frinzi
- *             phone:
- *              type: string
- *              description: The customer's phone number.
- *              example: 3483493698
- *          
- *    responses:
- *      '201':
+ *   description: Use to insert a new customer.
+ *   parameters:
+ *     - in: body
+ *       name: body
+ *       description: The customer to create
+ *       schema:
+ *         type: object
+ *         required: 
+ *           - 'name'
+ *           - 'surname'
+ *           - 'phone'
+ *         properties:
+ *           name: 
+ *             type: string
+ *             description: The customer's name.
+ *             example: Paolo
+ *           surname:
+ *             type: string
+ *             description: The customer's surname.
+ *             example: Frinzi
+ *           phone:
+ *             type: string
+ *             description: The customer's phone number.
+ *             example: 3483493698
+ *   responses:
+ *     '201':
  *        description: Customer successfully inserted
- */
+ */ 
 router.post('', async (req, res) => {
   let customer = new Customer({
     name: req.body.name,
@@ -173,7 +168,6 @@ router.post('', async (req, res) => {
  * @swagger
  * /customers/{id}:
  *  delete:
- *    tags: [customers]
  *    description: Use to delete a customer
  *    parameters:
  *      - in: path

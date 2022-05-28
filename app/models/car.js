@@ -10,7 +10,7 @@ const carSchema = new mongoose.Schema({
 });
 
 //Create and export the model based on the operation schema
-module.exports = mongoose.model('cars', operationSchema, 'cars');
+module.exports = mongoose.model('cars', carSchema, 'cars');
 
 /*
 Schema:

@@ -12,7 +12,8 @@ const tokenChecker = require('./tokenChecker.js');
 const operations = require('./operations');
 const customers = require('./customers');
 const users = require('./users');
-//dconst cars = require('./cars');
+const cars = require('./cars');
+
 
 
 const port = 8080;
@@ -87,8 +88,10 @@ app.use('/api/v1/customers', tokenChecker);
 app.use('/api/v1/operations', operations);
 app.use('/api/v1/customers', customers);
 app.use('/api/v1/users', users);
+app.use('/api/v1/cars', cars);
 
-//Default 404 handler - it needs to be before defined before routing to the api urls
+
+//Default 404 handler 
 app.use((req, res) => {
   res.status(404);
   res.json({ error: 'Not found' });
