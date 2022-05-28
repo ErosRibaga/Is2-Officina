@@ -74,8 +74,6 @@ router.get('/', async (req, res) => {
   
   let cars = await Car.find({});
 
-  console.log(req.body);
-
   cars = cars.map((car) => {
     return {
       self: '/api/v1/car/' + car.id,
