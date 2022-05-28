@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 
 //Define the schema
 const carSchema = new mongoose.Schema({
-  brand: String, 
+  brand: String,
   model: String,
   plate: String,
   description: String,
   owner: String
 });
 
-//Create and export the model based on the operation schema
+
+//Create and export the model based on the car schema
 module.exports = mongoose.model('cars', carSchema, 'cars');
 
 /*
@@ -23,3 +24,4 @@ Auto
 - descrizione: string
 - proprietario: utente
 */
+

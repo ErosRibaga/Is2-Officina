@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://malsup.github.io/jquery.form.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/58443bf2c0.js" crossorigin="anonymous"></script>
+
+    <!-- Locals -->
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/agenda.css" />
+    <script src="./js/index.js"></script>
+    <script src="./js/car.js"></script>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <a class="active" href="#home"><i class="fa-solid fa-house"></i>Home</a>
+        <a href="#news"><i class="fa-solid fa-calendar"></i>Agenda</a>
+        <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
+        <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
+        <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 ">Auto</h1>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+
+                <table id="car-table" class="table">
+                    <thead class="thead-dark">
+                        <th scope="col">Targa</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modello</th>
+                        <th scope="col">Descrizione</th>
+                        <th scope="col">Proprietario</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col-sm-3">
+                <div class="col-4">
+                    <button id="addClient" type="button" class="btn btn-dark">Aggiungi Auto</button>
+                </div>
+                <div class="col-4">
+                    <button id="remClient" type="button" class="btn btn-dark">Rimuovi Auto</button>
+                </div>
+                <div class="col-4">
+                    <button id="modClient" type="button" class="btn btn-dark">Modifica Auto</button>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
