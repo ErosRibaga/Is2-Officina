@@ -11,11 +11,11 @@ const tokenChecker = function(req, res, next) {
 		return res.status(401).send({ 
 			success: false,
 			message: 'No token provided.'
-		});
+		});		
 	}
 
 	// decode token, verifies secret and checks exp
-	jwt.verify(token, "stringaSuperSegretissima", function(err, decoded) {			
+	jwt.verify(token, "is2laboratory2017", function(err, decoded) {			
 		if (err) {
 			return res.status(403).send({
 				success: false,
