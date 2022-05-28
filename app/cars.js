@@ -2,10 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Car = require('./models/car');
 
-/**
- * @swagger
- * 
- */
+
  router.put('/:id', async (req, res) => {
   let customer = await Car.findByIdAndUpdate(req.params.id, {
     brand: req.body.brand,
@@ -72,9 +69,7 @@ router.post('', async (req, res) => {
     .send();
 });
 
-/**
- * @swagger
- */
+
 router.get('/', async (req, res) => {
   
   let cars = await Car.find({});
@@ -95,10 +90,7 @@ router.get('/', async (req, res) => {
 });
 
 
-/**
- * @swagger
- *
- */
+
 router.get('/:id', async (req, res) => {
   let car = await Car.findById(req.params.id);
   res.status(200).json({
@@ -112,9 +104,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-/**
- * @swagger
- */
+
 router.delete('/:id', async (req, res) => {
   let car = await Car.findById(req.params.id).exec();
   if (!car) {

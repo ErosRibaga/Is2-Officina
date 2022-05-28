@@ -1,12 +1,9 @@
-/*const express = require('express');
-const app = express();*/
+$(document).ready(function () {
+  loadCars();
+});
 
-const car = require("../../app/models/car");
-
-
-function loadCars(){
-
-    /*fetch('../api/v1/customers')
+function loadCars() {
+  /*fetch('../api/v1/customers')
     .then((resp) => resp.json())
     .then(function(data){
       console.log(data);
@@ -16,7 +13,7 @@ function loadCars(){
       //loggedUser.self = data.self;
     })
     .catch(error => console.error(error));*/
-    fetch('http://localhost:8080/api/v1/cars')
+  fetch('http://localhost:8080/api/v1/cars')
     .then((resp) => resp.json())
     .then((data) => {
       return data.map((car) => {
@@ -26,15 +23,27 @@ function loadCars(){
           model: car.model,
           plate: car.plate,
           description: car.description,
-          owner: car.owner
+          owner: car.owner,
         };
 
-        var tblRow = "<tr class='clickable'><td>  <p hidden>" + obj.id.substring(obj.id.lastIndexOf('/')+1) + "</p>" + obj.brand + "</td><td>" + obj.model + "</td><td>" + obj.plate + "</td></tr>" + obj.description + "</td></tr>" + obj.owner + "</td></tr>";
-      $(tblRow).appendTo("#car-table tbody");
+        var tblRow =
+          "<tr class='clickable'><td>  <p hidden>" +
+          obj.id.substring(obj.id.lastIndexOf('/') + 1) +
+          '</p>' +
+          obj.brand +
+          '</td><td>' +
+          obj.model +
+          '</td><td>' +
+          obj.plate +
+          '</td></tr>' +
+          obj.description +
+          '</td></tr>' +
+          obj.owner +
+          '</td></tr>';
+        $(tblRow).appendTo('#car-table tbody');
 
-      $('#user-count').html('<p>Numero di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
-      
+        $('#user-count').html('<p>Numero di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
       });
-    }) 
+    })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
