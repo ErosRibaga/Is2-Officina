@@ -21,7 +21,6 @@ function insertCar() {
     })
     .then((resp) => {
         console.log(resp);
-        //loadBooks();
         return;
     })
     .catch( error => console.error(error) ); // If there is any error you will catch them here
