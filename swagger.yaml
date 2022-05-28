@@ -1,120 +1,142 @@
-swagger: '2.0'
 info:
-  version: '1.0'
-  title: "Officina"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
-  license:
-    name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
-basePath: /
-schemes:
-- https
-consumes:
-- application/json
-produces:
-- application/json
+  version: 2.0.0
+  title: API Officina
+  description: Informazioni API Officina
+  contact:
+    name: Eros Ribaga
+swagger: '2.0'
 paths:
-  /questions:
-    x-summary: Questions Collection
+  /customers:
     get:
-      summary: List All Questions
+      tags:
+        - customers
+      description: Use to request all customers
       responses:
-        200:
-          description: Successful Response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
-    post:
-      description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
+        '200':
+          description: A successful response
+        '404':
+          description: Operation not found
+  '/customers/{id}':
+    get:
+      tags:
+        - customers
+      description: Use to get a customer by its id
       parameters:
-        - name: body
-          in: body
+        - in: path
+          name: id
           required: true
-          schema:
-            $ref: '#/definitions/QuestionRequest'
-      responses:
-        201:
-          description: ''
-          schema:
-            $ref: '#/definitions/Question'
-          examples:
-            application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
+          description: The customer's id
           type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+      responses:
+        '200':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
+    delete:
+      tags:
+        - customers
+      description: Use to delete a customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '204':
+          description: Customer successfully removed
+        '404':
+          description: Customer not found
+  /operations:
+    get:
+      tags:
+        - operations
+      description: Use to request all operations
+      responses:
+        '200':
+          description: A successful response
+        '404':
+          description: Operation not found
+    post:
+      tags:
+        - operations
+      description: Use to insert a new operation.
+      parameters:
+        - in: body
+          name: body
+          description: The operation to create
+          schema:
+            type: object
+            required:
+              - title
+            properties:
+              title:
+                type: string
+                description: The operations's title.
+                example: asd87658af
+      responses:
+        '201':
+          description: Operation successfully inserted
+  '/operations/{id}':
+    delete:
+      tags:
+        - operations
+      description: Use to delete an operation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+      responses:
+        '204':
+          description: Operation successfully removed
+        '404':
+          description: Operation not found
+    put:
+      tags:
+        - operations
+      description: Use to update an operation.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+        - in: body
+          name: body
+          description: The operation to create
+          schema:
+            type: object
+            required:
+              - title
+            properties:
+              title:
+                type: string
+                description: The operations's title.
+                example: asd87658af
+      responses:
+        '204':
+          description: Operation successfully updated
+        '404':
+          description: Operation not found
+    get:
+      tags:
+        - operations
+      description: Use to get an operation by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The operation's id
+          type: string
+      responses:
+        '200':
+          description: Operation successfully removed
+        '404':
+          description: Operation not found
+definitions: {}
+responses: {}
+parameters: {}
+securityDefinitions: {}
+tags: []

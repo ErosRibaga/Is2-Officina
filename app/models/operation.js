@@ -8,7 +8,7 @@ const operationSchema = new mongoose.Schema({
   endDate: Date,
   comments: [{ author: String, body: String, date: Date }],
   employee: String,
-  car: String
+  car: {type: mongoose.Schema.Types.ObjectId, ref: 'cars'}
 });
 
 //Create and export the model based on the operation schema

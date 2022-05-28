@@ -22,15 +22,17 @@
     <link rel="stylesheet" href="./css/style.css" />
     <script src="./js/index.js"></script>
     <script src="./js/operation.js"></script>
+
+    <!-- Sidebar generation -->
+    <script>
+        $(document).ready(function () {
+            createSideBar("#sideAgenda");
+        });
+    </script>
 </head>
 
 <body>
     <div class="sidebar">
-        <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-        <a class="active" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
-        <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
-        <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
-        <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
     </div>
     <div class="container-fluid">
 
@@ -54,18 +56,10 @@
                     <label>Data fine</label>
                     <input type="date" class="form-control form-control form-control-sm" id="endDate" name="endDate"
                         required>
-
                     <hr />
 
                     <h5>Auto</h5>
-                    <p class="pt-2" id="brand"><b>Marca: </b></p>
-                    <p class="pt-2" id="model"><b>Modello: </b></p>
-                    <hr />
-
-                    <h5>Cliente</h5>
-                    <p class="pt-2" id="cName"><b>Nome: </b></p>
-                    <p class="pt-2" id="cSurname"><b>Cognome: </b></p>
-                    <p class="pt-2" id="cNumber"><b>Telefono: </b></p>
+                    <select name="car" id="cars"></select>
                     <hr />
 
                     <h5>Operaio</h5>

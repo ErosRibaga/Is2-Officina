@@ -3,6 +3,7 @@ const router = express.Router();
 const Car = require('./models/car');
 
 
+
  router.put('/:id', async (req, res) => {
   let customer = await Car.findByIdAndUpdate(req.params.id, {
     brand: req.body.brand,
@@ -71,12 +72,11 @@ router.post('', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-  
   let cars = await Car.find({});
 
   cars = cars.map((car) => {
     return {
-      self: '/api/v1/car/' + car.id,
+      self: '/api/v1/cars/' + car.id,
       brand: car.brand,
       model: car.model,
       plate: car.plate,
@@ -86,8 +86,6 @@ router.get('/', async (req, res) => {
   });
   res.status(200).json(cars);
 });
-
-
 
 router.get('/:id', async (req, res) => {
   let car = await Car.findById(req.params.id);
@@ -116,3 +114,4 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

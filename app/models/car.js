@@ -9,6 +9,7 @@ const carSchema = new mongoose.Schema({
   owner: String
 });
 
+
 //Create and export the model based on the car schema
 module.exports = mongoose.model('cars', carSchema, 'cars');
 
@@ -21,4 +22,6 @@ Auto
 - modello: string
 - targa: string
 - descrizione: string
-- proprietario: utente*/
+- proprietario: utente
+*/
+
