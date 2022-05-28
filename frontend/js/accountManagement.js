@@ -16,19 +16,19 @@ function login(){
         loggedUser.token = data.token;
         loggedUser.mail = data.mail;
         loggedUser.id = data.id;
-        loggedUser.self = data.self;
-        loggedUser.role = data.role;
-        //document.cookie = "token=" + data.token;
-        //document.cookie = "role=" + data.role;
+        //loggedUser.role = data.role;
+        document.cookie = "token=" + data.token;
+        document.cookie = "role=" + data.role;
         //loggedUser.id = loggedUser.self.substring(loggedUser.self.lastIndexOf('/') + 1);
         //document.getElementById("loggedUser").textContent = loggedUser.email;
-        fetch('../frontend/agenda.html', {
+        /*fetch('../frontend/agenda.html', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 token: data.token,
             }),
-        })
+        })*/
+        redirect('../frontend/customers.html');
         return;
     })
     .catch( error => console.error(error) );

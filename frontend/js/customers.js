@@ -1,9 +1,32 @@
 /*const express = require('express');
 const app = express();*/
 
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+var cookieToken = getCookie("token");
+
 function loadCustomers(){
 
-  fetch('http://localhost:8080/api/v1/customers/')
+  fetch('http://localhost:8080/api/v1/customers/',{
+    header: {
+      'x-access-token': cookieToken,
+    },
+  })
   .then((resp) => resp.json()) // Transform the data into json
   .then((data) => {
     return data.map((customer) => {
@@ -37,6 +60,8 @@ var selecteditemid = -1 ;
 
 $(document).ready(function(){
   
+console.log(cookieToken);
+
   document.getElementById("addClient").onclick = function () {
     location.href = "/frontend/addcustomer.html"; //add link to addPage
   };
