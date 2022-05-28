@@ -1,9 +1,10 @@
-/*const express = require('express');
-const app = express();*/
-
 function loadCustomers(){
 
-  fetch('http://localhost:8080/api/v1/customers/')
+  fetch('http://localhost:8080/api/v1/customers/',{
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
   .then((resp) => resp.json()) // Transform the data into json
   .then((data) => {
     return data.map((customer) => {
@@ -37,6 +38,8 @@ var selecteditemid = -1 ;
 
 $(document).ready(function(){
   
+console.log(cookieToken);
+
   document.getElementById("addClient").onclick = function () {
     location.href = "/frontend/add-customer.html"; //add link to addPage
   };
