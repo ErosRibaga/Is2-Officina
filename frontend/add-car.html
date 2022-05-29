@@ -36,41 +36,53 @@
 <body>
     <div class="sidebar">
     </div>
+
     <div class="container-fluid">
-        <div class="row align-items-start">
-            <div class="col-8" id="customer-table">
-                <div>
-                    <h1 class="display-4">Automobili</h1>
-                </div>
-                <div class="container">
-                    <!--  campi dati   -->
-                    <form method="post" name="carform" id="carform">
-                        <div class="mb-3">
-                            <label for="inputBrand" class="form-label">Marca</label>
-                            <input type="input" class="form-control" name="nome" id="textBrand">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputModel" class="form-label">Modello</label>
-                            <input type="input" class="form-control" name="cognome" id="textModel">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputPlate" class="form-label">Targa</label>
-                            <input type="input" class="form-control" name="telefono" id="textPlate">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputDescription" class="form-label">Descrizione</label>
-                            <input type="input" class="form-control" name="telefono" id="textDescription">
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputOwner" class="form-label">Proprietario</label>
-                            <select name="owner" id="selectOwner"></select>
-                        </div>
-                        <button id="actionClient" type="button" class="btn btn-dark" onclick="insertCar()">Aggiungi
-                            Auto</button>
-                    </form>
-                </div>
+
+        <!-- Title -->
+        <div class="row">
+            <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                <h1 class="display-4" id="title">Auto</h1>
             </div>
         </div>
+
+        <!-- Content -->
+
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6" id="customer-table">
+
+                <!--  campi dati   -->
+                <form method="post" name="carform" id="carform">
+                    <div class="mb-3">
+                        <label for="inputBrand" class="form-label">Marca</label>
+                        <input type="input" class="form-control" name="nome" id="textBrand" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputModel" class="form-label">Modello</label>
+                        <input type="input" class="form-control" name="cognome" id="textModel" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputPlate" class="form-label">Targa</label>
+                        <input type="input" class="form-control" name="telefono" id="textPlate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputDescription" class="form-label">Descrizione</label>
+                        <input type="input" class="form-control" name="telefono" id="textDescription">
+                    </div>
+                    <div class="mb-3">
+                        <label for="inputOwner" class="form-label">Proprietario</label>
+                        <select name="owner" id="selectOwner"></select>
+                    </div>
+                    <button id="actionClient" type="button" class="btn btn-dark" onclick="insertCar()">Aggiungi
+                        Auto</button>
+                </form>
+
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+
+
     </div>
 </body>
 

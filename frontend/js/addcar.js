@@ -108,6 +108,7 @@ $(document).ready(function () {
   //Init page
   if (getID() != null) {
     add = false;
+    $('#title').text("Modifica auto");
 
     console.log('ciao');
 
@@ -131,6 +132,7 @@ $(document).ready(function () {
     //carica i dati come value delle textbox
   } else {
     add = true;
+    $('#title').text("Aggiungi auto");
     populateSelectOwner();
   }
 });

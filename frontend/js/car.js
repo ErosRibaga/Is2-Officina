@@ -51,16 +51,16 @@ function loadCars() {
 }
 
 function changeLocation() {
-  if (selecteditemid != -1) {
+  if (selecteditemid != undefined) {
     window.location.href =
       'http://127.0.0.1:5500/frontend/add-car.html?id=' + selecteditemid;
   } else {
-    alert('No customer selected');
+    alert('Prima seleziona un cliente');
   }
 }
 
 function deleteCar() {
-  if (selecteditemid != -1) {
+  if (selecteditemid != undefined) {
     fetch('http://localhost:8080/api/v1/cars/' + selecteditemid, {
       method: 'DELETE',
       headers: {
@@ -75,6 +75,8 @@ function deleteCar() {
         console.log(error);
       });
     selecteditemid = -1;
+  } else {
+    alert('Prima seleziona un cliente');
   }
 }
 
