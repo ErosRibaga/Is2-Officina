@@ -6,7 +6,7 @@ const carSchema = new mongoose.Schema({
   model: String,
   plate: String,
   description: String,
-  owner: String
+  owner: {type: mongoose.Schema.Types.ObjectId, ref: 'customers '}
 });
 
 

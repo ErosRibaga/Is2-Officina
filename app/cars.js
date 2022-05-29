@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Car = require('./models/car');
+const mongoose = require('mongoose');
 
 
 
@@ -10,7 +11,7 @@ const Car = require('./models/car');
     model: req.body.model,
     plate: req.body.plate,
     description: req.body.description,
-    owner: req.body.owner
+    owner: mongoose.Types.ObjectId(req.body.owner)
   });
 
   res
@@ -55,9 +56,11 @@ const Car = require('./models/car');
  */
 router.post('', async (req, res) => {
   let car = new Car({
-    name: req.body.name,
-    surname: req.body.surname,
-    phone: req.body.phone,
+    brand: req.body.brand,
+    model: req.body.model,
+    plate: req.body.plate,
+    description: req.body.description,
+    owner: mongoose.Types.ObjectId(req.body.owner),
   });
 
   car = await car.save();

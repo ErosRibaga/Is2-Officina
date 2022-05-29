@@ -25,27 +25,30 @@
     <script src="./js/index.js"></script>
     <script src="./js/car.js"></script>
 
+     <!-- Sidebar generation -->
+  <script>
+    $(document).ready(function () {
+      createSideBar("#sideCars");
+    });
+  </script>
 </head>
 
 <body>
 
     <div class="sidebar">
-        <a class="active" href="#home"><i class="fa-solid fa-house"></i>Home</a>
-        <a href="#news"><i class="fa-solid fa-calendar"></i>Agenda</a>
-        <a href="#contact"><i class="fa-solid fa-user"></i>Customers</a>
-        <a href="#about"><i class="fa-solid fa-car"></i>Cars</a>
-        <a href="#about"><i class="fa-solid fa-list"></i>Users</a>
     </div>
 
     <div class="container-fluid">
+        <!-- Title -->
         <div class="row">
             <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
                 <h1 class="display-4 ">Auto</h1>
             </div>
-
         </div>
+
+        <!-- Content -->
         <div class="row">
-            <div class="col-sm-3"></div>
+            <div class="col-sm-2"></div>
             <div class="col-sm-6">
 
                 <table id="car-table" class="table">
@@ -61,15 +64,15 @@
                 </table>
 
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4 px-5">
                 <div class="col-4">
-                    <button id="addClient" type="button" class="btn btn-dark">Aggiungi Auto</button>
+                    <button id="addCar" type="button" class="btn btn-dark" onclick="redirect('/frontend/add-car.html')" >Aggiungi Auto</button>
+                </div>
+                <div class="col-4 py-3">
+                    <button id="remCar" type="button" class="btn btn-dark" onclick="deleteCar()">Rimuovi Auto</button>
                 </div>
                 <div class="col-4">
-                    <button id="remClient" type="button" class="btn btn-dark">Rimuovi Auto</button>
-                </div>
-                <div class="col-4">
-                    <button id="modClient" type="button" class="btn btn-dark">Modifica Auto</button>
+                    <button id="modCar" type="button" class="btn btn-dark" onclick="changeLocation()" >Modifica Auto</button>
                 </div>
             </div>
         </div>
