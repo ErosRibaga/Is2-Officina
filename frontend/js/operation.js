@@ -21,12 +21,14 @@ function displayOperation(data) {
   $('#startDate').text(new Date(data.startDate).toDateString());
   $('#endDate').text(new Date(data.endDate).toDateString());
 
-  $('#eName').append(data.employee.name);
-  $('#eSurname').append(data.employee.surname);
-
   $('#brand').append(data.car.brand);
   $('#model').append(data.car.model);
   $('#plate').append(data.car.plate);
+
+  console.log(data);
+
+  $('#eName').append(data.employee.name);
+  $('#eSurname').append(data.employee.surname);
 }
 
 //Insert the old values inside the form inputs of the update-operation.html
@@ -66,26 +68,20 @@ function populateEmployeeSelect(dataOp) {
         //get user id
         var id = user.self.substring(user.self.lastIndexOf('/') + 1);
 
-        if (id == dataOp.employee._id)
-          $('#employees').append(
-            '<option selected="selected" value="' +
-              id +
-              '">' +
-              user.name +
-              ' ' +
-              user.surname +
-              '</option>'
-          );
-        else
-          $('#employees').append(
-            '<option value="' +
-              id +
-              '">' +
-              user.name +
-              ' ' +
-              user.surname +
-              '</option>'
-          );
+        $('#employees').append(
+          '<option value="' +
+            id +
+            '">' +
+            user.name +
+            ' ' +
+            user.surname +
+            '</option>'
+        );
+
+        if (dataOp.employee != null) {
+          $('select option[value="' + dataOp.employee._id + '"]').attr('selected', true);
+        }
+        
       });
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
@@ -103,27 +99,22 @@ function populateCarSelect(dataOp) {
       return carData.map((car) => {
         //get car id
         var id = car.self.substring(car.self.lastIndexOf('/') + 1);
+        
+        $('#cars').append(
+          '<option value="' +
+            id +
+            '">' +
+            car.brand +
+            ' ' +
+            car.model +
+            '</option>'
+        );
 
-        if (id == dataOp.car._id)
-          $('#cars').append(
-            '<option selected="selected" value="' +
-              id +
-              '">' +
-              car.brand +
-              ' ' +
-              car.model +
-              '</option>'
-          );
-        else
-          $('#cars').append(
-            '<option value="' +
-              id +
-              '">' +
-              car.brand +
-              ' ' +
-              car.model +
-              '</option>'
-          );
+        if (dataOp.car != null) {
+          $('select option[value="' + dataOp.car._id + '"]').attr('selected', true);
+        }
+
+        
       });
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
@@ -160,7 +151,6 @@ function updateOperation() {
       redirect('/frontend/operation.html?id=' + getID());
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
-
 }
 
 function deleteOperation() {
