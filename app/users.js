@@ -11,8 +11,6 @@ const User = require('./models/user');
  *    responses:
  *      '200':
  *        description: A successful response
- *      '404':
- *        description: Operation not found
  */
 router.get('/', async (req, res) => {
   let users = await User.find({});
@@ -24,10 +22,10 @@ router.get('/', async (req, res) => {
       surname: user.surname,
       password: user.password,
       email: user.email,
-      role: user.role,
+      admin: user.admin,
     };
   });
-  res.status(200).json(operations);
+  res.status(200).json(users);
 });
 
 /**
@@ -47,7 +45,7 @@ router.get('/', async (req, res) => {
  *            - 'surname'
  *            - 'password'
  *            - 'mail'
- *            - 'role'
+ *            - 'admin'
  *          properties:
  *            name:
  *              type: string
@@ -65,13 +63,13 @@ router.get('/', async (req, res) => {
  *              type: string
  *              description: The user's mail.
  *              example: paolo.franci@indirizzoprivato.com
- *            role:
- *              type: enum
- *              description: The user's role, either user or admin.
- *              example: user
+ *            admin:
+ *              type: boolean
+ *              description: The user's role, if true, the user is an admin, otherwise he's a normal user.
+ *              example: true
  *    responses:
  *      '201':
- *        description: Operation successfully inserted
+ *        description: User successfully inserted
  */
  router.post('', async (req, res) => {
     let user = new User({
@@ -79,7 +77,7 @@ router.get('/', async (req, res) => {
       surname: req.body.surname,
       password: req.body.password,
       email: req.body.email,
-      role: req.body.role,
+      admin: req.body.admin,
     });
   
     user = await user.save();
