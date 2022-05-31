@@ -31,6 +31,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
+  if (!user) {
+    res.status(404).send('User not found');
+    return;
+  }
+
   res.status(200).json({
     self: '/api/v1/users/' + user.id,
     name: user.name,
@@ -117,6 +122,14 @@ router.put('/:id', async (req, res) => {
     .location('/api/v1/users/' + req.params.id)
     .status(204)
     .send();
+});
+
+router.delete('/:id', async (req, res) => {
+  let user = await User.findById(req.params.id).exec();
+
+  await user.deleteOne();
+  console.log('car removed');
+  res.status(204).send();
 });
 
 //export the router to use it in the index.js
