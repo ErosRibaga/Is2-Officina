@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calendar</title>
+    <title>Aggiunta Utente</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -21,28 +21,27 @@
 
     <!-- Locals -->
     <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" href="./css/agenda.css" />
     <script src="./js/index.js"></script>
-    <script src="./js/addcar.js"></script>
+    <script src="./js/user.js"></script>
+    <script src="./js/accountManagement.js"></script>
 
     <!-- Sidebar generation -->
     <script>
         $(document).ready(function () {
-            createSideBar("#sideCars");
+            createSideBar("#sideUsers");
         });
     </script>
 </head>
 
 <body>
-    <div class="sidebar">
-    </div>
+    <div class="sidebar"></div>
 
     <div class="container-fluid">
 
         <!-- Title -->
         <div class="row">
             <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-                <h1 class="display-4" id="title">Auto</h1>
+                <h1 class="display-4" id="title">Utente</h1>
             </div>
         </div>
 
@@ -50,39 +49,38 @@
 
         <div class="row">
             <div class="col-sm-2"></div>
-            <div class="col-sm-6" id="customer-table">
+            <div class="col-sm-6" id="user-table">
 
                 <!--  campi dati   -->
-                <form method="post" name="carform" id="carform">
+                <form method="post" name="userform" id="userform">
                     <div class="mb-3">
-                        <label for="inputBrand" class="form-label">Marca</label>
-                        <input type="input" class="form-control" name="nome" id="textBrand" required>
+                        <label for="inputname" class="form-label">Nome</label>
+                        <input type="input" class="form-control" name="name" id="textnome">
                     </div>
                     <div class="mb-3">
-                        <label for="inputModel" class="form-label">Modello</label>
-                        <input type="input" class="form-control" name="cognome" id="textModel" required>
+                        <label for="inputsurname" class="form-label">Cognome</label>
+                        <input type="input" class="form-control" name="surname" id="textcognome">
                     </div>
                     <div class="mb-3">
-                        <label for="inputPlate" class="form-label">Targa</label>
-                        <input type="input" class="form-control" name="telefono" id="textPlate" required>
+                        <label for="inputmail" class="form-label">Mail</label>
+                        <input type="input" class="form-control" name="mail" id="textmail">
                     </div>
                     <div class="mb-3">
-                        <label for="inputDescription" class="form-label">Descrizione</label>
-                        <input type="input" class="form-control" name="telefono" id="textDescription">
+                        <label for="inputpassword" class="form-label">Password</label>
+                        <input type="input" class="form-control" name="password" id="textpassword">
                     </div>
                     <div class="mb-3">
-                        <label for="inputOwner" class="form-label">Proprietario</label>
-                        <select class="form-select" name="owner" id="selectOwner"></select>
+                        <label for="inputrole" class="form-label">Ruolo</label>
+                        <select class="form-select" aria-label="Default select example" name="roles" id="roles">
+                            <option value="admin">Admin</option>
+                            <option value="employee" selected>Dipendente</option>
+                        </select>
                     </div>
-                    <button id="actionClient" type="button" class="btn btn-dark" onclick="insertCar()">Aggiungi
-                        Auto</button>
+                    <button id="createuser" type="button" class="btn btn-dark">Signin</button>
                 </form>
 
             </div>
-            <div class="col-sm-2"></div>
         </div>
-
-
     </div>
 </body>
 
