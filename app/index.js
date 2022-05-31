@@ -9,10 +9,11 @@ const swaggerUI = require('swagger-ui-express');
 const authentication = require('./authentication.js');
 const tokenChecker = require('./tokenChecker.js');
 
-const operations = require('./operations');
+
 const customers = require('./customers');
 const cars = require('./cars');
 const users = require('./users');
+const operations = require('./operations');
 
 const port = 8080;
 
@@ -83,10 +84,10 @@ app.use('/api/v1/cars', tokenChecker);
 
 
 //use express as middleware to run the specific requests and make the code more flexible
-app.use('/api/v1/operations', operations);
 app.use('/api/v1/customers', customers);
 app.use('/api/v1/cars', cars);
 app.use('/api/v1/users', users);
+app.use('/api/v1/operations', operations);
 
 //Default 404 handler 
 app.use((req, res) => {

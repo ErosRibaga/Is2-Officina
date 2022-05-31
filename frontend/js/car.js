@@ -18,31 +18,23 @@ function loadCars() {
           owner: car.owner,
         };
 
-        fetch('http://localhost:8080/api/v1/customers/' + obj.owner, {
-          headers: {
-            'x-access-token': cookieToken,
-          },
-        })
-          .then((resp) => resp.json()) // Transform the data into json
-          .then((owner) => {
-            var tblRow =
-              "<tr class='clickable'><td>  <p hidden>" +
-              obj.id.substring(obj.id.lastIndexOf('/') + 1) +
-              '</p>' +
-              obj.plate +
-              '</td><td>' +
-              obj.brand +
-              '</td><td>' +
-              obj.model +
-              '</td><td>' +
-              obj.description +
-              '</td><td>' +
-              owner.name +
-              ' ' +
-              owner.surname +
-              '</td></tr>';
-            $(tblRow).appendTo('#car-table tbody');
-          });
+        var tblRow =
+          "<tr class='clickable'><td>  <p hidden>" +
+          obj.id.substring(obj.id.lastIndexOf('/') + 1) +
+          '</p>' +
+          obj.plate +
+          '</td><td>' +
+          obj.brand +
+          '</td><td>' +
+          obj.model +
+          '</td><td>' +
+          obj.description +
+          '</td><td>' +
+          obj.owner.name +
+          ' ' +
+          obj.owner.surname +
+          '</td></tr>';
+        $(tblRow).appendTo('#car-table tbody');
 
         $('#user-count').html('<p>Numero di Utenti:' + data.length + '</p>'); //fare lo stesso con le macchine
       });
@@ -53,7 +45,7 @@ function loadCars() {
 function changeLocation() {
   if (selecteditemid != undefined) {
     window.location.href =
-      'http://127.0.0.1:5500/frontend/add-car.html?id=' + selecteditemid;
+      '/frontend/add-car.html?id=' + selecteditemid;
   } else {
     alert('Prima seleziona un cliente');
   }

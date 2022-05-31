@@ -21,30 +21,12 @@ function displayOperation(data) {
   $('#startDate').text(new Date(data.startDate).toDateString());
   $('#endDate').text(new Date(data.endDate).toDateString());
 
-  //get employee info
-  fetch('http://localhost:8080/api/v1/users/' + data.employee, {
-    headers: {
-      'x-access-token': cookieToken,
-    },
-  })
-    .then((resp) => resp.json()) // Transform the data into json
-    .then((employee) => {
-      $('#eName').append(employee.name);
-      $('#eSurname').append(employee.surname);
-    });
+  $('#eName').append(data.employee.name);
+  $('#eSurname').append(data.employee.surname);
 
-  //get car info
-  fetch('http://localhost:8080/api/v1/cars/' + data.car, {
-    headers: {
-      'x-access-token': cookieToken,
-    },
-  })
-    .then((resp) => resp.json()) // Transform the data into json
-    .then((car) => {
-      $('#brand').append(car.brand);
-      $('#model').append(car.model);
-      $('#plate').append(car.plate);
-    });
+  $('#brand').append(data.car.brand);
+  $('#model').append(data.car.model);
+  $('#plate').append(data.car.plate);
 }
 
 //Insert the old values inside the form inputs of the update-operation.html
@@ -84,7 +66,7 @@ function populateEmployeeSelect(dataOp) {
         //get user id
         var id = user.self.substring(user.self.lastIndexOf('/') + 1);
 
-        if (id == dataOp.employee)
+        if (id == dataOp.employee._id)
           $('#employees').append(
             '<option selected="selected" value="' +
               id +
@@ -122,7 +104,7 @@ function populateCarSelect(dataOp) {
         //get car id
         var id = car.self.substring(car.self.lastIndexOf('/') + 1);
 
-        if (id == dataOp.car)
+        if (id == dataOp.car._id)
           $('#cars').append(
             '<option selected="selected" value="' +
               id +

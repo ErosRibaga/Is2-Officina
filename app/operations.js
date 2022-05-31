@@ -16,7 +16,7 @@ const { scopedOperations, canViewOperation } = require('./permissions');
  *        description: Operation not found
  */
 router.get('/', async (req, res) => {
-  let operations = await Operation.find({});
+  let operations = await Operation.find({}).populate('employee').populate('car');
 
   operations = operations.map((operation) => {
     return {
@@ -124,7 +124,8 @@ router.put('/:id', async (req, res) => {
  *        description: Operation not found
  */
 router.get('/:id', async (req, res) => {
-  let operation = await Operation.findById(req.params.id);
+  let operation = await Operation.findById(req.params.id).populate('employee').populate('car');
+  console.log(operation.employee)
 
   if (canViewOperation(req.loggedUser, operation)) {
     res.status(200).json({
