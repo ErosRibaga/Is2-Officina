@@ -41,7 +41,7 @@ function createSideBar(activeId) {
     <a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
     <a id="sideCostumers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
     <a id="sideCars" href="/frontend/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
-    <a href="#about"><i class="fa-solid fa-list"></i>Users</a>`;
+    <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   } else {
     sidebar = `
     <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
