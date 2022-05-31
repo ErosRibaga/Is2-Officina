@@ -75,7 +75,7 @@ router.post('', async (req, res) => {
 
 
 router.get('/', async (req, res) => {
-  let cars = await Car.find({});
+  let cars = await Car.find({}).populate('owner');
 
   cars = cars.map((car) => {
     return {
@@ -91,7 +91,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  let car = await Car.findById(req.params.id);
+  let car = await Car.findById(req.params.id).populate('owner');
   res.status(200).json({
     self: '/api/v1/car/' + car.id,
     brand: car.brand,
