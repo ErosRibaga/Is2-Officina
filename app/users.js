@@ -28,17 +28,16 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
-
 router.get('/:id', async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
   res.status(200).json({
     self: '/api/v1/users/' + user.id,
-      name: user.name,
-      surname: user.surname,
-      password: user.password,
-      email: user.email,
-      admin: user.admin,
+    name: user.name,
+    surname: user.surname,
+    password: user.password,
+    email: user.email,
+    admin: user.admin,
   });
 });
 
@@ -86,23 +85,13 @@ router.get('/:id', async (req, res) => {
  *        description: User successfully inserted
  */
 
- router.post('', async (req, res) => {
-    let user = new User({
-      name: req.body.name,
-      surname: req.body.surname,
-      password: req.body.password,
-      email: req.body.email,
-      admin: req.body.admin,
-    });
-  
-    user = await user.save();
-  
-    let userId = user.id;
-  
-    res
-      .location('/api/v1/users/' + userId)
-      .status(201)
-      .send();
+router.post('', async (req, res) => {
+  let user = new User({
+    name: req.body.name,
+    surname: req.body.surname,
+    password: req.body.password,
+    email: req.body.email,
+    admin: req.body.admin,
   });
 
   user = await user.save();
@@ -112,6 +101,21 @@ router.get('/:id', async (req, res) => {
   res
     .location('/api/v1/users/' + userId)
     .status(201)
+    .send();
+});
+
+router.put('/:id', async (req, res) => {
+  let user = await User.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    surname: req.body.surname,
+    password: req.body.password,
+    email: req.body.email,
+    admin: req.body.admin,
+  });
+
+  res
+    .location('/api/v1/users/' + req.params.id)
+    .status(204)
     .send();
 });
 
