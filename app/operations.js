@@ -94,9 +94,9 @@ router.put('/:id', async (req, res) => {
   let operation = await Operation.findByIdAndUpdate(req.params.id, {
     title: req.body.title,
     description: req.body.description,
-    employee: req.body.employee,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
+    employee: mongoose.Types.ObjectId(req.body.employee),
     car: mongoose.Types.ObjectId(req.body.car),
   });
 
@@ -168,7 +168,7 @@ router.post('', async (req, res) => {
     description: req.body.description,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
-    employee: req.body.employee,
+    employee: mongoose.Types.ObjectId(req.body.employee),
     car: mongoose.Types.ObjectId(req.body.car),
   });
 
