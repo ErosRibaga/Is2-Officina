@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Operation = require('./models/operation');
 const mongoose = require('mongoose');
+const { scopedOperations, canViewOperation } = require('./permissions');
 
 /**
  * @swagger
@@ -28,7 +29,7 @@ router.get('/', async (req, res) => {
       car: operation.car,
     };
   });
-  res.status(200).json(operations);
+  res.status(200).json(scopedOperations(req.loggedUser, operations));
 });
 
 /**
@@ -76,7 +77,7 @@ router.delete('/:id', async (req, res) => {
  *        description: The operation to create
  *        schema:
  *          type: object
- *          required: 
+ *          required:
  *            - 'title'
  *          properties:
  *            title:
@@ -124,15 +125,18 @@ router.put('/:id', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   let operation = await Operation.findById(req.params.id);
-  res.status(200).json({
-    self: '/api/v1/operations/' + operation.id,
-    title: operation.title,
-    description: operation.description,
-    employee: operation.employee,
-    startDate: new Date(operation.startDate),
-    endDate: new Date(operation.endDate),
-    car: operation.car,
-  });
+
+  if (canViewOperation(req.loggedUser, operation)) {
+    res.status(200).json({
+      self: '/api/v1/operations/' + operation.id,
+      title: operation.title,
+      description: operation.description,
+      employee: operation.employee,
+      startDate: new Date(operation.startDate),
+      endDate: new Date(operation.endDate),
+      car: operation.car,
+    });
+  }
 });
 
 /**
@@ -146,7 +150,7 @@ router.get('/:id', async (req, res) => {
  *        description: The operation to create
  *        schema:
  *          type: object
- *          required: 
+ *          required:
  *            - 'title'
  *          properties:
  *            title:
@@ -158,7 +162,6 @@ router.get('/:id', async (req, res) => {
  *        description: Operation successfully inserted
  */
 router.post('', async (req, res) => {
-
   console.log(req.body.car);
   let operation = new Operation({
     title: req.body.title,

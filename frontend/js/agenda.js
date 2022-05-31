@@ -3,7 +3,11 @@ function loadOperations() {
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
 
-  fetch('http://localhost:8080/api/v1/operations/')
+  fetch('http://localhost:8080/api/v1/operations/',{
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
       return data.map((operation) => {
@@ -20,30 +24,6 @@ function loadOperations() {
     .then(() => {
       calendar.removeAllEvents();
       calendar.addEventSource(operations);
-    })
-    .catch((error) => console.error(error)); // If there is any error you will catch them here
-}
-
-
-function addOperation(start, end, title) {
-  console.log(start);
-
-  fetch('http://localhost:8080/api/v1/operations/', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: title,
-      startDate: new Date(start),
-      endDate: new Date(end),
-    }),
-  })
-    .then((resp) => {
-      calendar.addEvent({ title: title, start: start, end: end });
-      console.log(resp);
-      return;
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
@@ -96,6 +76,9 @@ $(document).ready(function () {
     $.ajax({
       type: 'POST',
       url: actionUrl,
+      headers: {
+        'x-access-token': cookieToken,
+      },
       data: form.serialize(), // serializes the form's elements.
       success: function (data) {
         console.log(data);

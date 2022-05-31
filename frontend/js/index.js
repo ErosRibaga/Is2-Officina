@@ -14,10 +14,10 @@ function redirect(url) {
 const app = express();*/
 
 function getCookie(cname) {
-  let name = cname + "=";
+  let name = cname + '=';
   let decodedCookie = decodeURIComponent(document.cookie);
   let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
+  for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
     while (c.charAt(0) == ' ') {
       c = c.substring(1);
@@ -26,22 +26,29 @@ function getCookie(cname) {
       return c.substring(name.length, c.length);
     }
   }
-  return "";
+  return '';
 }
 
-var cookieToken = getCookie("token");
+var cookieToken = getCookie('token');
+var isAdmin = getCookie('admin');
 
 function createSideBar(activeId) {
-  var sidebar = `
+  var sidebar;
+  console.log(isAdmin)
+  if (isAdmin === 'true') {
+    sidebar = `
     <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
     <a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
     <a id="sideCostumers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
     <a id="sideCars" href="/frontend/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
     <a href="#about"><i class="fa-solid fa-list"></i>Users</a>`;
+  } else {
+    sidebar = `
+    <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
+    <a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
+    <a href="#about"><i class="fa-solid fa-list"></i>Users</a>`;
+  }
 
   $('.sidebar').html(sidebar);
-  $(activeId).addClass("active");
+  $(activeId).addClass('active');
 }
-
-
-

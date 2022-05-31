@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require('./models/customer');
+const { isAdmin }= require('./permissions');
 
 /**
  * @swagger
@@ -18,7 +19,7 @@ const Customer = require('./models/customer');
  *        description: The customer to update
  *        schema:
  *          type: object
- *          required: 
+ *          required:
  *            - 'name'
  *            - 'surname'
  *            - 'phone'
@@ -41,7 +42,7 @@ const Customer = require('./models/customer');
  *      '404':
  *        description: Customer not found
  */
- router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   let customer = await Customer.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     surname: req.body.surname,
@@ -54,7 +55,6 @@ const Customer = require('./models/customer');
     .send();
 });
 
-
 /**
  * @swagger
  * /customers:
@@ -66,11 +66,8 @@ const Customer = require('./models/customer');
  *      '404':
  *        description: Customer not found
  */
- router.get('/', async (req, res) => {
-  
+router.get('/', isAdmin(true), async (req, res) => {
   let customers = await Customer.find({});
-
-  console.log(req.body);
 
   customers = customers.map((customer) => {
     return {
@@ -82,7 +79,6 @@ const Customer = require('./models/customer');
   });
   res.status(200).json(customers);
 });
-
 
 /**
  * @swagger
@@ -111,9 +107,6 @@ router.get('/:id', async (req, res) => {
   });
 });
 
-
-
-
 /**
  * @swagger
  * /customers:
@@ -125,12 +118,12 @@ router.get('/:id', async (req, res) => {
  *       description: The customer to create
  *       schema:
  *         type: object
- *         required: 
+ *         required:
  *           - 'name'
  *           - 'surname'
  *           - 'phone'
  *         properties:
- *           name: 
+ *           name:
  *             type: string
  *             description: The customer's name.
  *             example: Paolo
@@ -145,7 +138,7 @@ router.get('/:id', async (req, res) => {
  *   responses:
  *     '201':
  *        description: Customer successfully inserted
- */ 
+ */
 router.post('', async (req, res) => {
   let customer = new Customer({
     name: req.body.name,
@@ -162,7 +155,6 @@ router.post('', async (req, res) => {
     .status(201)
     .send();
 });
-
 
 /**
  * @swagger
@@ -184,9 +176,9 @@ router.post('', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id).exec();
   if (!customer) {
-      res.status(404).send();
-      console.log('book not found');
-      return;
+    res.status(404).send();
+    console.log('book not found');
+    return;
   }
   await customer.deleteOne();
   console.log('customer removed');
