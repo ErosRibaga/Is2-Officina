@@ -16,7 +16,7 @@ const { scopedOperations, canViewOperation } = require('./permissions');
  *        description: Operation not found
  */
 router.get('/', async (req, res) => {
-  let operations = await Operation.find({});
+  let operations = await Operation.find({}).populate('employee').populate('car');
 
   operations = operations.map((operation) => {
     return {
@@ -94,9 +94,9 @@ router.put('/:id', async (req, res) => {
   let operation = await Operation.findByIdAndUpdate(req.params.id, {
     title: req.body.title,
     description: req.body.description,
-    employee: req.body.employee,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
+    employee: mongoose.Types.ObjectId(req.body.employee),
     car: mongoose.Types.ObjectId(req.body.car),
   });
 
@@ -124,7 +124,8 @@ router.put('/:id', async (req, res) => {
  *        description: Operation not found
  */
 router.get('/:id', async (req, res) => {
-  let operation = await Operation.findById(req.params.id);
+  let operation = await Operation.findById(req.params.id).populate('employee').populate('car');
+  console.log(operation.employee)
 
   if (canViewOperation(req.loggedUser, operation)) {
     res.status(200).json({
@@ -168,7 +169,7 @@ router.post('', async (req, res) => {
     description: req.body.description,
     startDate: new Date(req.body.startDate),
     endDate: new Date(req.body.endDate),
-    employee: req.body.employee,
+    employee: mongoose.Types.ObjectId(req.body.employee),
     car: mongoose.Types.ObjectId(req.body.car),
   });
 

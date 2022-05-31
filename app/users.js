@@ -28,6 +28,20 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
+
+router.get('/:id', async (req, res) => {
+  let user = await User.findById(req.params.id).exec();
+
+  res.status(200).json({
+    self: '/api/v1/users/' + user.id,
+      name: user.name,
+      surname: user.surname,
+      password: user.password,
+      email: user.email,
+      admin: user.admin,
+  });
+});
+
 /**
  * @swagger
  * /users:
@@ -40,7 +54,7 @@ router.get('/', async (req, res) => {
  *        description: The user to create
  *        schema:
  *          type: object
- *          required: 
+ *          required:
  *            - 'name'
  *            - 'surname'
  *            - 'password'
@@ -71,6 +85,7 @@ router.get('/', async (req, res) => {
  *      '201':
  *        description: User successfully inserted
  */
+
  router.post('', async (req, res) => {
     let user = new User({
       name: req.body.name,
@@ -89,6 +104,16 @@ router.get('/', async (req, res) => {
       .status(201)
       .send();
   });
+
+  user = await user.save();
+
+  let userId = user.id;
+
+  res
+    .location('/api/v1/users/' + userId)
+    .status(201)
+    .send();
+});
 
 //export the router to use it in the index.js
 module.exports = router;
