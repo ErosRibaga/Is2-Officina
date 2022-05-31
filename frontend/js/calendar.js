@@ -1,12 +1,13 @@
 var calendar;
 
+//Setup calendar
 document.addEventListener('DOMContentLoaded', function () {
   var calendarEl = document.getElementById('calendar');
 
   calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     initialDate: new Date(),
-    displayEventTime : false,
+    displayEventTime: false,
     firstDay: 1, //set monday as the first day of the week
     height: 650,
     selectable: true,
@@ -32,9 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var id = info.event.extendedProps.self.substring(
         info.event.extendedProps.self.lastIndexOf('/') + 1
       );
-      window.location.href = '/frontend/operation.html?id='+id;
+      window.location.href = '/frontend/operation.html?id=' + id;
     },
   });
 
   calendar.render();
 });
+

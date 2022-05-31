@@ -14,7 +14,7 @@ router.post('', async function(req, res) {
 	let user = await User.findOne({
 		email: req.body.email
 	}).exec();
-	
+
 	// user not found
 	if (!user) {
 		res.json({ success: false, message: 'Authentication failed. User not found.' });
@@ -28,9 +28,12 @@ router.post('', async function(req, res) {
 	// if user is found and password is right create a token
 	var payload = {
 		email: user.email,
-		id: user._id
-		// other data encrypted in the token	
+		id: user._id,
+		admin: user.admin
 	}
+
+	console.log(user);
+
 	var options = {
 		expiresIn: 86400 // expires in 24 hours
 	}
@@ -44,6 +47,7 @@ router.post('', async function(req, res) {
 		token: token,
 		email: user.email,
 		id: user._id,
+		admin: user.admin,
 		self: "api/v1/users" + user._id
 	});
 

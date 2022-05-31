@@ -1,7 +1,10 @@
-
 //Init the operation or the update-operation pages
 function initOperation(type) {
-  fetch('http://localhost:8080/api/v1/operations/' + getID())
+  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
       if (type == 'get') displayOperation(data);
@@ -9,7 +12,6 @@ function initOperation(type) {
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
-
 
 //Print the information about the operation in the operation.html
 function displayOperation(data) {
@@ -27,7 +29,11 @@ function displayOperation(data) {
   $('#eSurname').append('cognome');
 
   //get car info
-  fetch('http://localhost:8080/api/v1/cars/' + data.car)
+  fetch('http://localhost:8080/api/v1/cars/' + data.car, {
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
     .then((resp) => resp.json()) // Transform the data into json
     .then((car) => {
       $('#brand').append(car.brand);
@@ -111,6 +117,7 @@ function updateOperation() {
     }),
     headers: {
       'Content-type': 'application/json',
+      'x-access-token': cookieToken,
     },
     mode: 'cors',
   })
@@ -128,6 +135,9 @@ function updateOperation() {
 function deleteOperation() {
   fetch('http://localhost:8080/api/v1/operations/' + getID(), {
     method: 'DELETE',
+    headers: {
+      'x-access-token': cookieToken,
+    },
   })
     .then((data) => {
       console.log(data);
@@ -135,4 +145,3 @@ function deleteOperation() {
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
-

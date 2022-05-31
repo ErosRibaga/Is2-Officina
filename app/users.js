@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
       name: user.name,
       surname: user.surname,
       password: user.password,
-      mail: user.mail,
+      email: user.email,
       role: user.role,
     };
   });
@@ -78,7 +78,7 @@ router.get('/', async (req, res) => {
       name: req.body.name,
       surname: req.body.surname,
       password: req.body.password,
-      mail: req.body.mail,
+      email: req.body.email,
       role: req.body.role,
     });
   
