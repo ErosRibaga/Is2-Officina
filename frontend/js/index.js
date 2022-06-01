@@ -44,7 +44,7 @@ function createSideBar(activeId) {
     <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   }
 
-  sidebar += '<a id="" href="#"><i class="fa-solid fa-gear"></i>Impostazioni</a>';
+  sidebar += '<a id="sideSettings" href="/frontend/user-settings.html"><i class="fa-solid fa-gear"></i>Impostazioni</a>';
 
   $('.sidebar').html(sidebar);
   $(activeId).addClass('active');
