@@ -53,6 +53,14 @@ hr {
   color: white;
 }
 
+.sidebar p {
+  display: block;
+  color: black;
+  padding: 16px;
+  padding-bottom: 0;
+  text-decoration: none;
+}
+
 @media screen and (max-width: 700px) {
   .sidebar {
     width: 100%;
@@ -95,5 +103,6 @@ i {
 .selected {
   background-color: blueviolet;
 }
+
 
 

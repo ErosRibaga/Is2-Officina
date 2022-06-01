@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
+const Operation = require('./models/operation');
 
 /**
  * @swagger
@@ -127,8 +128,23 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
+  if (!user) {
+    res.status(404).send();
+    console.log('user not found');
+    return;
+  }
+
+  //Check if the user is associated with any operations, in that case it cannot be deleted
+  let operations = await Operation.find({ employee: user._id });
+
+  if(operations.length != 0) {
+    res.status(403).send();
+    console.log('Cannot delete the user, it has some operations associated to it');
+    return;
+  }
+
   await user.deleteOne();
-  console.log('car removed');
+  console.log('user removed');
   res.status(204).send();
 });
 

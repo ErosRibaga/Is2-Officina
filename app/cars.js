@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Car = require('./models/car');
+const Operation = require('./models/operation');
 const mongoose = require('mongoose');
 
 router.put('/:id', async (req, res) => {
@@ -101,11 +102,22 @@ router.get('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   let car = await Car.findById(req.params.id).exec();
+
   if (!car) {
     res.status(404).send();
     console.log('car not found');
     return;
   }
+
+  //Check if the user is associated with any operations, in that case it cannot be deleted
+  let operations = await Operation.find({ car: car._id });
+
+  if(operations.length != 0) {
+    res.status(403).send();
+    console.log('Cannot delete the car, it has some operations associated to it');
+    return;
+  }
+
   await car.deleteOne();
   console.log('car removed');
   res.status(204).send();

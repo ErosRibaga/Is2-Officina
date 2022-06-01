@@ -59,8 +59,13 @@ function deleteUser() {
       },
     })
       .then((res) => {
-        console.log('Request complete! response:', res);
-        location.reload();
+        //if response status code == 403
+        if(res.status == 403) {
+          $('#message').text("Impossibile eliminare l'utente, operazioni trovate");
+        } else {          
+          location.reload();
+          console.log('Request complete! response:', res);
+        }        
       })
       .catch((error) => {
         console.log(error);
