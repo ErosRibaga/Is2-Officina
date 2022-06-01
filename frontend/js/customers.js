@@ -55,9 +55,20 @@ $(document).ready(function () {
 
       fetch('http://localhost:8080/api/v1/customers/' + selecteditemid, {
         method: 'DELETE',
+        headers : {
+          'x-access-token': cookieToken
+        }
       })
         .then((res) => {
-          console.log('Request complete! response:', res);
+          //if response status code == 403
+          if (res.status == 403) {
+            $('#message').text(
+              "Impossibile eliminare il cliente, auto trovate"
+            );
+          } else {
+            location.reload();
+            console.log('Request complete! response:', res);
+          }
         })
         .catch((error) => {
           console.log(error);

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require('./models/customer');
+const Car = require('./models/car');
 const { isAdmin }= require('./permissions');
 
 /**
@@ -180,6 +181,16 @@ router.delete('/:id', async (req, res) => {
     console.log('book not found');
     return;
   }
+
+  //Check if the customer has any cars, in that case it cannot be deleted
+  let cars = await Car.find({ owner: customer._id });
+
+  if(cars.length != 0) {
+    res.status(403).send();
+    console.log('Cannot delete the custmore, it has any cars associated to it');
+    return;
+  }
+  
   await customer.deleteOne();
   console.log('customer removed');
   res.status(204).send();

@@ -109,14 +109,14 @@ router.delete('/:id', async (req, res) => {
     return;
   }
 
-  //Cascade delete all the operations done on the car
-  Operation.deleteMany({ car: car._id }, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(404).send('Cannot cascade delete the operation');
-      return;
-    }
-  });
+  //Check if the user is associated with any operations, in that case it cannot be deleted
+  let operations = await Operation.find({ car: car._id });
+
+  if(operations.length != 0) {
+    res.status(403).send();
+    console.log('Cannot delete the car, it has some operations associated to it');
+    return;
+  }
 
   await car.deleteOne();
   console.log('car removed');
