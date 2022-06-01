@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
+const Operation = require('./models/operation');
 
 /**
  * @swagger
@@ -127,8 +128,23 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
+  if (!user) {
+    res.status(404).send();
+    console.log('user not found');
+    return;
+  }
+
+  //Cascade delete all the operations done on the car
+  Operation.deleteMany({ employee: user._id }, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(404).send('Cannot cascade delete the operation');
+      return;
+    }
+  });
+
   await user.deleteOne();
-  console.log('car removed');
+  console.log('user removed');
   res.status(204).send();
 });
 

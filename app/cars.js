@@ -103,19 +103,21 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   let car = await Car.findById(req.params.id).exec();
 
-  //Cascade delete all the operations done on the car
-  Operation.deleteMany({'car': car._id}, (err) => {
-    console.log(err);
-    res.status(404).send('Cannot cascade delete the operation');
-    return;
-  });
-
   if (!car) {
     res.status(404).send();
     console.log('car not found');
     return;
   }
-  
+
+  //Cascade delete all the operations done on the car
+  Operation.deleteMany({ car: car._id }, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(404).send('Cannot cascade delete the operation');
+      return;
+    }
+  });
+
   await car.deleteOne();
   console.log('car removed');
   res.status(204).send();
