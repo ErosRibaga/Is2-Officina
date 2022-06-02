@@ -31,6 +31,7 @@ const userToken = jwt.sign(
 
 describe('GET /api/v1/customers', () => {
   beforeAll(async () => {
+    console.log(adminToken);
     connection = await mongoose.connect(
       'mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority',
       { useNewUrlParser: true, useUnifiedTopology: true }
@@ -40,15 +41,17 @@ describe('GET /api/v1/customers', () => {
       .spyOn(Customer, 'find')
       .mockImplementation((criterias) => {
         return [
-          {
+          {            
             id: 1010,
             name: 'Mario',
             surname: 'Draghi',
+            phone: '1234567890',
           },
           {
             id: 1011,
             name: 'Dario',
             surname: 'Maghi',
+            phone: '1234567891',
           },
         ];
       });
@@ -60,6 +63,7 @@ describe('GET /api/v1/customers', () => {
             id: 1010,
             name: 'Mario',
             surname: 'Draghi',
+            phone: '1234567890'
           };
         else return {};
       });
@@ -80,11 +84,13 @@ describe('GET /api/v1/customers', () => {
           self: '/api/v1/customers/1010',
           name: 'Mario',
           surname: 'Draghi',
+          phone: '1234567890',
         },
         {
           self: '/api/v1/customers/1011',
           name: 'Dario',
           surname: 'Maghi',
+          phone: '1234567891',
         },
       ]);
   });
@@ -98,6 +104,7 @@ describe('GET /api/v1/customers', () => {
         self: '/api/v1/customers/1010',
         name: 'Mario',
         surname: 'Draghi',
+        phone: '1234567890',
       });
   });
 
@@ -106,8 +113,35 @@ describe('GET /api/v1/customers', () => {
       .get('/api/v1/customers')
       .set('x-access-token', userToken)
       .expect('Content-Type', /json/)
-      .expect(401, {'error': 'Not allowed'})
+      .expect(401, { error: 'Not allowed' });
   });
 });
 
-describe('POST /api/v1/customers', () => {});
+describe('POST /api/v1/customers', () => {
+  test('POST /api/v1/customers with name not specified', () => {
+    return request(app)
+      .post('/api/v1/customers')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .expect(400, { error: 'Name not specified' });
+  });
+
+  test('POST /api/v1/customers with surname not specified', () => {
+    return request(app)
+      .post('/api/v1/customers')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name' })
+      .expect(400, { error: 'Surname not specified' });
+  });
+
+  test('POST /api/v1/customers with phone not specified', () => {
+    return request(app)
+      .post('/api/v1/customers')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname' })
+      .expect(400, { error: 'Phone not specified' });
+  });
+});
+
