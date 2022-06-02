@@ -72,7 +72,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 
   customers = customers.map((customer) => {
     return {
-      self: '/api/v1/customer/' + customer.id,
+      self: '/api/v1/customers/' + customer.id,
       name: customer.name,
       surname: customer.surname,
       phone: customer.phone,
@@ -101,7 +101,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 router.get('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id);
   res.status(200).json({
-    self: '/api/v1/customer/' + customer.id,
+    self: '/api/v1/customers/' + customer.id,
     name: customer.name,
     surname: customer.surname,
     phone: customer.phone,
@@ -178,7 +178,7 @@ router.delete('/:id', async (req, res) => {
   let customer = await Customer.findById(req.params.id).exec();
   if (!customer) {
     res.status(404).send();
-    console.log('book not found');
+    console.log('Customer not found');
     return;
   }
 
@@ -187,7 +187,7 @@ router.delete('/:id', async (req, res) => {
 
   if(cars.length != 0) {
     res.status(403).send();
-    console.log('Cannot delete the custmore, it has any cars associated to it');
+    console.log('Cannot delete the customer, it has any cars associated to it');
     return;
   }
   
