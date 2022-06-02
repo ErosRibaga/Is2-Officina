@@ -1,30 +1,41 @@
 const request = require('supertest');
 const app = require('./app');
+const Operation = require('./models/operation');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
+var operationSpy;
+var operationSpyFindById;
+
+const adminToken = jwt.sign(
+    {
+        email: 'email',
+        id: 'id',
+        admin: true,
+    },
+    'is2laboratory2017',
+    { expiresIn: 86400 }
+);
+
+const userToken = jwt.sign(
+    {
+        email: 'email',
+        id: 'id',
+        admin: false,
+    },
+    'is2laboratory2017',
+    { expiresIn: 86400 }
+);
 
 describe('GET /api/v1/operations', () => {
 
     let connection;
 
-    let operationSpy;
-    let operationSpyFindById;
-    let userSpy;
-    let userSpyFindById;
-    let carSpy;
-    let carSpyFindById;
-
-
     beforeAll(async () => {
-        jest.setTimeout(8000);
-        jest.unmock('mongoose');
+
         connection = await mongoose.connect('mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
-        /*const Operation = require('./models/operation');
-        const User = require('./models/user');
-        const Car = require('./models/car');
 
-        userSpy = jest.spyOn(User, 'find').mockImplementation((criterias) => {
+        /*userSpy = jest.spyOn(User, 'findById').mockImplementation((criterias) => {
             return [{
                 id: 1001010,
                 name: 'Franco',
@@ -35,51 +46,102 @@ describe('GET /api/v1/operations', () => {
             }]
         });
 
-        carSpy = jest.spyOn(Car, 'find').mockImplementation((criterias) => {
+        customerSpy = jest.spyOn(Customer, 'findById').mockImplementation((criterias) => {
             return [{
-                id: 1001010,
-                name: 'Franco',
-                surname: 'Rossi',
-                password: '123456',
-                email: 'francorossi@mail.com',
-                admin: false,
+                id: 1001015,
+                name: 'Luigi',
+                surname: 'Mastroianni',
+                phone: '1234567890',
             }]
         });
 
-        operationSpy = jest.spyOn(Operation, 'find').mockImplementation((criterias) => {
+        carSpy = jest.spyOn(Car, 'findById').mockImplementation((criterias) => {
             return [{
-                id: 1010,
-                title: 'Operation Testing',
-                description: 'Operation Testing',
-                employee: 'Employee Testing',
-            }];
+                id: 1001020,
+                brand: 'Franco',
+                model: 'Rossi',
+                plate: '123456',
+                description: 'francorossi@mail.com',
+                owner: 1001015,
+            }]
         });*/
+
+        operationSpy = jest.spyOn(Operation, 'find')
+            .mockImplementation((criterias) => {
+                return [{
+                    id: 10015,
+                    title: 'Operation Testing 1',
+                    description: 'Operation Testing 1',
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    employee: 'Id employee',
+                    comment: 'Comment example',
+                    car: 'Id car'
+                },
+                {
+                    id: 10020,
+                    title: 'Operation Testing 2',
+                    description: 'Operation Testing 2',
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    employee: 'Id employee',
+                    comment: 'Comment example',
+                    car: 'Id car'
+                }
+            ];
+            });
+
+        operationSpyFindById = jest.spyOn(Operation, 'findById')
+            .mockImplementation((id) => {
+                if (id == 10015) {
+                    return {
+                        id: 10015,
+                        title: 'Operation Testing 1',
+                        description: 'Operation Testing 1',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        employee: 'Id employee',
+                        comment: 'Comment example',
+                        car: 'Id car'
+                    };
+                }
+                else {
+                    return {};
+                }
+            });
     });
 
     afterAll(() => {
+        customerSpyFindById.mockRestore();
         mongoose.connection.close();
     });
-
-    // create a valid token
-    var token = jwt.sign(
-        {
-            email: 'pl@mail.com',
-            id: '6290e320900f428a261cc754',
-            admin: 'true'
-        },
-        'is2laboratory2017',
-        { expiresIn: 86400 }
-    );
 
     test('GET /api/v1/operations should respond with an array of operations', () => {
         return request(app)
             .get('/api/v1/operations')
-            .set('x-access-token', token)
+            .set('x-access-token', userToken)
             .expect('Content-Type', /json/)
-            .expect(200)
-            .then((res) => {
-                console.log("Get all the operations: ", res.body);
-            });
+            .expect(200, [{
+                id: 10015,
+                title: 'Operation Testing 1',
+                description: 'Operation Testing 1',
+                startDate: new Date(),
+                endDate: new Date(),
+                employee: 'Id employee',
+                comment: 'Comment example',
+                car: 'Id car'
+            },
+            {
+                id: 10020,
+                title: 'Operation Testing 2',
+                description: 'Operation Testing 2',
+                startDate: new Date(),
+                endDate: new Date(),
+                employee: 'Id employee',
+                comment: 'Comment example',
+                car: 'Id car'
+            }
+        ]);
     });
 
     test('GET /api/v1/operations/:id should respond with the operation with the corresponding Id', () => {
@@ -87,13 +149,19 @@ describe('GET /api/v1/operations', () => {
             .get('/api/v1/operations/629783896e8511ac7d0e7218')
             .set('x-access-token', token)
             .expect('Content-Type', /json/)
-            .expect(200)
-            .then((res) => {
-                console.log("Get operation by id (629783896e8511ac7d0e7218): ", res.body);
-            });
+            .expect(200, {
+                id: 10015,
+                title: 'Operation Testing 1',
+                description: 'Operation Testing 1',
+                startDate: new Date(),
+                endDate: new Date(),
+                employee: 'Id employee',
+                comment: 'Comment example',
+                car: 'Id car'
+            })
     });
 
-    test('POST /api/v1/operations with Title not specified', () => {
+    /*test('POST /api/v1/operations with Title not specified', () => {
         return request(app)
             .post('/api/v1/operations')
             .set('x-access-token', token)
@@ -107,7 +175,7 @@ describe('GET /api/v1/operations', () => {
                     car: '62977e45d6a23ec9e17fafd7'
                 })
             .expect(400, { error: 'Title not specified' });
-    });
+    });*/
 
 
 });
