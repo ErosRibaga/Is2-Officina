@@ -3,7 +3,7 @@ function loadOperations() {
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
 
-  fetch('http://localhost:8080/api/v1/operations/',{
+  fetch('http://localhost:8080/api/v1/operations/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -38,20 +38,53 @@ function openForm(start, end) {
   document.getElementById('startDate').valueAsDate = new Date(start);
   document.getElementById('endDate').valueAsDate = new Date(end);
 
-  //Populate cars select box  
-  fetch('http://localhost:8080/api/v1/cars/')  
+  //Populate cars select box
+  fetch('http://localhost:8080/api/v1/cars/', {
+    headers: {
+      'x-access-token': cookieToken,
+    }
+  })
     .then((resp) => resp.json()) // Transform the data into json
-    .then((data) => {      
-
+    .then((data) => {
       return data.map((car) => {
-        console.log(car);
         //get car id
-        var id = car.self.substring(
-          car.self.lastIndexOf('/') + 1
+        var id = car.self.substring(car.self.lastIndexOf('/') + 1);
+
+        $('#cars').append(
+          '<option value="' +
+            id +
+            '">' +
+            car.brand +
+            ' ' +
+            car.model +
+            '</option>'
         );
+      });
+    })
+    .catch((error) => console.error(error)); // If there is any error you will catch them here
 
-        $('#cars').append('<option value="' + id + '">' + car.brand + ' ' + car.model + '</option>');
+  //Populate employyes select box
+  fetch('http://localhost:8080/api/v1/users/', {
+    headers: {
+      'x-access-token': cookieToken
+    }
+  })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then((data) => {
+      return data.map((user) => {
 
+        //get user id
+        var id = user.self.substring(user.self.lastIndexOf('/') + 1);
+
+        $('#employees').append(
+          '<option value="' +
+            id +
+            '">' +
+            user.name +
+            ' ' +
+            user.surname +
+            '</option>'
+        );
       });
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here

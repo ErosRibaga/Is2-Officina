@@ -21,25 +21,14 @@ function displayOperation(data) {
   $('#startDate').text(new Date(data.startDate).toDateString());
   $('#endDate').text(new Date(data.endDate).toDateString());
 
-  $('#cName').append(data.customer);
-  $('#cSurname').append('cognome');
-  $('#cNumber').append('telefono');
+  $('#brand').append(data.car.brand);
+  $('#model').append(data.car.model);
+  $('#plate').append(data.car.plate);
 
-  $('#eName').append(data.employee);
-  $('#eSurname').append('cognome');
+  console.log(data);
 
-  //get car info
-  fetch('http://localhost:8080/api/v1/cars/' + data.car, {
-    headers: {
-      'x-access-token': cookieToken,
-    },
-  })
-    .then((resp) => resp.json()) // Transform the data into json
-    .then((car) => {
-      $('#brand').append(car.brand);
-      $('#model').append(car.model);
-      $('#plate').append(car.plate);
-    });
+  $('#eName').append(data.employee.name);
+  $('#eSurname').append(data.employee.surname);
 }
 
 //Insert the old values inside the form inputs of the update-operation.html
@@ -62,35 +51,70 @@ function initUpdateOperation(dataOp) {
   $('#endDate').val(end);
   $('#endDate').attr('min', start);
 
+  populateEmployeeSelect(dataOp);
+  populateCarSelect(dataOp);
+}
+
+function populateEmployeeSelect(dataOp) {
   //Populate cars select box
-  fetch('http://localhost:8080/api/v1/cars/')
+  fetch('http://localhost:8080/api/v1/users/', {
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then((userData) => {
+      return userData.map((user) => {
+        //get user id
+        var id = user.self.substring(user.self.lastIndexOf('/') + 1);
+
+        $('#employees').append(
+          '<option value="' +
+            id +
+            '">' +
+            user.name +
+            ' ' +
+            user.surname +
+            '</option>'
+        );
+
+        if (dataOp.employee != null) {
+          $('select option[value="' + dataOp.employee._id + '"]').attr('selected', true);
+        }
+        
+      });
+    })
+    .catch((error) => console.error(error)); // If there is any error you will catch them here
+}
+
+function populateCarSelect(dataOp) {
+  //Populate cars select box
+  fetch('http://localhost:8080/api/v1/cars/', {
+    headers: {
+      'x-access-token': cookieToken,
+    },
+  })
     .then((resp) => resp.json()) // Transform the data into json
     .then((carData) => {
       return carData.map((car) => {
-        console.log(car);
         //get car id
         var id = car.self.substring(car.self.lastIndexOf('/') + 1);
+        
+        $('#cars').append(
+          '<option value="' +
+            id +
+            '">' +
+            car.brand +
+            ' ' +
+            car.model +
+            '</option>'
+        );
 
-        if (id == dataOp.car)
-          $('#cars').append(
-            '<option selected="selected" value="' +
-              id +
-              '">' +
-              car.brand +
-              ' ' +
-              car.model +
-              '</option>'
-          );
-        else
-          $('#cars').append(
-            '<option value="' +
-              id +
-              '">' +
-              car.brand +
-              ' ' +
-              car.model +
-              '</option>'
-          );
+        if (dataOp.car != null) {
+          $('select option[value="' + dataOp.car._id + '"]').attr('selected', true);
+        }
+
+        
       });
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
@@ -104,32 +128,29 @@ function updateOperation() {
   var endDate = $('#endDate').val();
 
   var car = $('#cars').val();
+  var employee = $('#employees').val();
 
   fetch('http://localhost:8080/api/v1/operations/' + getID(), {
     method: 'PUT',
-    body: JSON.stringify({
-      title: title,
-      description: description,
-      endDate: new Date(endDate),
-      startDate: new Date(startDate),
-      employee: 'Tiziano Ferro',
-      car: car,
-    }),
     headers: {
       'Content-type': 'application/json',
       'x-access-token': cookieToken,
     },
     mode: 'cors',
+    body: JSON.stringify({
+      title: title,
+      description: description,
+      endDate: new Date(endDate),
+      startDate: new Date(startDate),
+      employee: employee,
+      car: car,
+    }),
   })
     .then((data) => {
       console.log(data);
       redirect('/frontend/operation.html?id=' + getID());
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
-
-  /*
-  var title = $('#eName').val();
-  var title = $('#eSurname').val();*/
 }
 
 function deleteOperation() {

@@ -22,8 +22,7 @@
     <!-- Locals -->
     <link rel="stylesheet" href="./css/style.css" />
     <script src="./js/index.js"></script>
-    <script src="./js/user.js"></script>
-    <script src="./js/accountManagement.js"></script>
+    <script src="./js/adduser.js"></script>
 
     <!-- Sidebar generation -->
     <script>
@@ -55,28 +54,28 @@
                 <form method="post" name="userform" id="userform">
                     <div class="mb-3">
                         <label for="inputname" class="form-label">Nome</label>
-                        <input type="input" class="form-control" name="name" id="textnome">
+                        <input type="input" class="form-control" name="name" id="textNome">
                     </div>
                     <div class="mb-3">
                         <label for="inputsurname" class="form-label">Cognome</label>
-                        <input type="input" class="form-control" name="surname" id="textcognome">
+                        <input type="input" class="form-control" name="surname" id="textCognome">
                     </div>
                     <div class="mb-3">
                         <label for="inputmail" class="form-label">Mail</label>
-                        <input type="input" class="form-control" name="mail" id="textmail">
+                        <input type="input" class="form-control" name="mail" id="textMail">
                     </div>
                     <div class="mb-3">
                         <label for="inputpassword" class="form-label">Password</label>
-                        <input type="input" class="form-control" name="password" id="textpassword">
+                        <input type="input" class="form-control" name="password" id="textPassword">
                     </div>
                     <div class="mb-3">
                         <label for="inputrole" class="form-label">Ruolo</label>
-                        <select class="form-select" aria-label="Default select example" name="roles" id="roles">
-                            <option value="admin">Admin</option>
-                            <option value="employee" selected>Dipendente</option>
+                        <select class="form-select" aria-label="Default select example" name="roles" id="textRoles">
+                            <option value="admin" id="selAdmin">Admin</option>
+                            <option value="employee" id="selDipendente">Dipendente</option>
                         </select>
                     </div>
-                    <button id="createuser" type="button" class="btn btn-dark">Signin</button>
+                    <button id="saveUser" type="button" class="btn btn-dark">Salva</button>
                 </form>
 
             </div>
@@ -85,3 +84,4 @@
 </body>
 
 </html>
+

@@ -7,19 +7,6 @@ function insertCar() {
   var carDescription = document.getElementById('textDescription').value;
   var carOwner = document.getElementById('selectOwner').value;
 
-  console.log(
-    'Data: ' +
-      carBrand +
-      ', ' +
-      carModel +
-      ', ' +
-      carPlate +
-      ', ' +
-      carDescription +
-      ', ' +
-      carOwner
-  );
-
   if (add) {
     //Insert car
     fetch('http://localhost:8080/api/v1/cars/', {
@@ -108,10 +95,8 @@ $(document).ready(function () {
   //Init page
   if (getID() != null) {
     add = false;
+    
     $('#title').text("Modifica auto");
-
-    console.log('ciao');
-
     $('#actionClient').text('Salva modifiche');
 
     fetch('http://localhost:8080/api/v1/cars/' + getID(), {

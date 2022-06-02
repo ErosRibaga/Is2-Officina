@@ -34,20 +34,17 @@ var isAdmin = getCookie('admin');
 
 function createSideBar(activeId) {
   var sidebar;
-  console.log(isAdmin)
+
+  sidebar = '<a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
+
   if (isAdmin === 'true') {
-    sidebar = `
-    <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-    <a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
+    sidebar += `
     <a id="sideCostumers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
     <a id="sideCars" href="/frontend/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
-    <a href="#about"><i class="fa-solid fa-list"></i>Users</a>`;
-  } else {
-    sidebar = `
-    <a href="#home"><i class="fa-solid fa-house"></i>Home</a>
-    <a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>
-    <a href="#about"><i class="fa-solid fa-list"></i>Users</a>`;
+    <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   }
+
+  sidebar += '<a id="sideSettings" href="/frontend/user-settings.html"><i class="fa-solid fa-gear"></i>Impostazioni</a>';
 
   $('.sidebar').html(sidebar);
   $(activeId).addClass('active');
