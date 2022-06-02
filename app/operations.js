@@ -91,13 +91,55 @@ router.delete('/:id', async (req, res) => {
  *        description: Operation not found
  */
 router.put('/:id', async (req, res) => {
+
+  let title = req.body.title;
+  let description = req.body.description;
+  let employee = req.body.employee;
+  let startDate = req.body.startDate;
+  let endDate = req.body.endDate;
+  let car = req.body.car;
+
+  if(!title){
+    res.status(400).json({ error: 'Title not specified' });
+    return;
+  }
+
+  if(!description){
+    res.status(400).json({ error: 'Description not specified' });
+    return;
+  }
+
+  if(!employee){
+    res.status(400).json({ error: 'Employee not specified' });
+    return;
+  }
+
+  if(!startDate){
+    res.status(400).json({ error: 'Start Date not specified' });
+    return;
+  }
+
+  if(!endDate){
+    res.status(400).json({ error: 'End Date not specified' });
+    return;
+  }
+
+  if(!car){
+    res.status(400).json({ error: 'Car not specified' });
+    return;
+  }
+
+  
+
+
+
   let operation = await Operation.findByIdAndUpdate(req.params.id, {
-    title: req.body.title,
-    description: req.body.description,
-    employee: req.body.employee,
-    startDate: new Date(req.body.startDate),
-    endDate: new Date(req.body.endDate),
-    car: mongoose.Types.ObjectId(req.body.car),
+    title: title,
+    description: description,
+    employee: employee,
+    startDate: new Date(startDate),
+    endDate: new Date(endDate),
+    car: mongoose.Types.ObjectId(car),
   });
 
   res

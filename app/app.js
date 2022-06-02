@@ -78,7 +78,7 @@ app.use('/api/v1/authentications', authentication);
 app.use('/api/v1/operations', tokenChecker);
 app.use('/api/v1/customers', tokenChecker);
 app.use('/api/v1/cars', tokenChecker);
-//app.use('/api/v1/users', tokenChecker);
+app.use('/api/v1/users', tokenChecker);
 
 
 //use express as middleware to run the specific requests and make the code more flexible
