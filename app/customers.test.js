@@ -143,5 +143,14 @@ describe('POST /api/v1/customers', () => {
       .send({ name: 'name', surname: 'surname' })
       .expect(400, { error: 'Phone not specified' });
   });
+
+  test('POST /api/v1/customers with phone duplicate', () => {
+    return request(app)
+      .post('/api/v1/customers')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname', phone: '1234567890' })
+      .expect(409, { error: 'Phone duplicate' });
+  });
 });
 

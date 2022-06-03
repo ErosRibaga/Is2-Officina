@@ -140,7 +140,7 @@ router.get('/:id', async (req, res) => {
  *     '201':
  *        description: Customer successfully inserted
  */
-router.post('', async (req, res) => {
+router.post('', async (req, res, next) => {
   if (!req.body.name) {
     res.status(400).json({ error: 'Name not specified' });
     return;
@@ -156,8 +156,12 @@ router.post('', async (req, res) => {
     return;
   }
 
-  if ((await Customer.find({ phone: req.body.phone }).exec()).lenght > 0) {
-    res.status(409).json({ error: 'Duplicate phone number' });
+  console.log(req.body.phone);
+
+  let customers = await Customer.find({ phone: req.body.phone });
+
+  if (customers.length > 0) {
+    res.status(409).json({ error: 'Duplicate phone number' }).send();
     return;
   }
 
