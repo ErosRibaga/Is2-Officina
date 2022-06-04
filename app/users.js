@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  let user = await User.findById(req.params.id).exec();
+  let user = await User.findById(req.params.id);
 
   if (!user) {
     res.status(404).send('User not found');
