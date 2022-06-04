@@ -138,6 +138,15 @@ describe('POST /api/v1/customers', () => {
       .expect(409, { error: 'Phone already exists' });
   });
 
+  test('POST /api/v1/customers with non admin user', () => {
+    return request(app)
+      .post('/api/v1/customers')
+      .set('x-access-token', userToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname', phone: '1324567899' })
+      .expect(401, { error: 'Not allowed' });
+  });
+
   test('POST /api/v1/customers with valid data', () => {
     return request(app)
       .post('/api/v1/customers')
