@@ -1,4 +1,18 @@
-{
+{  
+  "name": "is2-officina",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErosRibaga/Is2-Officina.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErosRibaga/Is2-Officina/issues"
+  },
+  "homepage": "https://github.com/ErosRibaga/Is2-Officina#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.1",
