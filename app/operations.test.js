@@ -1,12 +1,14 @@
 const request = require('supertest');
 const app = require('./app');
 const Operation = require('./models/operation');
+const Customer = require('./models/customer');
+const User = require('./models/user');
+const Car = require('./models/car');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-var operationSpy;
-var operationSpyFindById;
-
+// create a token for an admin user
 const adminToken = jwt.sign(
     {
         email: 'email',
@@ -17,6 +19,7 @@ const adminToken = jwt.sign(
     { expiresIn: 86400 }
 );
 
+// create a token for a normal user
 const userToken = jwt.sign(
     {
         email: 'email',
@@ -27,156 +30,205 @@ const userToken = jwt.sign(
     { expiresIn: 86400 }
 );
 
-describe('GET /api/v1/operations', () => {
+var mongodb;
 
-    let connection;
+describe('GET /api/v1/operations', () => {
+    var operationId;
+    var userId;
+    var carId;
+    var customerId;
 
     beforeAll(async () => {
-        jest.setTimeout(30000);
-        connection = await mongoose.connect('mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+        // This will create an new instance of "MongoMemoryServer" and automatically start it
+        mongodb = await MongoMemoryServer.create();
+        app.locals.db = await mongoose.connect(mongodb.getUri());
 
-        /*userSpy = jest.spyOn(User, 'findById').mockImplementation((criterias) => {
-            return [{
-                id: 1001010,
-                name: 'Franco',
-                surname: 'Rossi',
-                password: '123456',
-                email: 'francorossi@mail.com',
-                admin: false,
-            }]
+
+        var user = new User({
+            name: "user1",
+            surname: "user1",
+            password: "pssw",
+            email: "email",
+            admin: false
         });
 
-        customerSpy = jest.spyOn(Customer, 'findById').mockImplementation((criterias) => {
-            return [{
-                id: 1001015,
-                name: 'Luigi',
-                surname: 'Mastroianni',
-                phone: '1234567890',
-            }]
+        userId = await user.save();
+        userId = userId._id;
+        console.log("UserID: " + userId);
+
+        var customer = new Customer({
+            name: "customer1",
+            surname: "customer1",
+            phone: "123456789",
         });
 
-        carSpy = jest.spyOn(Car, 'findById').mockImplementation((criterias) => {
-            return [{
-                id: 1001020,
-                brand: 'Franco',
-                model: 'Rossi',
-                plate: '123456',
-                description: 'francorossi@mail.com',
-                owner: 1001015,
-            }]
-        });*/
+        customerId = await customer.save();
+        customerId = customerId._id;
 
-        operationSpy = jest.spyOn(Operation, 'find')
-            .mockImplementation((criterias) => {
-                return [{
-                    id: 10015,
-                    title: 'Operation Testing 1',
-                    description: 'Operation Testing 1',
-                    startDate: new Date(1654131000000),
-                    endDate: new Date(1654171200000),
-                    employee: 'Id employee',
-                    comment: 'Comment example',
-                    car: 'Id car'
-                },
+        var car = new Car({
+            brand: "brand",
+            model: "model",
+            plate: "AA000AA",
+            description: "testdescription",
+            owner: customerId
+        });
+
+        carId = await car.save();
+        carId = carId._id;
+
+
+        var operation = new Operation({
+            title: 'test1',
+            description: 'test1',
+            startDate: new Date('1995-12-17T03:24:00'),
+            endDate: new Date('1995-12-17T05:24:00'),
+            employee: userId,
+            car: carId,
+        });
+
+        operationId = await operation.save();
+        operationId = operationId._id;
+
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.close();
+        await mongodb.stop();
+    });
+
+    test('GET /api/v1/operations with admin user should respond with an array of operations', async () => {
+        return request(app)
+            .get('/api/v1/operations')
+            .set('x-access-token', adminToken)
+            .expect('Content-Type', /json/)
+            .expect(200, [
                 {
-                    id: 10020,
-                    title: 'Operation Testing 2',
-                    description: 'Operation Testing 2',
-                    startDate: new Date(1654131000000),
-                    endDate: new Date(1654171200000),
-                    employee: 'Id employee',
-                    comment: 'Comment example',
-                    car: 'Id car'
-                }
-                ];
-            });
+                    self: '/api/v1/operations/' + operationId,
+                    title: 'test1',
+                    description: 'test1',
+                    employee: {
+                        _id: '' + userId,
+                        name: "user1",
+                        surname: "user1",
+                        password: "pssw",
+                        email: "email",
+                        admin: false,
+                        __v: 0
+                    },
+                    startDate: '1995-12-17T02:24:00.000Z',
+                    endDate: '1995-12-17T04:24:00.000Z',
+                    car: {
+                        _id: '' + carId,
+                        brand: "brand",
+                        model: "model",
+                        plate: "AA000AA",
+                        description: "testdescription",
+                        owner: '' + customerId,
+                        __v: 0
+                    },
+                },
+            ]);
+    });
 
-        operationSpyFindById = jest.spyOn(Operation, 'findById')
-            .mockImplementation((id) => {
-                if (id == 10015) {
-                    return {
-                        id: 10015,
-                        title: 'Operation Testing 1',
-                        description: 'Operation Testing 1',
-                        startDate: new Date(1654131000000),
-                        endDate: new Date(1654171200000),
-                        employee: 'Id employee',
-                        comment: 'Comment example',
-                        car: 'Id car'
-                    };
-                }
-                else {
-                    return {};
-                }
+    test('GET /api/v1/operations/:id with admin user should respond with a json file of the single operation', async () => {
+        return request(app)
+            .get('/api/v1/operations/' + operationId)
+            .set('x-access-token', adminToken)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                self: '/api/v1/operations/' + operationId,
+                title: 'test1',
+                description: 'test1',
+                employee: {
+                    _id: '' + userId,
+                    name: "user1",
+                    surname: "user1",
+                    password: "pssw",
+                    email: "email",
+                    admin: false,
+                    __v: 0
+                },
+                startDate: '1995-12-17T02:24:00.000Z',
+                    endDate: '1995-12-17T04:24:00.000Z',
+                    car: {
+                        _id: '' + carId,
+                        brand: "brand",
+                        model: "model",
+                        plate: "AA000AA",
+                        description: "testdescription",
+                        owner: '' + customerId,
+                        __v: 0
+                    },
             });
     });
 
-    afterAll(() => {
-        //operationSpyFindById.mockRestore();
-        mongoose.connection.close();
-    });
-
-    /*test('GET /api/v1/operations should respond with an array of operations', () => {
+    test('GET /api/v1/operations with normal user should respond with status code 401', async () => {
         return request(app)
             .get('/api/v1/operations')
             .set('x-access-token', userToken)
             .expect('Content-Type', /json/)
-            .expect(200, [{
-                id: 10015,
-                title: 'Operation Testing 1',
-                description: 'Operation Testing 1',
-                startDate: new Date(1654131000000),
-                endDate: new Date(1654171200000),
-                employee: 'Id employee',
-                comment: 'Comment example',
-                car: 'Id car'
-            },
-            {
-                id: 10020,
-                title: 'Operation Testing 2',
-                description: 'Operation Testing 2',
-                startDate: new Date(1654171000000),
-                endDate: new Date(1654171200000),
-                employee: 'Id employee',
-                comment: 'Comment example',
-                car: 'Id car'
-            }
-            ]);
-    });*/
-
-    test('GET /api/v1/operations/:id should respond with the operation with the corresponding Id', () => {
-        return request(app)
-            .get('/api/v1/operations/10015')
-            .set('x-access-token', adminToken)
-            .expect('Content-Type', /json/)
-            .expect(200, {
-                id: 10015,
-                title: 'Operation Testing 1',
-                description: 'Operation Testing 1',
-                startDate: new Date(1654131000000),
-                endDate: new Date(1654171200000),
-                employee: 'Id employee',
-                comment: 'Comment example',
-                car: 'Id car'
-            })
+            .expect(401, { error: 'Not allowed' });
+    });
+});
+/*
+describe('POST /api/v1/customers', () => {
+    beforeAll(async () => {
+        // This will create an new instance of "MongoMemoryServer" and automatically start it
+        app.locals.db = await mongoose.connect(mongodb.getUri());
     });
 
-    /*test('POST /api/v1/operations with Title not specified', () => {
+    afterAll(async () => {
+        await mongoose.connection.close();
+        await mongodb.stop();
+    });
+
+    test('POST /api/v1/customers with name not specified', async () => {
         return request(app)
-            .post('/api/v1/operations')
-            .set('x-access-token', token)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
-            .send(
-                {
-                    description: 'No title operation',
-                    startDate: new Date(1654156800000),
-                    endDate: new Date(1654171200000),
-                    employee: true,
-                    car: '62977e45d6a23ec9e17fafd7'
-                })
-            .expect(400, { error: 'Title not specified' });
-    });*/
+            .expect(400, { error: 'Some fields are empty or undefined' });
+    });
 
+    test('POST /api/v1/customers with surname not specified', () => {
+        return request(app)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
+            .set('Accept', 'application/json')
+            .send({ name: 'name' })
+            .expect(400, { error: 'Some fields are empty or undefined' });
+    });
 
+    test('POST /api/v1/customers with phone not specified', () => {
+        return request(app)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
+            .set('Accept', 'application/json')
+            .send({ name: 'name', surname: 'surname' })
+            .expect(400, { error: 'Some fields are empty or undefined' });
+    });
+
+    test('POST /api/v1/customers with phone duplicate', async () => {
+        await request(app)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
+            .send({ name: 'name1', surname: 'surname1', phone: '1234567890' });
+        return request(app)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
+            .set('Accept', 'application/json')
+            .send({ name: 'name2', surname: 'surname2', phone: '1234567890' })
+            .expect(409, { error: 'Phone duplicate' });
+    });
+
+    test('POST /api/v1/customers with valid data', () => {
+        return request(app)
+            .post('/api/v1/customers')
+            .set('x-access-token', adminToken)
+            .set('Accept', 'application/json')
+            .send({ name: 'name', surname: 'surname', phone: '1324567899' })
+            .expect(201);
+    });
 });
 
+*/
