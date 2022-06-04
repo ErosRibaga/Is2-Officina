@@ -141,45 +141,29 @@ router.get('/:id', async (req, res) => {
  *        description: Customer successfully inserted
  */
 router.post('', async (req, res, next) => {
-  if (!req.body.name) {
-    res.status(400).json({ error: 'Name not specified' });
-    return;
-  }
-
-  if (!req.body.surname) {
-    res.status(400).json({ error: 'Surname not specified' });
-    return;
-  }
-
-  if (!req.body.phone) {
-    res.status(400).json({ error: 'Phone not specified' });
-    return;
-  }
-
-  console.log(req.body.phone);
-
-  let customers = await Customer.find({ phone: req.body.phone });
-
-  if (customers.length > 0) {
-    res.status(409).json({ error: 'Duplicate phone number' }).send();
-    return;
-  }
-
   let customer = new Customer({
     name: req.body.name,
     surname: req.body.surname,
     phone: req.body.phone,
   });
 
-  customer.save(function (err, post) {
-    if (err) {
-      return next(err);
-    }
-    res
+  try {
+    await customer.save();
+
+    return res
       .location('/api/v1/customers/' + customer.id)
       .status(201)
-      .send('Ciao');
-  });
+      .send();
+  } catch (err) {
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: 'Phone already exists' });
+    }
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 });
 
 /**
