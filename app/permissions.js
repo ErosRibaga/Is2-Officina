@@ -1,8 +1,7 @@
 function isAdmin(isAdmin) {
   return (req, res, next) => {
     if (req.loggedUser.admin != isAdmin) {
-      res.status(401);
-      return res.send('Not allowed');
+      return res.status(401).json({ error: 'Not allowed' });
     }
 
     next();
@@ -10,7 +9,6 @@ function isAdmin(isAdmin) {
 }
 
 function scopedOperations(user, operations) {
-  console.log(user)
   if(user.admin) return operations;
   return operations.filter(operation => operation.employee._id == user.id);
 }
