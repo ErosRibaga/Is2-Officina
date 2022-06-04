@@ -135,7 +135,7 @@ describe('POST /api/v1/customers', () => {
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({ name: 'name2', surname: 'surname2', phone: '1234567890' })
-      .expect(409, { error: 'Phone duplicate' });
+      .expect(409, { error: 'Phone already exists' });
   });
 
   test('POST /api/v1/customers with valid data', () => {
