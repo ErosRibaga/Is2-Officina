@@ -3,11 +3,9 @@ const app = require('./app');
 const User = require('./models/user');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-var userSpyFindById;
-var userSpy;
-
-// create a valid for an admin user
+// create a token for an admin user
 const adminToken = jwt.sign(
   {
     email: 'email',
@@ -18,7 +16,7 @@ const adminToken = jwt.sign(
   { expiresIn: 86400 }
 );
 
-// create a valid for a normal user
+// create a token for a normal user
 const userToken = jwt.sign(
   {
     email: 'email',
@@ -29,79 +27,59 @@ const userToken = jwt.sign(
   { expiresIn: 86400 }
 );
 
-beforeAll(async () => {
-  connection = await mongoose.connect(
-    'mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority',
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  );
-
-  userSpy = jest.spyOn(User, 'find').mockImplementation((criterias) => {
-    return [
-      {
-        id: 1010,
-        name: 'Mario',
-        surname: 'Draghi',
-        password: 'psw',
-        email: 'email',
-        admin: true,
-      },
-      {
-        id: 1011,
-        name: 'Dario',
-        surname: 'Maghi',
-        password: 'psw',
-        email: 'email',
-        admin: false,
-      },
-    ];
-  });
-
-  userSpyFindById = jest
-    .spyOn(User, 'findById')
-    .mockImplementation((id, status) => {
-      if (id == 1010)
-        return {
-          id: 1010,
-          name: 'Mario',
-          surname: 'Draghi',
-          password: 'psw',
-          email: 'email',
-          admin: true,
-        };
-      else return {}
-    });
-  
-});
-
-afterAll(() => {
-  userSpyFindById.mockRestore();
-  mongoose.connection.close();
-});
+var mongod;
 
 describe('GET /api/v1/users', () => {
-  test('GET /api/v1/users with admin user should respond with an user', async () => {
+  var userId;
+
+  beforeAll(async () => {
+    // This will create an new instance of "MongoMemoryServer" and automatically start it
+    mongod = await MongoMemoryServer.create();
+    app.locals.db = await mongoose.connect(mongod.getUri());
+
+    var user = new User({
+      name: 'Dario',
+      surname: 'Maghi',
+      email: 'dario.maghi@gmail.it',
+      admin: true,
+    });
+
+    userId = await user.save();
+    userId = user._id;
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+
+  test('GET /api/v1/users with admin user should respond with an array of users', async () => {
     return request(app)
       .get('/api/v1/users')
       .set('x-access-token', adminToken)
       .expect('Content-Type', /json/)
       .expect(200, [
         {
-          self: '/api/v1/users/1010',
-          name: 'Mario',
-          surname: 'Draghi',
-          password: 'psw',
-          email: 'email',
-          admin: true,
-        },
-        {
-          self: '/api/v1/users/1011',
+          self: '/api/v1/users/' + userId,
           name: 'Dario',
           surname: 'Maghi',
-          password: 'psw',
-          email: 'email',
-          admin: false,
+          email: 'dario.maghi@gmail.it',
+          admin: true,
         },
       ]);
+  });
+
+  test('GET /api/v1/users/:id with admin user should respond with an user', async () => {
+    return request(app)
+      .get('/api/v1/users/' + userId)
+      .set('x-access-token', adminToken)
+      .expect('Content-Type', /json/)
+      .expect(200, {
+        self: '/api/v1/users/' + userId,
+        name: 'Dario',
+        surname: 'Maghi',
+        email: 'dario.maghi@gmail.it',
+        admin: true,
+      });
   });
 
   test('GET /api/v1/users with normal user should respond with status code 401', async () => {
@@ -111,21 +89,73 @@ describe('GET /api/v1/users', () => {
       .expect('Content-Type', /json/)
       .expect(401, { error: 'Not allowed' });
   });
-
-  test('GET /api/v1/users/:id with admin user should respond with an array of customers', async () => {
-    return request(app)
-      .get('/api/v1/users/1010')
-      .set('x-access-token', adminToken)
-      .expect('Content-Type', /json/)
-      .expect(200, {
-        self: '/api/v1/users/1010',
-        name: 'Mario',
-        surname: 'Draghi',
-        password: 'psw',
-        email: 'email',
-        admin: true,
-      });
-  });
-  
 });
 
+describe('POST /api/v1/users', () => {
+  beforeAll(async () => {
+    // This will create an new instance of "MongoMemoryServer" and automatically start it
+    app.locals.db = await mongoose.connect(mongod.getUri());
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+    await mongod.stop();
+  });
+
+  test('POST /api/v1/users with name not specified', async () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .expect(400, { error: 'Some fields are empty or undefined' });
+  });
+
+  test('POST /api/v1/users with surname not specified', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name' })
+      .expect(400, { error: 'Some fields are empty or undefined' });
+  });
+
+  test('POST /api/v1/users with email not specified', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname' })
+      .expect(400, { error: 'Some fields are empty or undefined' });
+  });
+
+  test('POST /api/v1/users with email duplicate', async () => {
+    await request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .send({ name: 'name1', surname: 'surname1', email: 'name1.sur1@gmail.com', admin: true });
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name2', surname: 'surname2', email: 'name1.sur1@gmail.com', admin: false })
+      .expect(409, { error: 'Email duplicate' });
+  });
+
+  test('POST /api/v1/users with role not specified', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname', email: 'name3.sur3@gmail.com' })
+      .expect(201);
+  });
+
+  test('POST /api/v1/users with valid data', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname', email: 'name4.sur4@gmail.com', admin: true })
+      .expect(201);
+  });
+});
