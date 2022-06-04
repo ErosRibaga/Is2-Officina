@@ -43,7 +43,7 @@ const { isAdmin } = require('./permissions');
  *      '404':
  *        description: Customer not found
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', isAdmin(true), async (req, res) => {
   let customer = await Customer.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     surname: req.body.surname,
@@ -98,7 +98,7 @@ router.get('/', isAdmin(true), async (req, res) => {
  *      '404':
  *        description: Customer not found
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', isAdmin(true), async (req, res) => {
   let customer = await Customer.findById(req.params.id);
   res.status(200).json({
     self: '/api/v1/customers/' + customer.id,
@@ -140,7 +140,7 @@ router.get('/:id', async (req, res) => {
  *     '201':
  *        description: Customer successfully inserted
  */
-router.post('', async (req, res, next) => {
+router.post('', isAdmin(true), async (req, res, next) => {
   let customer = new Customer({
     name: req.body.name,
     surname: req.body.surname,
@@ -183,7 +183,7 @@ router.post('', async (req, res, next) => {
  *      '404':
  *        description: Customer not found
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAdmin(true), async (req, res) => {
   let customer = await Customer.findById(req.params.id).exec();
   if (!customer) {
     res.status(404).send();
