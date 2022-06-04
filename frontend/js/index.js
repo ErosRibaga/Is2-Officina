@@ -49,3 +49,10 @@ function createSideBar(activeId) {
   $('.sidebar').html(sidebar);
   $(activeId).addClass('active');
 }
+
+
+$(document).ready(function () {
+  if(!cookieToken && window.location.pathname != '/frontend/login.html')
+    redirect('/frontend/login.html');
+});
+
