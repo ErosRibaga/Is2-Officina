@@ -41,6 +41,7 @@ describe('GET /api/v1/users', () => {
       name: 'Dario',
       surname: 'Maghi',
       email: 'dario.maghi@gmail.it',
+      password: 'password',
       admin: true,
     });
 
@@ -63,6 +64,7 @@ describe('GET /api/v1/users', () => {
           name: 'Dario',
           surname: 'Maghi',
           email: 'dario.maghi@gmail.it',
+          password: 'password',
           admin: true,
         },
       ]);
@@ -78,6 +80,7 @@ describe('GET /api/v1/users', () => {
         name: 'Dario',
         surname: 'Maghi',
         email: 'dario.maghi@gmail.it',
+        password: 'password',
         admin: true,
       });
   });
@@ -132,21 +135,31 @@ describe('POST /api/v1/users', () => {
     await request(app)
       .post('/api/v1/users')
       .set('x-access-token', adminToken)
-      .send({ name: 'name1', surname: 'surname1', email: 'name1.sur1@gmail.com', admin: true });
+      .send({ name: 'name1', surname: 'surname1', email: 'name1.sur1@gmail.com', password:'password1', admin: true });
     return request(app)
       .post('/api/v1/users')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
-      .send({ name: 'name2', surname: 'surname2', email: 'name1.sur1@gmail.com', admin: false })
-      .expect(409, { error: 'Email duplicate' });
+      .send({ name: 'name2', surname: 'surname2', email: 'name1.sur1@gmail.com', password:'password2', admin: false })
+      .expect(409, { error: 'email already exists' });
   });
+
+  test('POST /api/v1/users with password not specified', () => {
+    return request(app)
+      .post('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .set('Accept', 'application/json')
+      .send({ name: 'name', surname: 'surname', email: 'name2.sur2@gmail.com', })
+      .expect(400, { error: 'Some fields are empty or undefined' });
+  });
+
 
   test('POST /api/v1/users with role not specified', () => {
     return request(app)
       .post('/api/v1/users')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
-      .send({ name: 'name', surname: 'surname', email: 'name3.sur3@gmail.com' })
+      .send({ name: 'name', surname: 'surname', email: 'name3.sur3@gmail.com', password: 'password', })
       .expect(201);
   });
 
@@ -155,7 +168,7 @@ describe('POST /api/v1/users', () => {
       .post('/api/v1/users')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
-      .send({ name: 'name', surname: 'surname', email: 'name4.sur4@gmail.com', admin: true })
+      .send({ name: 'name', surname: 'surname', email: 'name4.sur4@gmail.com', password: 'password', admin: true })
       .expect(201);
   });
 });

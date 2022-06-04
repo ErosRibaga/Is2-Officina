@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
 const Operation = require('./models/operation');
+const { isAdmin } = require('./permissions');
 
 /**
  * @swagger
@@ -13,7 +14,7 @@ const Operation = require('./models/operation');
  *      '200':
  *        description: A successful response
  */
-router.get('/', async (req, res) => {
+router.get('/', isAdmin(true), async (req, res) => {
   let users = await User.find({});
 
   users = users.map((user) => {
@@ -29,7 +30,7 @@ router.get('/', async (req, res) => {
   res.status(200).json(users);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findById(req.params.id);
 
   if (!user) {
@@ -91,7 +92,7 @@ router.get('/:id', async (req, res) => {
  *        description: User successfully inserted
  */
 
-router.post('', async (req, res) => {
+router.post('', isAdmin(true), async (req, res) => {
   let user = new User({
     name: req.body.name,
     surname: req.body.surname,
@@ -100,17 +101,26 @@ router.post('', async (req, res) => {
     admin: req.body.admin,
   });
 
-  user = await user.save();
+  try {
+    await user.save();
 
-  let userId = user.id;
-
-  res
-    .location('/api/v1/users/' + userId)
-    .status(201)
-    .send();
+    res
+      .location('/api/v1/users/' + user.id)
+      .status(201)
+      .send();
+  } catch (err) {
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: 'email already exists' });
+    }
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     surname: req.body.surname,
@@ -125,7 +135,7 @@ router.put('/:id', async (req, res) => {
     .send();
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
   if (!user) {
@@ -137,9 +147,11 @@ router.delete('/:id', async (req, res) => {
   //Check if the user is associated with any operations, in that case it cannot be deleted
   let operations = await Operation.find({ employee: user._id });
 
-  if(operations.length != 0) {
+  if (operations.length != 0) {
     res.status(403).send();
-    console.log('Cannot delete the user, it has some operations associated to it');
+    console.log(
+      'Cannot delete the user, it has some operations associated to it'
+    );
     return;
   }
 
