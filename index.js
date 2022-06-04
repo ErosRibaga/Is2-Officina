@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const app = require('./app.js');
+const app = require('./app/app.js');
 
-const port = 8080;
-
+const port = process.env.PORT || 8080
 
 //connection to the mongodb server
 //start the server on the port 8080
 mongoose
   .connect(
-    'mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority'
+    process.env.DB_URL
   )
   .then(() => {
     console.log('Connesso al db');
