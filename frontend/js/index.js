@@ -39,7 +39,7 @@ function createSideBar(activeId) {
 
   if (isAdmin === 'true') {
     sidebar += `
-    <a id="sideCostumers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
+    <a id="sideCustomers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
     <a id="sideCars" href="/frontend/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
     <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   }
