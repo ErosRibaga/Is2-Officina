@@ -8,7 +8,7 @@ const port = process.env.PORT || 8080
 //start the server on the port 8080
 mongoose
   .connect(
-    'mongodb+srv://db_prova1:admin@cluster0.ijsod.mongodb.net/officina?retryWrites=true&w=majority'
+    process.env.DB_URL
   )
   .then(() => {
     console.log('Connesso al db');

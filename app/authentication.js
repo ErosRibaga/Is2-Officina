@@ -38,8 +38,8 @@ router.post('', async function(req, res) {
 		expiresIn: 86400 // expires in 24 hours
 	}
 
-    //process.env.SUPER_SECRET (is2laboratory2017) --> token che serve per la criptazione e decriptazione
-	var token = jwt.sign(payload, "is2laboratory2017", options);
+    //process.env.SUPER_SECRET (process.env.SUPER_SECRET) --> token che serve per la criptazione e decriptazione
+	var token = jwt.sign(payload, "process.env.SUPER_SECRET", options);
 
 	res.json({
 		success: true,

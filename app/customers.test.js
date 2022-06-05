@@ -12,7 +12,7 @@ const adminToken = jwt.sign(
     id: 'id',
     admin: true,
   },
-  'is2laboratory2017',
+  'process.env.SUPER_SECRET',
   { expiresIn: 86400 }
 );
 
@@ -23,7 +23,7 @@ const userToken = jwt.sign(
     id: 'id',
     admin: false,
   },
-  'is2laboratory2017',
+  'process.env.SUPER_SECRET',
   { expiresIn: 86400 }
 );
 

@@ -14,7 +14,7 @@ const tokenChecker = function (req, res, next) {
   }
 
   // decode token, verifies secret and checks exp
-  jwt.verify(token, 'is2laboratory2017', function (err, decoded) {
+  jwt.verify(token, 'process.env.SUPER_SECRET', function (err, decoded) {
     if (err) {
       return res.status(403).send({
         success: false,
