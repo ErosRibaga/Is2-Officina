@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
 const Operation = require('./models/operation');
+const Car = require('./models/car');
 const { isAdmin } = require('./permissions');
 
 /**

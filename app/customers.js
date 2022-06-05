@@ -108,6 +108,17 @@ router.get('/:id', isAdmin(true), async (req, res) => {
   });
 });
 
+//get all the cars of an user
+router.get('/:id/cars', isAdmin(true), async (req, res) => {
+  try {
+      const cars = await Car.find({ owner: req.params.id })
+      return res.status(200).json(cars)
+  } catch (err) {
+      console.log(err)
+      return res.status(404).send({ message: 'User not found' })
+  }
+});
+
 /**
  * @swagger
  * /customers:
