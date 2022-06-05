@@ -40,6 +40,14 @@ function changeLocation() {
   }
 }
 
+function seeCars() {
+  if (selecteditemid != -1) {
+    window.location.href = '/frontend/customer-cars.html?id=' + selecteditemid;
+  } else {
+    alert('No customer selected');
+  }
+}
+
 var selecteditemid = -1;
 
 $(document).ready(function () {
@@ -78,6 +86,8 @@ $(document).ready(function () {
   };
 
   document.getElementById('modClient').onclick = changeLocation;
+
+  $('#userCars').click(seeCars);
 
   loadCustomers();
 });

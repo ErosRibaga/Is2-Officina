@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('./models/user');
 const Operation = require('./models/operation');
+const Car = require('./models/car');
 const { isAdmin } = require('./permissions');
 
 /**
@@ -47,6 +48,17 @@ router.get('/:id', isAdmin(true), async (req, res) => {
     admin: user.admin,
   });
 });
+
+//get all the cars of an user
+router.get('/:id/cars', isAdmin(true), async (req, res) => {
+  try {
+      const cars = await Car.find({ owner: req.params.id })
+      return res.status(200).json(cars)
+  } catch (err) {
+      console.log(err)
+      return res.status(404).send({ message: 'User not found' })
+  }
+})
 
 /**
  * @swagger
