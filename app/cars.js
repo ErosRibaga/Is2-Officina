@@ -3,6 +3,7 @@ const router = express.Router();
 const Car = require('./models/car');
 const Operation = require('./models/operation');
 const mongoose = require('mongoose');
+const { isAdmin } = require('./permissions');
 
 
 /**
@@ -54,7 +55,7 @@ const mongoose = require('mongoose');
  *      '404':
  *        description: Customer not found
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', isAdmin(true), async (req, res) => {
   let car = await Car.findByIdAndUpdate(req.params.id, {
     brand: req.body.brand,
     model: req.body.model,
@@ -62,6 +63,12 @@ router.put('/:id', async (req, res) => {
     description: req.body.description,
     owner: mongoose.Types.ObjectId(req.body.owner),
   });
+
+  if(req.body.owner == undefined || req.body.brand == "" || req.body.model == "" || req.body.plate == "" || req.body.description == ""){
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 
   res
     .location('/api/v1/cars/' + req.params.id)
@@ -113,7 +120,7 @@ router.put('/:id', async (req, res) => {
  *      '201':
  *        description: Customer successfully inserted
  */
-router.post('', async (req, res) => {
+router.post('', isAdmin(true), async (req, res) => {
   let car = new Car({
     brand: req.body.brand,
     model: req.body.model,
@@ -122,7 +129,13 @@ router.post('', async (req, res) => {
     owner: mongoose.Types.ObjectId(req.body.owner),
   });
 
-  try{
+  if(req.body.owner == undefined){
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
+
+  try {
     await car.save();
 
     return res
@@ -155,7 +168,7 @@ router.post('', async (req, res) => {
  *      '404':
  *        description: Car not found
  */
-router.get('/', async (req, res) => {
+router.get('/', isAdmin(true), async (req, res) => {
   let cars = await Car.find({}).populate('owner');
 
   cars = cars.map((car) => {
@@ -188,7 +201,7 @@ router.get('/', async (req, res) => {
  *      '404':
  *        description: Car not found
  */
-router.get('/:id', async (req, res) => {
+router.get('/:id', isAdmin(true), async (req, res) => {
   let car = await Car.findById(req.params.id).populate('owner');
   res.status(200).json({
     self: '/api/v1/car/' + car.id,
@@ -218,7 +231,7 @@ router.get('/:id', async (req, res) => {
  *      '404':
  *        description: Car not found
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAdmin(true), async (req, res) => {
   let car = await Car.findById(req.params.id).exec();
 
   if (!car) {

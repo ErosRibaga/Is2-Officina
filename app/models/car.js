@@ -19,7 +19,12 @@ const carSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  owner: {type: mongoose.Schema.Types.ObjectId, ref: 'customers', required: true},
+  owner: {
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true,
+    ref: 'customers', 
+    default: undefined
+    },
 });
 
 

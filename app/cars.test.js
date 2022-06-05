@@ -178,7 +178,7 @@ describe('POST /api/v1/cars', () => {
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000AA', description: 'testdescription', owner: customerId })
-            .expect(409, { error: 'email already exists' });
+            .expect(409, { error: 'Plate already exists' });
     });
 
     test('POST /api/v1/cars with description not specified', () => {
@@ -186,7 +186,7 @@ describe('POST /api/v1/cars', () => {
             .post('/api/v1/cars')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
-            .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000AA', owner: customerId })
+            .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000CC', owner: customerId })
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
@@ -196,7 +196,7 @@ describe('POST /api/v1/cars', () => {
             .post('/api/v1/cars')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
-            .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000AA', description: 'testdescription' })
+            .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000BB', description: 'testdescription' })
             .expect(400);
     });
 
@@ -205,7 +205,7 @@ describe('POST /api/v1/cars', () => {
             .post('/api/v1/cars')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
-            .send({ brand: 'testbrand', model: 'testmodel', plate: 'AA000AA', description: 'testdescription', owner: customerId })
+            .send({ brand: 'testbrand', model: 'testmodel', plate: 'ZZ999ZZ', description: 'testdescription', owner: customerId })
             .expect(201);
     });
 });
