@@ -1,5 +1,5 @@
 function loadCars() {
-  fetch('http://localhost:8080/api/v1/users/' + getID() + '/cars', {
+  fetch('http://localhost:8080/api/v1/customers/' + getID() + '/cars', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -36,6 +36,52 @@ function loadCars() {
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
+
+function changeLocation() {
+  if (selecteditemid != undefined) {
+    window.location.href = '/frontend/add-car.html?id=' + selecteditemid;
+  } else {
+    alert('Prima seleziona un cliente');
+  }
+}
+
+function deleteCar() {
+  if (selecteditemid != undefined) {
+    fetch('http://localhost:8080/api/v1/cars/' + selecteditemid, {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': cookieToken,
+      },
+    })
+      .then((res) => {
+        //if response status code == 403
+        if (res.status == 403) {
+          $('#message').text(
+            "Impossibile eliminare l'utente, operazioni trovate"
+          );
+        } else {
+          location.reload();
+          console.log('Request complete! response:', res);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    selecteditemid = -1;
+  } else {
+    alert('Prima seleziona un cliente');
+  }
+}
+
+$(document).on('click', '.clickable', function () {
+  var elem = $(this);
+
+  $('.selected').removeClass('selected');
+  elem.addClass('selected');
+
+  var splitted = elem.html().split('<');
+  selecteditemid = splitted[2].substring(splitted[2].indexOf('>') + 1);
+});
 
 $(document).ready(function () {
   loadCars();
