@@ -44,7 +44,7 @@ describe('GET /api/v1/operations', () => {
             name: "user1",
             surname: "user1",
             password: "pssw",
-            email: "email",
+            email: "email1",
             admin: false
         });
 
@@ -139,7 +139,7 @@ describe('GET /api/v1/operations', () => {
                         name: "user1",
                         surname: "user1",
                         password: "pssw",
-                        email: "email",
+                        email: "email1",
                         admin: false,
                         __v: 0
                     },
@@ -232,7 +232,7 @@ describe('GET /api/v1/operations', () => {
                     name: "user1",
                     surname: "user1",
                     password: "pssw",
-                    email: "email",
+                    email: "email1",
                     admin: false,
                     __v: 0
                 },
@@ -368,6 +368,7 @@ describe('POST /api/v1/operations', () => {
     });
 });
 
+
 describe('PUT /api/v1/operations', () => {
     beforeAll(async () => {
         // This will create an new instance of "MongoMemoryServer" and automatically start it
@@ -377,7 +378,7 @@ describe('PUT /api/v1/operations', () => {
             name: "user1",
             surname: "user1",
             password: "pssw",
-            email: "email",
+            email: "email.com",
             admin: false
         });
 
@@ -388,7 +389,7 @@ describe('PUT /api/v1/operations', () => {
             name: "user1",
             surname: "user1",
             password: "pssw",
-            email: "email",
+            email: "email.it",
             admin: false
         });
 
@@ -397,7 +398,7 @@ describe('PUT /api/v1/operations', () => {
 
         userToken = jwt.sign(
             {
-                email: 'email',
+                email: 'email.it',
                 id: '' + userId2,
                 admin: false,
             },
@@ -408,7 +409,7 @@ describe('PUT /api/v1/operations', () => {
         var customer = new Customer({
             name: "customer1",
             surname: "customer1",
-            phone: "123456789",
+            phone: "123465777",
         });
 
         customerId = await customer.save();
@@ -418,7 +419,7 @@ describe('PUT /api/v1/operations', () => {
         var car = new Car({
             brand: "brand",
             model: "model",
-            plate: "AA000AA",
+            plate: "AA000BB",
             description: "testdescription",
             owner: customerId
         });
@@ -505,7 +506,7 @@ describe('PUT /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('PUT /api/v1/operations/:id with startDate not specified', async () => {
+    test('PUT /api/v1/operations/:id with startDate higher than endDate', async () => {
         return request(app)
             .put('/api/v1/operations/' + operationId)
             .set('x-access-token', adminToken)
@@ -513,28 +514,12 @@ describe('PUT /api/v1/operations', () => {
             .send({
                 title: "title",
                 description: "description",
-                startDate: new Date(),
-                endDate: new Date('1995-12-17T05:24:00'),
+                startDate: new Date('1995-12-17T05:24:00'),
+                endDate: new Date('1995-12-17T03:24:00'),
                 employee: userId2,
                 car: carId,
             })
-            .expect(400, { error: 'Some fields are empty or undefined' });
-    });
-
-    test('PUT /api/v1/operations/:id with endDate not specified', async () => {
-        return request(app)
-            .put('/api/v1/operations/' + operationId)
-            .set('x-access-token', adminToken)
-            .set('Accept', 'application/json')
-            .send({
-                title: "title",
-                description: "description",
-                startDate: new Date('1995-12-17T03:24:00'),
-                endDate: new Date(),
-                employee: userId2,
-                car: carId,
-            })
-            .expect(400, { error: 'Some fields are empty or undefined' });
+            .expect(400, { error: 'Start date must be before end date' });
     });
 
     test('PUT /api/v1/operations/:id with employee Id not specified', async () => {

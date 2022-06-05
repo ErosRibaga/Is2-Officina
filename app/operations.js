@@ -92,7 +92,6 @@ router.delete('/:id', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
 
-
   let operation = await Operation.findByIdAndUpdate(req.params.id, {
     title: req.body.title,
     description: req.body.description,
@@ -101,6 +100,17 @@ router.put('/:id', async (req, res) => {
     employee: mongoose.Types.ObjectId(req.body.employee),
     car: mongoose.Types.ObjectId(req.body.car),
   });
+
+  if (req.body.employee == undefined || req.body.car == undefined || req.body.title == "" || req.body.description == "") {
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
+
+  if(req.body.startDate > req.body.endDate){
+    res.status(400).json({ error: 'Start date must be before end date' });
+    return;
+  }
 
   res
     .location('/api/v1/operations/' + req.params.id)
@@ -127,7 +137,6 @@ router.put('/:id', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   let operation = await Operation.findById(req.params.id).populate('employee').populate('car');
-  console.log(operation.employee)
 
   if (canViewOperation(req.loggedUser, operation)) {
     res.status(200).json({
@@ -165,7 +174,6 @@ router.get('/:id', async (req, res) => {
  *        description: Operation successfully inserted
  */
 router.post('', async (req, res) => {
-  console.log(req.body.car);
   let operation = new Operation({
     title: req.body.title,
     description: req.body.description,
@@ -175,14 +183,25 @@ router.post('', async (req, res) => {
     car: mongoose.Types.ObjectId(req.body.car),
   });
 
-  operation = await operation.save();
+  if (req.body.employee == undefined || req.body.car == undefined) {
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 
-  let operationId = operation.id;
+  try {
+    await operation.save();
 
-  res
-    .location('/api/v1/operations/' + operationId)
-    .status(201)
-    .send();
+    return res
+      .location('/api/v1/operations/' + operation.id)
+      .status(201)
+      .send();
+  }
+  catch (err) {
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 });
 
 //export the router to use it in the index.js
