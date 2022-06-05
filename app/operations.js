@@ -189,6 +189,11 @@ router.post('', async (req, res) => {
       .json({ error: 'Some fields are empty or undefined' });
   }
 
+  if(req.body.startDate > req.body.endDate){
+    res.status(400).json({ error: 'Start date must be before end date' });
+    return;
+  }
+
   try {
     await operation.save();
 
