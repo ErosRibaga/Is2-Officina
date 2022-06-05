@@ -8,8 +8,9 @@ const { isAdmin } = require('./permissions');
 
 /**
  * @swagger
- * /car/{id}:
+ * /cars/{id}:
  *  put:
+ *    tags: [cars]
  *    description: Use to update a car's data.
  *    parameters:
  *      - in: path
@@ -37,25 +38,27 @@ const { isAdmin } = require('./permissions');
  *              type: string
  *              description: The car's model.
  *              example: XC70
- *             plate:
+ *            plate:
  *              type: string
  *              description: The car's plate.
- *              example: BD215CZ
- *             description:
+ *              example: AA000AA
+ *            description:
  *              type: string
  *              description: The car's description.
- *              example: Damaged, Black
- *             owner:
- *              type: string
+ *              example: black, damaged
+ *            owner:
+ *              type: object
  *              description: The car's owner.
- *              example: Luca
+ *              example: {}
  *    responses:
  *      '204':
- *        description: Customer successfully updated
+ *        description: Car successfully updated
+ *      '400':
+ *        description: Some fields are empty or undefined
  *      '404':
- *        description: Customer not found
+ *        description: Car not found
  */
-router.put('/:id', isAdmin(true), async (req, res) => {
+ router.put('/:id', isAdmin(true), async (req, res) => {
   let car = await Car.findByIdAndUpdate(req.params.id, {
     brand: req.body.brand,
     model: req.body.model,
@@ -78,49 +81,52 @@ router.put('/:id', isAdmin(true), async (req, res) => {
 
 /**
  * @swagger
- * /customers:
+ * /cars:
  *  post:
- *    tags: [cars]
- *    description: Use to insert a new car.
- *    parameters:
- *      - in: body
- *        name: body
- *        description: The car to create
- *        schema:
- *          type: object
- *          required:
- *            - 'brand'
- *            - 'model'
- *            - 'plate'
- *            - 'description'
- *            - 'owner'
- *          properties:
- *            brand:
- *              type: string
- *              description: The car's brand.
- *              example: Volvo
- *            model:
- *              type: string
- *              description: The car's model.
- *              example: XC70
- *             plate:
- *              type: string
- *              description: The car's plate.
- *              example: BD215CZ
- *             description:
- *              type: string
- *              description: The car's description.
- *              example: Damaged, Black
- *             owner:
- *              type: string
- *              description: The car's owner.
- *              example: Luca
- *
- *    responses:
- *      '201':
- *        description: Customer successfully inserted
+ *   tags: [cars]
+ *   description: Use to insert a new car.
+ *   parameters:
+ *     - in: body
+ *       name: body
+ *       description: The car to insert
+ *       schema:
+ *         type: object
+ *         required:
+ *           - 'brand'
+ *           - 'model'
+ *           - 'plate'
+ *           - 'description'
+ *           - 'owner'
+ *         properties:
+ *           brand:
+ *             type: string
+ *             description: The car's brand.
+ *             example: Volvo
+ *           model:
+ *             type: string
+ *             description: The car's model.
+ *             example: XC70
+ *           plate:
+ *             type: string
+ *             description: The car's plate.
+ *             example: AA000AA
+ *           description:
+ *             type: string
+ *             description: The car's description.
+ *             example: black, damaged
+ *           owner:
+ *             type: object
+ *             description: The car's owner.
+ *             example: {}
+ *   responses:
+ *     '204':
+ *       description: Car successfully inserted
+ *     '400':
+ *       description: Some fields are empty or undefined
+ *     '409':
+ *       description: Plate already exists
  */
-router.post('', isAdmin(true), async (req, res) => {
+ router.post('', isAdmin(true), async (req, res) => {
   let car = new Car({
     brand: req.body.brand,
     model: req.body.model,
@@ -161,12 +167,11 @@ router.post('', isAdmin(true), async (req, res) => {
  * @swagger
  * /cars:
  *  get:
+ *    tags: [cars]
  *    description: Use to request all cars
  *    responses:
  *      '200':
  *        description: A successful response
- *      '404':
- *        description: Car not found
  */
 router.get('/', isAdmin(true), async (req, res) => {
   let cars = await Car.find({}).populate('owner');
@@ -188,6 +193,7 @@ router.get('/', isAdmin(true), async (req, res) => {
  * @swagger
  * /cars/{id}:
  *  get:
+ *    tags: [cars]
  *    description: Use to get a car by its id
  *    parameters:
  *      - in: path
@@ -218,6 +224,7 @@ router.get('/:id', isAdmin(true), async (req, res) => {
  * @swagger
  * /cars/{id}:
  *  delete:
+ *    tags: [cars]
  *    description: Use to delete a car
  *    parameters:
  *      - in: path
@@ -228,6 +235,8 @@ router.get('/:id', isAdmin(true), async (req, res) => {
  *    responses:
  *      '204':
  *        description: Car successfully removed
+ *      '403':
+ *        description: Cannot delete the car, it has some operations associated to it
  *      '404':
  *        description: Car not found
  */

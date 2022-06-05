@@ -8,6 +8,7 @@ const { isAdmin } = require('./permissions');
  * @swagger
  * /customer/{id}:
  *  put:
+ *    tags: [customers]
  *    description: Use to update a customer data.
  *    parameters:
  *      - in: path
@@ -40,6 +41,8 @@ const { isAdmin } = require('./permissions');
  *    responses:
  *      '204':
  *        description: Customer successfully updated
+ *      '409':
+ *        description: Phone number already exists
  *      '404':
  *        description: Customer not found
  */
@@ -50,22 +53,34 @@ router.put('/:id', isAdmin(true), async (req, res) => {
     phone: req.body.phone,
   });
 
-  res
-    .location('/api/v1/customers/' + req.params.id)
-    .status(204)
-    .send();
+  try {
+    await customer.save();
+
+    return res
+      .location('/api/v1/customers/' + customer.id)
+      .status(201)
+      .send();
+  } catch (err) {
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: 'Phone already exists' });
+    }
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
 });
 
 /**
  * @swagger
  * /customers:
  *  get:
+ *    tags: [customers]
  *    description: Use to request all customers
  *    responses:
  *      '200':
  *        description: A successful response
- *      '404':
- *        description: Customer not found
  */
 router.get('/', isAdmin(true), async (req, res) => {
   let customers = await Customer.find({});
@@ -85,6 +100,7 @@ router.get('/', isAdmin(true), async (req, res) => {
  * @swagger
  * /customers/{id}:
  *  get:
+ *    tags: [customers]
  *    description: Use to get a customer by its id
  *    parameters:
  *      - in: path
@@ -94,7 +110,7 @@ router.get('/', isAdmin(true), async (req, res) => {
  *        type: string
  *    responses:
  *      '200':
- *        description: Customer successfully removed
+ *        description: Customer successfully retrieved
  *      '404':
  *        description: Customer not found
  */
@@ -108,7 +124,24 @@ router.get('/:id', isAdmin(true), async (req, res) => {
   });
 });
 
-//get all the cars of an user
+/**
+ * @swagger
+ * /customers/{id}/cars:
+ *  get:
+ *    tags: [customers]
+ *    description: Use to get a the car associated to a customer
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The customer's id
+ *        type: string
+ *    responses:
+ *      '200':
+ *        description: Customer's cars successfully retrieved
+ *      '404':
+ *        description: Customer not found
+ */
 router.get('/:id/cars', isAdmin(true), async (req, res) => {
   try {
       const cars = await Car.find({ owner: req.params.id })
@@ -123,6 +156,7 @@ router.get('/:id/cars', isAdmin(true), async (req, res) => {
  * @swagger
  * /customers:
  *  post:
+ *   tags: [customers]
  *   description: Use to insert a new customer.
  *   parameters:
  *     - in: body
@@ -150,6 +184,10 @@ router.get('/:id/cars', isAdmin(true), async (req, res) => {
  *   responses:
  *     '201':
  *        description: Customer successfully inserted
+ *     '400':
+ *        description: Some fields are empty or undefined
+ *     '409':
+ *        description: Phone already exists
  */
 router.post('', isAdmin(true), async (req, res, next) => {
   let customer = new Customer({
@@ -181,6 +219,7 @@ router.post('', isAdmin(true), async (req, res, next) => {
  * @swagger
  * /customers/{id}:
  *  delete:
+ *    tags: [customers]
  *    description: Use to delete a customer
  *    parameters:
  *      - in: path

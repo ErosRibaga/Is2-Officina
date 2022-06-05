@@ -31,6 +31,25 @@ router.get('/', isAdmin(true), async (req, res) => {
   res.status(200).json(users);
 });
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *    tags: [users]
+ *    description: Use to get an user by its id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The user's id
+ *        type: string
+ *    responses:
+ *      '200':
+ *        description: User successfully retrieved
+ *      '404':
+ *        description: User not found
+ */
 router.get('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findById(req.params.id);
 
@@ -79,7 +98,7 @@ router.get('/:id', isAdmin(true), async (req, res) => {
  *            password:
  *              type: string
  *              description: The user's password.
- *              example: Cav0C4r0t3!!
+ *              example: PasswordSuperSegreta
  *            mail:
  *              type: string
  *              description: The user's mail.
@@ -91,6 +110,10 @@ router.get('/:id', isAdmin(true), async (req, res) => {
  *    responses:
  *      '201':
  *        description: User successfully inserted
+ *      '400':
+ *        description: Email already exists
+ *      '409':
+ *        description: Some fields are empty or undefined
  */
 
 router.post('', isAdmin(true), async (req, res) => {
@@ -121,6 +144,60 @@ router.post('', isAdmin(true), async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/{id}:
+ *  put:
+ *    tags: [users]
+ *    description: Use to update an user.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The user's id
+ *        type: string
+ *      - in: body
+ *        name: body
+ *        description: The user to update
+ *        schema:
+ *          type: object
+ *          required:
+ *            - 'name'
+ *            - 'surname'
+ *            - 'password'
+ *            - 'email'
+ *            - 'admin'
+ *          properties:
+ *            name:
+ *              type: string
+ *              description: The user's name.
+ *              example: Paolo
+ *            surname:
+ *              type: string
+ *              description: The user's surname.
+ *              example: Franceschi
+ *            password:
+ *              type: string
+ *              description: The user's password.
+ *              example: PasswordSuperSegreta
+ *            email:
+ *              type: string
+ *              description: The user's email.
+ *              example: paolofranceschi@email.com
+ *            admin:
+ *              type: boolean
+ *              description: If true the user is an admin, if false, the user is not.
+ *              example: true
+ *    responses:
+ *      '204':
+ *        description: User successfully updated
+ *      '400':
+ *        description: Some fields are empty or undefined
+ *      '409':
+ *        description: Email already exists
+ *      '404':
+ *        description: User not found
+ */
 router.put('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
@@ -130,12 +207,47 @@ router.put('/:id', isAdmin(true), async (req, res) => {
     admin: req.body.admin,
   });
 
-  res
-    .location('/api/v1/users/' + req.params.id)
-    .status(204)
-    .send();
+  try {
+    await user.save();
+
+    res
+      .location('/api/v1/users/' + user.id)
+      .status(201)
+      .send();
+  } catch (err) {
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: 'email already exists' });
+    }
+    return res
+      .status(400)
+      .json({ error: 'Some fields are empty or undefined' });
+  }
+
 });
 
+
+/**
+ * @swagger
+ * /users/{id}:
+ *  delete:
+ *    tags: [users]
+ *    description: Use to delete an user
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The user's id
+ *        type: string
+ *    responses:
+ *      '204':
+ *        description: User successfully removed
+ *      '403':
+ *        description: Cannot delete the user, it has some operations associated to it
+ *      '404':
+ *        description: User not found
+ */
 router.delete('/:id', isAdmin(true), async (req, res) => {
   let user = await User.findById(req.params.id).exec();
 
