@@ -2,11 +2,24 @@ const mongoose = require('mongoose');
 
 //Define the schema
 const carSchema = new mongoose.Schema({
-  brand: String,
-  model: String,
-  plate: String,
-  description: String,
-  owner: {type: mongoose.Schema.Types.ObjectId, ref: 'customers'}
+  brand: {
+    type: String,
+    required: true,
+  },
+  model: {
+    type: String,
+    required: true,
+  },
+  plate: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  owner: {type: mongoose.Schema.Types.ObjectId, ref: 'customers', required: true},
 });
 
 
