@@ -15,7 +15,7 @@ const adminToken = jwt.sign(
         id: 'id',
         admin: true,
     },
-    'is2laboratory2017',
+    process.env.SUPER_SECRET,
     { expiresIn: 86400 }
 );
 
@@ -68,7 +68,7 @@ describe('GET /api/v1/operations', () => {
                 id: '' + userId2,
                 admin: false,
             },
-            'is2laboratory2017',
+            process.env.SUPER_SECRET,
             { expiresIn: 86400 }
         );
 
@@ -402,7 +402,7 @@ describe('PUT /api/v1/operations', () => {
                 id: '' + userId2,
                 admin: false,
             },
-            'is2laboratory2017',
+            process.env.SUPER_SECRET,
             { expiresIn: 86400 }
         );
 

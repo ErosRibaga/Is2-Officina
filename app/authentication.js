@@ -39,7 +39,7 @@ router.post('', async function(req, res) {
 	}
 
     //process.env.SUPER_SECRET (process.env.SUPER_SECRET) --> token che serve per la criptazione e decriptazione
-	var token = jwt.sign(payload, "process.env.SUPER_SECRET", options);
+	var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 
 	res.json({
 		success: true,
