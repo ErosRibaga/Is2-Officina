@@ -1,10 +1,22 @@
 var calendar;
+var calendarEl;
 
 //Setup calendar
 document.addEventListener('DOMContentLoaded', function () {
-  var calendarEl = document.getElementById('calendar');
+  calendarEl = document.getElementById('calendar');
 
-  calendar = new FullCalendar.Calendar(calendarEl, {
+  if(calendarEl == null) {
+    calendarEl = document.getElementById('userCalendar');
+    calendar = userCalendar();
+  } else {
+    calendar = calendar();
+  }
+
+  calendar.render();
+});
+
+function calendar() {
+  var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     initialDate: new Date(),
     displayEventTime: false,
@@ -37,6 +49,23 @@ document.addEventListener('DOMContentLoaded', function () {
     },
   });
 
-  calendar.render();
-});
+  return calendar;
+}
 
+function userCalendar() {
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    initialDate: new Date(),
+    displayEventTime: false,
+    firstDay: 1, //set monday as the first day of the week
+    height: 650,
+    selectable: true,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear',
+    },
+  });
+
+  return calendar;
+}

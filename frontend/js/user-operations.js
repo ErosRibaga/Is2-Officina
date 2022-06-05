@@ -3,7 +3,7 @@ function loadOperations() {
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
 
-  fetch('http://localhost:8080/api/v1/operations/', {
+  fetch('http://localhost:8080/api/v1/users/' + getID() + '/operations' , {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -30,13 +30,6 @@ function loadOperations() {
 
 //Open the form to create a new operation
 function openForm(start, end) {
-
-  //Clean the form
-  $('#title').html('');
-  $('#description').html('');
-  $('#cars').html('');
-  $('#employees').html('');
-
   //Add one day to the selected date, because the calendar selection set the start the day before the selected one
   start = new Date(start);
   start.setDate(start.getDate() + 1);
@@ -49,11 +42,10 @@ function openForm(start, end) {
   fetch('http://localhost:8080/api/v1/cars/', {
     headers: {
       'x-access-token': cookieToken,
-    },
+    }
   })
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
-
       return data.map((car) => {
         //get car id
         var id = car.self.substring(car.self.lastIndexOf('/') + 1);
@@ -74,13 +66,13 @@ function openForm(start, end) {
   //Populate employyes select box
   fetch('http://localhost:8080/api/v1/users/', {
     headers: {
-      'x-access-token': cookieToken,
-    },
+      'x-access-token': cookieToken
+    }
   })
     .then((resp) => resp.json()) // Transform the data into json
     .then((data) => {
-
       return data.map((user) => {
+
         //get user id
         var id = user.self.substring(user.self.lastIndexOf('/') + 1);
 

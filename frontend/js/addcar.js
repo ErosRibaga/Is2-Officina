@@ -54,7 +54,7 @@ function insertCar() {
   }
 }
 
-function populateSelectOwner(ownerId) {
+function populateSelectOwner(owner) {
   //Populate owner select box
   fetch('http://localhost:8080/api/v1/customers/', {
     headers: {
@@ -65,8 +65,9 @@ function populateSelectOwner(ownerId) {
     .then((customers) => {
       return customers.map((customer) => {
         var id = customer.self.substring(customer.self.lastIndexOf('/') + 1);
+        console.log(owner)
 
-        if (id == ownerId)
+        if (id == owner._id)
           $('#selectOwner').append(
             '<option selected="selected" value="' +
               id +

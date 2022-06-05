@@ -50,6 +50,14 @@ function changeLocation() {
   }
 }
 
+function seeOperations() {
+  if (selecteditemid != -1) {
+    window.location.href = '/frontend/user-operations.html?id=' + selecteditemid;
+  } else {
+    alert('No user selected');
+  }
+}
+
 function deleteUser() {
   if (selecteditemid != undefined) {
     fetch('http://localhost:8080/api/v1/users/' + selecteditemid, {
@@ -88,4 +96,6 @@ $(document).on('click', '.clickable', function () {
 
 $(document).ready(function () {
   loadUsers();
+
+  $('#userOperations').click(seeOperations);
 });
