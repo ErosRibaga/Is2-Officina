@@ -41,6 +41,7 @@ describe('POST /api/v2/authentication/login', () => {
   });
 
   afterAll(async () => {
+    await mongod.stop();
     await mongoose.connection.close();
   });
 
