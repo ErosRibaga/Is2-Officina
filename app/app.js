@@ -70,7 +70,7 @@ app.use(express.json());
 /**
  * Authentication routing and middleware
  */
-app.use('/api/v1/authentications', authentication);
+app.use('/api/v1/login', authentication);
 
 // Protect booklendings endpoint
 // access is restricted only to authenticated users
