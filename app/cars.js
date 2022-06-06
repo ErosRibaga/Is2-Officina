@@ -59,24 +59,38 @@ const { isAdmin } = require('./permissions');
  *        description: Car not found
  */
  router.put('/:id', isAdmin(true), async (req, res) => {
-  let car = await Car.findByIdAndUpdate(req.params.id, {
-    brand: req.body.brand,
-    model: req.body.model,
-    plate: req.body.plate,
-    description: req.body.description,
-    owner: mongoose.Types.ObjectId(req.body.owner),
-  });
+  try {
+    if(req.body.owner == undefined || req.body.brand == "" || req.body.model == "" || req.body.plate == "" || req.body.description == ""){
+      return res
+        .status(400)
+        .json({ error: 'Some fields are empty or undefined' });
+    }
 
-  if(req.body.owner == undefined || req.body.brand == "" || req.body.model == "" || req.body.plate == "" || req.body.description == ""){
+    let car = await Car.findByIdAndUpdate(req.params.id, {
+      brand: req.body.brand,
+      model: req.body.model,
+      plate: req.body.plate,
+      description: req.body.description,
+      owner: mongoose.Types.ObjectId(req.body.owner),
+    });
+
+    await car.save();
+
+    return res
+      .location('/api/v1/cars/' + car.id)
+      .status(201)
+      .send();
+  }
+  catch (err) {
+    if (err.code === 11000) {
+      return res
+        .status(409)
+        .json({ error: 'Plate already exists' });
+    }
     return res
       .status(400)
       .json({ error: 'Some fields are empty or undefined' });
   }
-
-  res
-    .location('/api/v1/cars/' + req.params.id)
-    .status(204)
-    .send();
 });
 
 /**
