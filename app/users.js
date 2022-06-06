@@ -68,14 +68,31 @@ router.get('/:id', isAdmin(true), async (req, res) => {
   });
 });
 
-//get all the cars of an user
+/**
+ * @swagger
+ * /users/{id}/operations:
+ *  get:
+ *    tags: [users]
+ *    description: Use to get all the operation made by a user.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: The user whose operations we want to retrieve
+ *        type: string
+ *    responses:
+ *      '201':
+ *        description: User's operations were successfully retrieved
+ *      '404':
+ *        description: User not found
+ */
 router.get('/:id/operations', isAdmin(true), async (req, res) => {
   try {
     const operations = await Operation.find({ employee: req.params.id });
     return res.status(200).json(operations);
   } catch (err) {
     console.log(err);
-    return res.status(404).send({ message: 'Customer not found' });
+    return res.status(404).send({ message: 'User not found' });
   }
 });
 
@@ -126,7 +143,6 @@ router.get('/:id/operations', isAdmin(true), async (req, res) => {
  *      '409':
  *        description: Some fields are empty or undefined
  */
-
 router.post('', isAdmin(true), async (req, res) => {
   let user = new User({
     name: req.body.name,
@@ -207,16 +223,22 @@ router.post('', isAdmin(true), async (req, res) => {
  *      '404':
  *        description: User not found
  */
-router.put('/:id', isAdmin(true), async (req, res) => {
-  let user = await User.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    surname: req.body.surname,
-    password: req.body.password,
-    email: req.body.email,
-    admin: req.body.admin,
-  });
-
+ router.put('/:id', isAdmin(true), async (req, res) => {
   try {
+
+    if (req.body.name == "" || req.body.surname == "" || req.body.password == "" || req.body.email == "" || req.body.admin == null) {
+      return res
+        .status(400)
+        .json({ error: 'Some fields are empty or undefined' });
+    }
+
+    let user = await User.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      surname: req.body.surname,
+      password: req.body.password,
+      email: req.body.email,
+      admin: req.body.admin,
+    });
     await user.save();
 
     res
@@ -233,7 +255,6 @@ router.put('/:id', isAdmin(true), async (req, res) => {
       .status(400)
       .json({ error: 'Some fields are empty or undefined' });
   }
-
 });
 
 

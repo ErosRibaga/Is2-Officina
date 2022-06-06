@@ -46,14 +46,14 @@ const { isAdmin } = require('./permissions');
  *      '404':
  *        description: Customer not found
  */
-router.put('/:id', isAdmin(true), async (req, res) => {
-  let customer = await Customer.findByIdAndUpdate(req.params.id, {
-    name: req.body.name,
-    surname: req.body.surname,
-    phone: req.body.phone,
-  });
-
+ router.put('/:id', isAdmin(true), async (req, res) => {
   try {
+    let customer = await Customer.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      surname: req.body.surname,
+      phone: req.body.phone,
+    });
+
     await customer.save();
 
     return res

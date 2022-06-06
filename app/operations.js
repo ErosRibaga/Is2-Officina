@@ -120,32 +120,40 @@ router.delete('/:id', async (req, res) => {
  *      '404':
  *        description: Operation not found
  */
-router.put('/:id', async (req, res) => {
+ router.put('/:id', async (req, res) => {
+  try {
+    if (req.body.employee == undefined || req.body.car == undefined || req.body.title == "" || req.body.description == "") {
+      return res
+        .status(400)
+        .json({ error: 'Some fields are empty or undefined' });
+    }
 
-  let operation = await Operation.findByIdAndUpdate(req.params.id, {
-    title: req.body.title,
-    description: req.body.description,
-    startDate: new Date(req.body.startDate),
-    endDate: new Date(req.body.endDate),
-    employee: mongoose.Types.ObjectId(req.body.employee),
-    car: mongoose.Types.ObjectId(req.body.car),
-  });
+    if (req.body.startDate > req.body.endDate) {
+      res.status(400).json({ error: 'Start date must be before end date' });
+      return;
+    }
 
-  if (req.body.employee == undefined || req.body.car == undefined || req.body.title == "" || req.body.description == "") {
+    let operation = await Operation.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      description: req.body.description,
+      startDate: new Date(req.body.startDate),
+      endDate: new Date(req.body.endDate),
+      employee: mongoose.Types.ObjectId(req.body.employee),
+      car: mongoose.Types.ObjectId(req.body.car),
+    });
+
+    await operation.save();
+
+    return res
+      .location('/api/v1/operations/' + operation.id)
+      .status(201)
+      .send();
+  }
+  catch (err) {
     return res
       .status(400)
       .json({ error: 'Some fields are empty or undefined' });
   }
-
-  if(req.body.startDate > req.body.endDate){
-    res.status(427).json({ error: 'Start date must be before end date' });
-    return;
-  }
-
-  res
-    .location('/api/v1/operations/' + req.params.id)
-    .status(204)
-    .send();
 });
 
 /**
