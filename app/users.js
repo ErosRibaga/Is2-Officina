@@ -68,6 +68,17 @@ router.get('/:id', isAdmin(true), async (req, res) => {
   });
 });
 
+//get all the cars of an user
+router.get('/:id/operations', isAdmin(true), async (req, res) => {
+  try {
+    const operations = await Operation.find({ employee: req.params.id });
+    return res.status(200).json(operations);
+  } catch (err) {
+    console.log(err);
+    return res.status(404).send({ message: 'Customer not found' });
+  }
+});
+
 /**
  * @swagger
  * /users:
@@ -134,9 +145,7 @@ router.post('', isAdmin(true), async (req, res) => {
       .send();
   } catch (err) {
     if (err.code === 11000) {
-      return res
-        .status(409)
-        .json({ error: 'email already exists' });
+      return res.status(409).json({ error: 'email already exists' });
     }
     return res
       .status(400)
