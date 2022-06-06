@@ -8,12 +8,11 @@ const { scopedOperations, canViewOperation } = require('./permissions');
  * @swagger
  * /operations:
  *  get:
+ *    tags: [operations]
  *    description: Use to request all operations
  *    responses:
  *      '200':
  *        description: A successful response
- *      '404':
- *        description: Operation not found
  */
 router.get('/', async (req, res) => {
   let operations = await Operation.find({}).populate('employee').populate('car').exec();
@@ -36,6 +35,7 @@ router.get('/', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  delete:
+ *    tags: [operations]
  *    description: Use to delete an operation
  *    parameters:
  *      - in: path
@@ -65,6 +65,7 @@ router.delete('/:id', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  put:
+ *    tags: [operations]
  *    description: Use to update an operation.
  *    parameters:
  *      - in: path
@@ -74,19 +75,48 @@ router.delete('/:id', async (req, res) => {
  *        type: string
  *      - in: body
  *        name: body
- *        description: The operation to create
+ *        description: The operation to update
  *        schema:
  *          type: object
  *          required:
  *            - 'title'
+ *            - 'description'
+ *            - 'startDate'
+ *            - 'endDate'
+ *            - 'employee'
+ *            - 'car'
  *          properties:
  *            title:
  *              type: string
  *              description: The operations's title.
- *              example: asd87658af
+ *              example: Cambio gomme
+ *            description:
+ *              type: string
+ *              description: The operations's description.
+ *              example: Sostituzione pneumatici 155/70
+ *            starDate:
+ *              type: Date
+ *              description: The operations's startDate.
+ *              example: 2022-05-06T09:30:00.000Z
+ *            endDate:
+ *              type: Date
+ *              description: The operations's endDate.
+ *              example: 2022-05-06T11:00:00.000Z
+ *            employee:
+ *              type: Object
+ *              description: The employee who's gonna do the operation.
+ *              example: {}
+ *            car:
+ *              type: string
+ *              description: The car on which the employee is gonna operate.
+ *              example: {}
  *    responses:
  *      '204':
  *        description: Operation successfully updated
+ *      '400':
+ *        description: Some fields are empty or undefined
+ *      '427':
+ *        description: Start date must be before end date
  *      '404':
  *        description: Operation not found
  */
@@ -108,7 +138,7 @@ router.put('/:id', async (req, res) => {
   }
 
   if(req.body.startDate > req.body.endDate){
-    res.status(400).json({ error: 'Start date must be before end date' });
+    res.status(427).json({ error: 'Start date must be before end date' });
     return;
   }
 
@@ -122,6 +152,7 @@ router.put('/:id', async (req, res) => {
  * @swagger
  * /operations/{id}:
  *  get:
+ *    tags: [operations]
  *    description: Use to get an operation by its id
  *    parameters:
  *      - in: path
@@ -131,7 +162,7 @@ router.put('/:id', async (req, res) => {
  *        type: string
  *    responses:
  *      '200':
- *        description: Operation successfully removed
+ *        description: Operation successfully retrieved
  *      '404':
  *        description: Operation not found
  */
@@ -155,6 +186,7 @@ router.get('/:id', async (req, res) => {
  * @swagger
  * /operations:
  *  post:
+ *    tags: [operations]
  *    description: Use to insert a new operation.
  *    parameters:
  *      - in: body
@@ -164,14 +196,43 @@ router.get('/:id', async (req, res) => {
  *          type: object
  *          required:
  *            - 'title'
+ *            - 'description'
+ *            - 'startDate'
+ *            - 'endDate'
+ *            - 'employee'
+ *            - 'car'
  *          properties:
  *            title:
  *              type: string
  *              description: The operations's title.
- *              example: asd87658af
+ *              example: Cambio gomme
+ *            description:
+ *              type: string
+ *              description: The operations's description.
+ *              example: Sostituzione pneumatici 155/70
+ *            starDate:
+ *              type: Date
+ *              description: The operations's startDate.
+ *              example: 2022-05-06T09:30:00.000Z
+ *            endDate:
+ *              type: Date
+ *              description: The operations's endDate.
+ *              example: 2022-05-06T11:00:00.000Z
+ *            employee:
+ *              type: Object
+ *              description: The employee who's gonna do the operation.
+ *              example: {}
+ *            car:
+ *              type: string
+ *              description: The car on which the employee is gonna operate.
+ *              example: {}
  *    responses:
  *      '201':
  *        description: Operation successfully inserted
+ *      '400':
+ *        description: Some fields are empty or undefined
+ *      '427':
+ *        description: Start date must be before end date
  */
 router.post('', async (req, res) => {
   let operation = new Operation({
@@ -190,7 +251,7 @@ router.post('', async (req, res) => {
   }
 
   if(req.body.startDate > req.body.endDate){
-    res.status(400).json({ error: 'Start date must be before end date' });
+    res.status(427).json({ error: 'Start date must be before end date' });
     return;
   }
 
