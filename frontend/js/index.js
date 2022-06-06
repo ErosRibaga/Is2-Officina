@@ -72,9 +72,7 @@ function logout() {
 $(document).ready(function () {
   if ((!cookieToken || cookieToken == undefined) && window.location.pathname != '/login.html')
     redirect('/login.html');
-  else if(cookieToken != undefined && window.location.pathname == '/login.html') {
-    redirect('/agenda.html');
-  }
+
 });
 
 document.addEventListener('DOMContentLoaded', () => {
