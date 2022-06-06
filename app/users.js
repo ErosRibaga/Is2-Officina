@@ -91,7 +91,6 @@ router.get('/:id/operations', isAdmin(true), async (req, res) => {
     const operations = await Operation.find({ employee: req.params.id });
     return res.status(200).json(operations);
   } catch (err) {
-    console.log(err);
     return res.status(404).send({ message: 'User not found' });
   }
 });
@@ -283,15 +282,11 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
 
   if (!user) {
     res.status(404).send();
-    console.log('user not found');
     return;
   }
 
   if(user._id == req.loggedUser.id) {
     res.status(403).json({error: 'You cannot delete yourself'}).send();
-    console.log(
-      'You cannot delete yourself'
-    );
     return;
   }
 
@@ -300,14 +295,10 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
 
   if (operations.length != 0) {
     res.status(403).json({error: 'Cannot delete the user, it has some operations associated to it'}).send();
-    console.log(
-      'Cannot delete the user, it has some operations associated to it'
-    );
     return;
   }
 
   await user.deleteOne();
-  console.log('user removed');
   res.status(204).send();
 });
 

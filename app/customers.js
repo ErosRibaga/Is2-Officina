@@ -147,7 +147,6 @@ router.get('/:id/cars', isAdmin(true), async (req, res) => {
       const cars = await Car.find({ owner: req.params.id })
       return res.status(200).json(cars)
   } catch (err) {
-      console.log(err)
       return res.status(404).send({ message: 'User not found' })
   }
 });
@@ -236,8 +235,7 @@ router.post('', isAdmin(true), async (req, res, next) => {
 router.delete('/:id', isAdmin(true), async (req, res) => {
   let customer = await Customer.findById(req.params.id).exec();
   if (!customer) {
-    res.status(404).send();
-    console.log('Customer not found');
+    res.status(404).json({error: 'Customer not found'}).send();
     return;
   }
 
@@ -245,13 +243,11 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
   let cars = await Car.find({ owner: customer._id });
 
   if (cars.length != 0) {
-    res.status(403).send();
-    console.log('Cannot delete the customer, it has any cars associated to it');
+    res.status(403).json({error: 'Cannot delete the customer, it has any cars associated to it'}).send();
     return;
   }
 
   await customer.deleteOne();
-  console.log('customer removed');
   res.status(204).send();
 });
 

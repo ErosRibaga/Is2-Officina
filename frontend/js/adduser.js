@@ -5,8 +5,6 @@ function createUser() {
   var password = document.getElementById('textPassword').value;
   var role = document.getElementById('textRoles').value == 'admin';
 
-  console.log(name);
-
   fetch('/api/v2/users', {
     method: 'POST',
     headers: {
@@ -50,7 +48,6 @@ function updateUser() {
     }),
   })
     .then((data) => {
-      console.log(data);
       redirect('/users.html');
     })
     .catch((error) => console.error(error));

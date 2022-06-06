@@ -53,11 +53,9 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
   let operation = await Operation.findById(req.params.id).exec();
   if (!operation) {
     res.status(404).send();
-    console.log('Operation not found');
     return;
   }
   await operation.deleteOne();
-  console.log('Operation removed');
   res.status(204).send();
 });
 

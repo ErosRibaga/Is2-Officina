@@ -7,10 +7,6 @@ function actionCustomer() {
   customersurname = document.getElementById('textsurname').value;
   customerphone = document.getElementById('textphone').value;
 
-  console.log(
-    'Data: ' + customername + ', ' + customersurname + ', ' + customerphone
-  );
-
   if (customername == '' || customersurname == '' || customerphone == '') {
     alert('Uno o più campi non sono stati compilati, modifiche non accettate');
     return;
