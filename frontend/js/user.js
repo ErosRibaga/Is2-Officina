@@ -1,7 +1,7 @@
 var selecteditemid;
 
 function loadUsers() {
-  fetch('http://localhost:8080/api/v1/users', {
+  fetch('http://localhost:8080/api/v2/users', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -60,7 +60,7 @@ function seeOperations() {
 
 function deleteUser() {
   if (selecteditemid != undefined) {
-    fetch('http://localhost:8080/api/v1/users/' + selecteditemid, {
+    fetch('http://localhost:8080/api/v2/users/' + selecteditemid, {
       method: 'DELETE',
       headers: {
         'x-access-token': cookieToken,

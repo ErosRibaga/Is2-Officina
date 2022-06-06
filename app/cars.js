@@ -77,7 +77,7 @@ const { isAdmin } = require('./permissions');
     await car.save();
 
     return res
-      .location('/api/v1/cars/' + car.id)
+      .location('/api/v2/cars/' + car.id)
       .status(201)
       .send();
   }
@@ -159,7 +159,7 @@ const { isAdmin } = require('./permissions');
     await car.save();
 
     return res
-      .location('/api/v1/cars/' + car.id)
+      .location('/api/v2/cars/' + car.id)
       .status(201)
       .send();
   }
@@ -192,7 +192,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 
   cars = cars.map((car) => {
     return {
-      self: '/api/v1/cars/' + car.id,
+      self: '/api/v2/cars/' + car.id,
       brand: car.brand,
       model: car.model,
       plate: car.plate,
@@ -224,7 +224,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 router.get('/:id', isAdmin(true), async (req, res) => {
   let car = await Car.findById(req.params.id).populate('owner');
   res.status(200).json({
-    self: '/api/v1/car/' + car.id,
+    self: '/api/v2/car/' + car.id,
     brand: car.brand,
     model: car.model,
     plate: car.plate,

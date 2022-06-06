@@ -1,6 +1,6 @@
 //Init the operation or the update-operation pages
 function initOperation(type) {
-  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+  fetch('http://localhost:8080/api/v2/operations/' + getID(), {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -57,7 +57,7 @@ function initUpdateOperation(dataOp) {
 
 function populateEmployeeSelect(dataOp) {
   //Populate cars select box
-  fetch('http://localhost:8080/api/v1/users/', {
+  fetch('http://localhost:8080/api/v2/users/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -89,7 +89,7 @@ function populateEmployeeSelect(dataOp) {
 
 function populateCarSelect(dataOp) {
   //Populate cars select box
-  fetch('http://localhost:8080/api/v1/cars/', {
+  fetch('http://localhost:8080/api/v2/cars/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -130,7 +130,7 @@ function updateOperation() {
   var car = $('#cars').val();
   var employee = $('#employees').val();
 
-  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+  fetch('http://localhost:8080/api/v2/operations/' + getID(), {
     method: 'PUT',
     headers: {
       'Content-type': 'application/json',
@@ -154,7 +154,7 @@ function updateOperation() {
 }
 
 function deleteOperation() {
-  fetch('http://localhost:8080/api/v1/operations/' + getID(), {
+  fetch('http://localhost:8080/api/v2/operations/' + getID(), {
     method: 'DELETE',
     headers: {
       'x-access-token': cookieToken,

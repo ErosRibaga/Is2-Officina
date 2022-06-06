@@ -22,7 +22,7 @@ function actionCustomer() {
   }
 
   if (add) {
-    fetch('http://localhost:8080/api/v1/customers/', {
+    fetch('http://localhost:8080/api/v2/customers/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ function actionCustomer() {
       })
       .catch((error) => console.error(error)); // If there is any error you will catch them here
   } else {
-    fetch('http://localhost:8080/api/v1/customers/' + getID(), {
+    fetch('http://localhost:8080/api/v2/customers/' + getID(), {
       method: 'PUT',
       body: JSON.stringify({
         name: customername,
@@ -65,7 +65,7 @@ $(document).ready(function () {
 
     $('#actionClient').text('Salva modifiche');
 
-    fetch('http://localhost:8080/api/v1/customers/' + getID(), {
+    fetch('http://localhost:8080/api/v2/customers/' + getID(), {
       headers: {
         'x-access-token': cookieToken,
       },

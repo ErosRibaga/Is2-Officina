@@ -20,7 +20,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 
   users = users.map((user) => {
     return {
-      self: '/api/v1/users/' + user.id,
+      self: '/api/v2/users/' + user.id,
       name: user.name,
       surname: user.surname,
       password: user.password,
@@ -59,7 +59,7 @@ router.get('/:id', isAdmin(true), async (req, res) => {
   }
 
   res.status(200).json({
-    self: '/api/v1/users/' + user.id,
+    self: '/api/v2/users/' + user.id,
     name: user.name,
     surname: user.surname,
     password: user.password,
@@ -156,7 +156,7 @@ router.post('', isAdmin(true), async (req, res) => {
     await user.save();
 
     res
-      .location('/api/v1/users/' + user.id)
+      .location('/api/v2/users/' + user.id)
       .status(201)
       .send();
   } catch (err) {
@@ -242,7 +242,7 @@ router.post('', isAdmin(true), async (req, res) => {
     await user.save();
 
     res
-      .location('/api/v1/users/' + user.id)
+      .location('/api/v2/users/' + user.id)
       .status(201)
       .send();
   } catch (err) {

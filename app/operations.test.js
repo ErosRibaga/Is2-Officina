@@ -31,7 +31,7 @@ var carId;
 var customerId;
 var userToken;
 
-describe('GET /api/v1/operations', () => {
+describe('GET /api/v2/operations', () => {
 
 
     beforeAll(async () => {
@@ -124,14 +124,14 @@ describe('GET /api/v1/operations', () => {
         await mongoose.connection.close();
     });
 
-    test('GET /api/v1/operations with admin user should respond with an array of operations', async () => {
+    test('GET /api/v2/operations with admin user should respond with an array of operations', async () => {
         return request(app)
-            .get('/api/v1/operations')
+            .get('/api/v2/operations')
             .set('x-access-token', adminToken)
             .expect('Content-Type', /json/)
             .expect(200, [
                 {
-                    self: '/api/v1/operations/' + operationId,
+                    self: '/api/v2/operations/' + operationId,
                     title: 'test1',
                     description: 'test1',
                     employee: {
@@ -156,7 +156,7 @@ describe('GET /api/v1/operations', () => {
                     },
                 },
                 {
-                    self: '/api/v1/operations/' + operationId2,
+                    self: '/api/v2/operations/' + operationId2,
                     title: 'test1',
                     description: 'test1',
                     employee: {
@@ -183,14 +183,14 @@ describe('GET /api/v1/operations', () => {
             ]);
     });
 
-    test('GET /api/v1/operations with normal user should respond with an array of operations assigned to him', async () => {
+    test('GET /api/v2/operations with normal user should respond with an array of operations assigned to him', async () => {
         return request(app)
-            .get('/api/v1/operations')
+            .get('/api/v2/operations')
             .set('x-access-token', userToken)
             .expect('Content-Type', /json/)
             .expect(200, [
                 {
-                    self: '/api/v1/operations/' + operationId2,
+                    self: '/api/v2/operations/' + operationId2,
                     title: 'test1',
                     description: 'test1',
                     employee: {
@@ -218,13 +218,13 @@ describe('GET /api/v1/operations', () => {
     });
 
 
-    test('GET /api/v1/operations/:id with admin user should respond with a json file of the single operation', async () => {
+    test('GET /api/v2/operations/:id with admin user should respond with a json file of the single operation', async () => {
         return request(app)
-            .get('/api/v1/operations/' + operationId)
+            .get('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .expect('Content-Type', /json/)
             .expect(200, {
-                self: '/api/v1/operations/' + operationId,
+                self: '/api/v2/operations/' + operationId,
                 title: 'test1',
                 description: 'test1',
                 employee: {
@@ -251,7 +251,7 @@ describe('GET /api/v1/operations', () => {
     });
 });
 
-describe('POST /api/v1/operations', () => {
+describe('POST /api/v2/operations', () => {
     beforeAll(async () => {
         // This will create an new instance of "MongoMemoryServer" and automatically start it
         app.locals.db = await mongoose.connect(mongodb.getUri());
@@ -261,9 +261,9 @@ describe('POST /api/v1/operations', () => {
         await mongoose.connection.close();
     });
 
-    test('POST /api/v1/operations with title not specified', async () => {
+    test('POST /api/v2/operations with title not specified', async () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -276,9 +276,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with description not specified', () => {
+    test('POST /api/v2/operations with description not specified', () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -291,9 +291,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with starDate not specified', () => {
+    test('POST /api/v2/operations with starDate not specified', () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -306,9 +306,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with endDate not specified', async () => {
+    test('POST /api/v2/operations with endDate not specified', async () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -321,9 +321,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with employee Id not specified', () => {
+    test('POST /api/v2/operations with employee Id not specified', () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -336,9 +336,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with car Id not specified', () => {
+    test('POST /api/v2/operations with car Id not specified', () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -351,9 +351,9 @@ describe('POST /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('POST /api/v1/operations with correct data', () => {
+    test('POST /api/v2/operations with correct data', () => {
         return request(app)
-            .post('/api/v1/operations')
+            .post('/api/v2/operations')
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -369,7 +369,7 @@ describe('POST /api/v1/operations', () => {
 });
 
 
-describe('PUT /api/v1/operations', () => {
+describe('PUT /api/v2/operations', () => {
     beforeAll(async () => {
         // This will create an new instance of "MongoMemoryServer" and automatically start it
         app.locals.db = await mongoose.connect(mongodb.getUri());
@@ -458,9 +458,9 @@ describe('PUT /api/v1/operations', () => {
         await mongodb.stop();
     });
 
-    test('PUT /api/v1/operations/:id with correct data', async () => {
+    test('PUT /api/v2/operations/:id with correct data', async () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -474,9 +474,9 @@ describe('PUT /api/v1/operations', () => {
             .expect(201);
     });
 
-    test('PUT /api/v1/operations/:id with title not specified', async () => {
+    test('PUT /api/v2/operations/:id with title not specified', async () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -490,9 +490,9 @@ describe('PUT /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('PUT /api/v1/operations/:id with description not specified', async () => {
+    test('PUT /api/v2/operations/:id with description not specified', async () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -506,9 +506,9 @@ describe('PUT /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('PUT /api/v1/operations/:id with startDate higher than endDate', async () => {
+    test('PUT /api/v2/operations/:id with startDate higher than endDate', async () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -522,9 +522,9 @@ describe('PUT /api/v1/operations', () => {
             .expect(400, { error: 'Start date must be before end date' });
     });
 
-    test('PUT /api/v1/operations/:id with employee Id not specified', async () => {
+    test('PUT /api/v2/operations/:id with employee Id not specified', async () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
@@ -538,9 +538,9 @@ describe('PUT /api/v1/operations', () => {
             .expect(400, { error: 'Some fields are empty or undefined' });
     });
 
-    test('PUT /api/v1/operations/:id with car Id not specified', () => {
+    test('PUT /api/v2/operations/:id with car Id not specified', () => {
         return request(app)
-            .put('/api/v1/operations/' + operationId)
+            .put('/api/v2/operations/' + operationId)
             .set('x-access-token', adminToken)
             .set('Accept', 'application/json')
             .send({
