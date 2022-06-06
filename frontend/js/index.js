@@ -35,7 +35,8 @@ var isAdmin = getCookie('admin');
 function createSideBar(activeId) {
   var sidebar;
 
-  sidebar = '<a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
+  sidebar =
+    '<a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
 
   if (isAdmin === 'true') {
     sidebar += `
@@ -44,15 +45,33 @@ function createSideBar(activeId) {
     <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   }
 
-  sidebar += '<a id="sideSettings" href="/frontend/user-settings.html"><i class="fa-solid fa-gear"></i>Impostazioni</a>';
+  sidebar += '<hr>';
+  sidebar +=
+    '<a id="sideLogout" onClick="logout()" cursor="pointer"><i class="fa-solid fa-right-from-bracket"></i>Log out</a>';
 
   $('.sidebar').html(sidebar);
   $(activeId).addClass('active');
 }
 
+function logout() {
+  fetch('http://localhost:8080/api/v1/authentication/logout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}),
+  })
+    .then((resp) => resp.json()) // Transform the data into json
+    .then((data) => {
+      document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie = 'admin=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      window.location.href = '/frontend/login.html';
+    });
+}
 
 $(document).ready(function () {
-  if(!cookieToken && window.location.pathname != '/frontend/login.html')
+  if ((!cookieToken || cookieToken == undefined) && window.location.pathname != '/frontend/login.html')
     redirect('/frontend/login.html');
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  $('#sideLogout').css('cursor', 'pointer');
+});

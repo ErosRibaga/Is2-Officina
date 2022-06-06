@@ -12,7 +12,7 @@ var mongod;
 var userId;
 var adminToken;
 
-describe('POST /api/v1/login', () => {
+describe('POST /api/v1/authentication/login', () => {
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
     app.locals.db = await mongoose.connect(mongod.getUri());
@@ -44,9 +44,9 @@ describe('POST /api/v1/login', () => {
     await mongoose.connection.close();
   });
 
-  test('POST /api/v1/login with valid email and password', async () => {
+  test('POST /api/v1/authentication/login with valid email and password', async () => {
     return request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/authentication/login')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({
@@ -56,9 +56,9 @@ describe('POST /api/v1/login', () => {
       .expect(200);
   });
 
-  test('POST /api/v1/login with empty email', async () => {
+  test('POST /api/v1/authentication/login with empty email', async () => {
     return request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/authentication/login')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({
@@ -70,9 +70,9 @@ describe('POST /api/v1/login', () => {
       });
   });
 
-  test('POST /api/v1/login with wrong email', async () => {
+  test('POST /api/v1/authentication/login with wrong email', async () => {
     return request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/authentication/login')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({
@@ -85,9 +85,9 @@ describe('POST /api/v1/login', () => {
       });
   });
 
-  test('POST /api/v1/login with empty password', async () => {
+  test('POST /api/v1/authentication/login with empty password', async () => {
     return request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/authentication/login')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({
@@ -99,9 +99,9 @@ describe('POST /api/v1/login', () => {
       });
   });
 
-  test('POST /api/v1/login with wrong password', async () => {
+  test('POST /api/v1/authentication/login with wrong password', async () => {
     return request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/authentication/login')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({
