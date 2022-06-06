@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 // ---------------------------------------------------------
 // route to authenticate and get a new token
 // ---------------------------------------------------------
-router.post('', async function (req, res) {
+router.post('/login', async function (req, res) {
   // find the user
   let user = await User.findOne({
     email: req.body.email,
@@ -14,22 +14,18 @@ router.post('', async function (req, res) {
 
   // user not found
   if (!user || user == null) {
-    return res
-      .status(401)
-      .json({
-        success: false,
-        message: 'Authentication failed. Email not found.',
-      });
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication failed. Email not found.',
+    });
   }
 
   // check if password matches
   if (user.password != req.body.password) {
-    return res
-      .status(401)
-      .json({
-        success: false,
-        message: 'Authentication failed. Wrong password.',
-      });
+    return res.status(401).json({
+      success: false,
+      message: 'Authentication failed. Wrong password.',
+    });
   }
 
   // if user is found and password is right create a token
@@ -55,6 +51,18 @@ router.post('', async function (req, res) {
     admin: user.admin,
     self: 'api/v1/users/' + user._id,
   });
+});
+
+router.post('/logout', async (req, res) => {
+
+  var token = jwt.sign({ id: 'logout' }, process.env.SUPER_SECRET, {
+    expiresIn: 0, 
+  });
+
+  res.status(200).json({
+    token: token
+  });
+
 });
 
 module.exports = router;
