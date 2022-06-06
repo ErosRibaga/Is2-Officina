@@ -6,20 +6,208 @@ info:
     name: Eros Ribaga
 swagger: '2.0'
 paths:
-  /customers:
+  '/cars/{id}':
+    put:
+      description: Use to update a car's data.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The car's id
+          type: string
+        - in: body
+          name: body
+          description: The car to update
+          schema:
+            type: object
+            required:
+              - brand
+              - model
+              - plate
+              - description
+              - owner
+            properties:
+              brand:
+                type: string
+                description: The car's brand.
+                example: Volvo
+              model:
+                type: string
+                description: The car's model.
+                example: XC70
+              plate:
+                type: string
+                description: The car's plate.
+                example: AA000AA
+              description:
+                type: string
+                description: The car's description.
+                example: 'black, damaged'
+              owner:
+                type: object
+                description: The car's owner.
+                example: {}
+      responses:
+        '204':
+          description: Car successfully updated
+        '400':
+          description: Some fields are empty or undefined
+        '404':
+          description: Car not found
     get:
-      tags:
-        - customers
+      description: Use to get a car by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The car's id
+          type: string
+      responses:
+        '200':
+          description: Car successfully retrieved
+        '404':
+          description: Car not found
+    delete:
+      description: Use to delete a car
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The car's id
+          type: string
+      responses:
+        '204':
+          description: Car successfully removed
+        '403':
+          description: 'Cannot delete the car, it has some operations associated to it'
+        '404':
+          description: Car not found
+  '/cars':
+    post:
+      description: Use to insert a new car.
+      parameters:
+        - in: body
+          name: body
+          description: The car to insert
+          schema:
+            type: object
+            required:
+              - brand
+              - model
+              - plate
+              - description
+              - owner
+            properties:
+              brand:
+                type: string
+                description: The car's brand.
+                example: Volvo
+              model:
+                type: string
+                description: The car's model.
+                example: XC70
+              plate:
+                type: string
+                description: The car's plate.
+                example: AA000AA
+              description:
+                type: string
+                description: The car's description.
+                example: 'black, damaged'
+              owner:
+                type: object
+                description: The car's owner.
+                example: {}
+      responses:
+        '204':
+          description: Car successfully inserted
+        '400':
+          description: Some fields are empty or undefined
+        '409':
+          description: Plate already exists
+    get:
+      description: Use to request all cars
+      responses:
+        '200':
+          description: A successful response
+  '/customer/{id}':
+    put:
+      description: Use to update a customer data.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+        - in: body
+          name: body
+          description: The customer to update
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - phone
+            properties:
+              name:
+                type: string
+                description: The customer's name.
+                example: Paolo
+              surname:
+                type: string
+                description: The customer's surname.
+                example: Frinzi
+              phone:
+                type: string
+                description: The customer's phone number.
+                example: 3483493698
+      responses:
+        '204':
+          description: Customer successfully updated
+        '404':
+          description: Customer not found
+        '409':
+          description: Phone number already exists
+  '/customers':
+    get:
       description: Use to request all customers
       responses:
         '200':
           description: A successful response
-        '404':
-          description: Operation not found
+    post:
+      description: Use to insert a new customer.
+      parameters:
+        - in: body
+          name: body
+          description: The customer to create
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - phone
+            properties:
+              name:
+                type: string
+                description: The customer's name.
+                example: Paolo
+              surname:
+                type: string
+                description: The customer's surname.
+                example: Frinzi
+              phone:
+                type: string
+                description: The customer's phone number.
+                example: 3483493698
+      responses:
+        '201':
+          description: Customer successfully inserted
+        '400':
+          description: Some fields are empty or undefined
+        '409':
+          description: Phone already exists
   '/customers/{id}':
     get:
-      tags:
-        - customers
       description: Use to get a customer by its id
       parameters:
         - in: path
@@ -29,12 +217,10 @@ paths:
           type: string
       responses:
         '200':
-          description: Customer successfully removed
+          description: Customer successfully retrieved
         '404':
           description: Customer not found
     delete:
-      tags:
-        - customers
       description: Use to delete a customer
       parameters:
         - in: path
@@ -47,19 +233,27 @@ paths:
           description: Customer successfully removed
         '404':
           description: Customer not found
-  /operations:
+  '/customers/{id}/cars':
     get:
-      tags:
-        - operations
+      description: Use to get a the car associated to a customer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The customer's id
+          type: string
+      responses:
+        '200':
+          description: Customer's cars successfully retrieved
+        '404':
+          description: Customer not found
+  '/operations':
+    get:
       description: Use to request all operations
       responses:
         '200':
           description: A successful response
-        '404':
-          description: Operation not found
     post:
-      tags:
-        - operations
       description: Use to insert a new operation.
       parameters:
         - in: body
@@ -69,18 +263,47 @@ paths:
             type: object
             required:
               - title
+              - description
+              - startDate
+              - endDate
+              - employee
+              - car
             properties:
               title:
                 type: string
                 description: The operations's title.
-                example: asd87658af
+                example: Cambio gomme
+              description:
+                type: string
+                description: The operations's description.
+                example: Sostituzione pneumatici 155/70
+              startDate:
+                type: string
+                format: date
+                description: The operations's startDate.
+                example: '2022-05-06T09:30:00.000Z'
+              endDate:
+                type: string
+                format: date
+                description: The operations's endDate.
+                example: '2022-05-06T11:00:00.000Z'
+              employee:
+                type: object
+                description: The employee who's gonna do the operation.
+                example: {}
+              car:
+                type: string
+                description: The car on which the employee is gonna operate.
+                example: {}
       responses:
         '201':
           description: Operation successfully inserted
+        '400':
+          description: Some fields are empty or undefined
+        '427':
+          description: Start date must be before end date
   '/operations/{id}':
     delete:
-      tags:
-        - operations
       description: Use to delete an operation
       parameters:
         - in: path
@@ -94,8 +317,6 @@ paths:
         '404':
           description: Operation not found
     put:
-      tags:
-        - operations
       description: Use to update an operation.
       parameters:
         - in: path
@@ -105,24 +326,53 @@ paths:
           type: string
         - in: body
           name: body
-          description: The operation to create
+          description: The operation to update
           schema:
             type: object
             required:
               - title
+              - description
+              - startDate
+              - endDate
+              - employee
+              - car
             properties:
               title:
                 type: string
                 description: The operations's title.
-                example: asd87658af
+                example: Cambio gomme
+              description:
+                type: string
+                description: The operations's description.
+                example: Sostituzione pneumatici 155/70
+              startDate:
+                type: string
+                format: date
+                description: The operations's startDate.
+                example: '2022-05-06T09:30:00.000Z'
+              endDate:
+                type: string
+                format: date
+                description: The operations's endDate.
+                example: '2022-05-06T11:00:00.000Z'
+              employee:
+                type: object
+                description: The employee who's gonna do the operation.
+                example: {}
+              car:
+                type: string
+                description: The car on which the employee is gonna operate.
+                example: {}
       responses:
         '204':
           description: Operation successfully updated
+        '400':
+          description: Some fields are empty or undefined
         '404':
           description: Operation not found
+        '427':
+          description: Start date must be before end date
     get:
-      tags:
-        - operations
       description: Use to get an operation by its id
       parameters:
         - in: path
@@ -132,9 +382,153 @@ paths:
           type: string
       responses:
         '200':
-          description: Operation successfully removed
+          description: Operation successfully retrieved
         '404':
           description: Operation not found
+  /users:
+    get:
+      description: Use to request all users
+      responses:
+        '200':
+          description: A successful response
+    post:
+      tags:
+        - users
+      description: Use to insert a new user.
+      parameters:
+        - in: body
+          name: body
+          description: The user to create
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - password
+              - mail
+              - admin
+            properties:
+              name:
+                type: string
+                description: The user's name.
+                example: Paolo
+              surname:
+                type: string
+                description: The user's surname.
+                example: Franci
+              password:
+                type: string
+                description: The user's password.
+                example: PasswordSuperSegreta
+              mail:
+                type: string
+                description: The user's mail.
+                example: paolo.franci@indirizzoprivato.com
+              admin:
+                type: boolean
+                description: >-
+                  The user's role, if true, the user is an admin, otherwise he's
+                  a normal user.
+                example: true
+      responses:
+        '201':
+          description: User successfully inserted
+        '400':
+          description: Email already exists
+        '409':
+          description: Some fields are empty or undefined
+  '/users/{id}':
+    get:
+      description: Use to get an user by its id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The user's id
+          type: string
+      responses:
+        '200':
+          description: User successfully retrieved
+        '404':
+          description: User not found
+    put:
+      description: Use to update an user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The user's id
+          type: string
+        - in: body
+          name: body
+          description: The user to update
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - password
+              - email
+              - admin
+            properties:
+              name:
+                type: string
+                description: The user's name.
+                example: Paolo
+              surname:
+                type: string
+                description: The user's surname.
+                example: Franceschi
+              password:
+                type: string
+                description: The user's password.
+                example: PasswordSuperSegreta
+              email:
+                type: string
+                description: The user's email.
+                example: paolofranceschi@email.com
+              admin:
+                type: boolean
+                description: 'If true the user is an admin, if false, the user is not.'
+                example: true
+      responses:
+        '204':
+          description: User successfully updated
+        '400':
+          description: Some fields are empty or undefined
+        '404':
+          description: User not found
+        '409':
+          description: Email already exists
+    delete:
+      description: Use to delete an user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The user's id
+          type: string
+      responses:
+        '204':
+          description: User successfully removed
+        '403':
+          description: 'Cannot delete the user, it has some operations associated to it'
+        '404':
+          description: User not found
+  '/users/{id}/operations':
+    get:
+      description: Use to get all the operation made by a user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The user whose operations we want to retrieve
+          type: string
+      responses:
+        '201':
+          description: User's operations were successfully retrieved
+        '404':
+          description: User not found
 definitions: {}
 responses: {}
 parameters: {}
