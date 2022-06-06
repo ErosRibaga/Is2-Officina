@@ -1,7 +1,7 @@
 var selecteditemid;
 
 function loadUsers() {
-  fetch('http://localhost:8080/api/v2/users', {
+  fetch('/api/v2/users', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -20,7 +20,7 @@ function loadUsers() {
         var check = '';
         if (obj.admin) {
           check = '<i class="py-0 fa-solid fa-check"></i>';
-        } 
+        }
 
         var tblRow =
           "<tr class='clickable'><td><p hidden>" +
@@ -60,25 +60,25 @@ function seeOperations() {
 
 function deleteUser() {
   if (selecteditemid != undefined) {
-    fetch('http://localhost:8080/api/v2/users/' + selecteditemid, {
+    fetch('/api/v2/users/' + selecteditemid, {
       method: 'DELETE',
       headers: {
         'x-access-token': cookieToken,
       },
     })
-      .then((res) => {
-        //if response status code == 403
-        if(res.status == 403) {
-          $('#message').text("Impossibile eliminare l'utente, operazioni trovate");
-        } else {          
+      .then(async (resp) => {
+        if (resp.status == 403) {
+          var msg = await resp.json();
+          console.log(msg);
+          throw Error(msg.error);
+        } else {
           location.reload();
-          console.log('Request complete! response:', res);
-        }        
+          selecteditemid = -1;
+        }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((data) => {
+        $('#message').text(data);
       });
-    selecteditemid = -1;
   } else {
     alert('Prima seleziona un utente');
   }

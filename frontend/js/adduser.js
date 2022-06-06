@@ -7,7 +7,7 @@ function createUser() {
 
   console.log(name);
 
-  fetch('http://localhost:8080/api/v2/users', {
+  fetch('/api/v2/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ function updateUser() {
   var password = $('#textPassword').val();
   var role = $('#textRoles').val() == 'admin';
 
-  fetch('http://localhost:8080/api/v2/users/' + getID(), {
+  fetch('/api/v2/users/' + getID(), {
     method: 'PUT',
     mode: 'cors',
     headers: {
@@ -65,7 +65,7 @@ $(document).ready(function () {
     $('#title').text('Modifica utente');
     $('#actionClient').text('Salva modifiche');
 
-    fetch('http://localhost:8080/api/v2/users/' + getID(), {
+    fetch('/api/v2/users/' + getID(), {
       headers: {
         'x-access-token': cookieToken,
       },

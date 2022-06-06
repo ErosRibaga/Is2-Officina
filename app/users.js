@@ -287,11 +287,19 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
     return;
   }
 
+  if(user._id == req.loggedUser.id) {
+    res.status(403).json({error: 'You cannot delete yourself'}).send();
+    console.log(
+      'You cannot delete yourself'
+    );
+    return;
+  }
+
   //Check if the user is associated with any operations, in that case it cannot be deleted
   let operations = await Operation.find({ employee: user._id });
 
   if (operations.length != 0) {
-    res.status(403).send();
+    res.status(403).json({error: 'Cannot delete the user, it has some operations associated to it'}).send();
     console.log(
       'Cannot delete the user, it has some operations associated to it'
     );

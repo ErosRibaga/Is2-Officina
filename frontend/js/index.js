@@ -36,6 +36,8 @@ function createSideBar(activeId) {
   var sidebar;
 
   sidebar =
+    '<a id="sideHome" href="/index.html"><i class="fa-solid fa-home"></i>Home</a>';
+  sidebar +=
     '<a id="sideAgenda" href="/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
 
   if (isAdmin === 'true') {
@@ -54,7 +56,7 @@ function createSideBar(activeId) {
 }
 
 function logout() {
-  fetch('http://localhost:8080/api/v2/authentication/logout', {
+  fetch('/api/v2/authentication/logout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({}),
@@ -70,6 +72,9 @@ function logout() {
 $(document).ready(function () {
   if ((!cookieToken || cookieToken == undefined) && window.location.pathname != '/login.html')
     redirect('/login.html');
+  else if(cookieToken != undefined && window.location.pathname == '/login.html') {
+    redirect('/agenda.html');
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {

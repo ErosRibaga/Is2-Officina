@@ -3,7 +3,7 @@ function loadOperations() {
   const curMonth = new Date().getMonth() + 1;
   var operations = [];
 
-  fetch('http://localhost:8080/api/v2/operations/', {
+  fetch('/api/v2/operations/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -46,7 +46,7 @@ function openForm(start, end) {
   document.getElementById('endDate').valueAsDate = new Date(end);
 
   //Populate cars select box
-  fetch('http://localhost:8080/api/v2/cars/', {
+  fetch('/api/v2/cars/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -72,7 +72,7 @@ function openForm(start, end) {
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 
   //Populate employyes select box
-  fetch('http://localhost:8080/api/v2/users/', {
+  fetch('/api/v2/users/', {
     headers: {
       'x-access-token': cookieToken,
     },

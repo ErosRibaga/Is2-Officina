@@ -1,7 +1,7 @@
 var selecteditemid;
 
 function loadCars() {
-  fetch('http://localhost:8080/api/v2/cars', {
+  fetch('/api/v2/cars', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -52,7 +52,7 @@ function changeLocation() {
 
 function deleteCar() {
   if (selecteditemid != undefined) {
-    fetch('http://localhost:8080/api/v2/cars/' + selecteditemid, {
+    fetch('/api/v2/cars/' + selecteditemid, {
       method: 'DELETE',
       headers: {
         'x-access-token': cookieToken,
