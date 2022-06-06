@@ -3,7 +3,7 @@ function login() {
     var email = document.getElementById("textmail").value;
     var password = document.getElementById("textpassword").value;
 
-    fetch('http://localhost:8080/api/v1/authentications', {
+    fetch('http://localhost:8080/api/v1/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, password: password }),

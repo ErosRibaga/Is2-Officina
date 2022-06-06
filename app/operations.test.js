@@ -471,7 +471,7 @@ describe('PUT /api/v1/operations', () => {
                 employee: userId2,
                 car: carId,
             })
-            .expect(204);
+            .expect(201);
     });
 
     test('PUT /api/v1/operations/:id with title not specified', async () => {
