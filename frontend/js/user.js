@@ -69,7 +69,6 @@ function deleteUser() {
       .then(async (resp) => {
         if (resp.status == 403) {
           var msg = await resp.json();
-          console.log(msg);
           throw Error(msg.error);
         } else {
           location.reload();

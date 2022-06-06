@@ -66,12 +66,8 @@ function deleteCar() {
           );
         } else {
           location.reload();
-          console.log('Request complete! response:', res);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
     selecteditemid = -1;
   } else {
     alert('Prima seleziona un cliente');

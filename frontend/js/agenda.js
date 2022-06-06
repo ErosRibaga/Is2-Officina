@@ -122,7 +122,6 @@ $(document).ready(function () {
       },
       data: form.serialize(), // serializes the form's elements.
       success: function (data) {
-        console.log(data);
         //wait for the response
         loadOperations();
         closeForm();

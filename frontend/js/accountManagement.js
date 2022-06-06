@@ -10,7 +10,6 @@ function login() {
     })
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
-            console.log(data)
             if (data.success) {
                 var loggedUser = {};
                 loggedUser.token = data.token;

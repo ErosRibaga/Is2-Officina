@@ -24,7 +24,6 @@ function insertCar() {
       }),
     })
       .then((resp) => {
-        console.log(resp);
         redirect('/cars.html');
         return;
       })
@@ -47,7 +46,6 @@ function insertCar() {
       }),
     })
       .then((data) => {
-        console.log(data);
         redirect('/cars.html');
       })
       .catch((error) => console.error(error));
@@ -65,7 +63,6 @@ function populateSelectOwner(owner) {
     .then((customers) => {
       return customers.map((customer) => {
         var id = customer.self.substring(customer.self.lastIndexOf('/') + 1);
-        console.log(owner)
 
         if (id == owner._id)
           $('#selectOwner').append(

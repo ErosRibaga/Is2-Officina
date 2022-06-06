@@ -259,7 +259,6 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
 
   if (!car) {
     res.status(404).send();
-    console.log('car not found');
     return;
   }
 
@@ -268,12 +267,10 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
 
   if (operations.length != 0) {
     res.status(403).send();
-    console.log('Cannot delete the car, it has some operations associated to it');
     return;
   }
 
   await car.deleteOne();
-  console.log('car removed');
   res.status(204).send();
 });
 

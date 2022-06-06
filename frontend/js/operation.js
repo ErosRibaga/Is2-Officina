@@ -25,8 +25,6 @@ function displayOperation(data) {
   $('#model').append(data.car.model);
   $('#plate').append(data.car.plate);
 
-  console.log(data);
-
   $('#eName').append(data.employee.name);
   $('#eSurname').append(data.employee.surname);
 }
@@ -147,7 +145,6 @@ function updateOperation() {
     }),
   })
     .then((data) => {
-      console.log(data);
       redirect('/operation.html?id=' + getID());
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
@@ -161,7 +158,6 @@ function deleteOperation() {
     },
   })
     .then((data) => {
-      console.log(data);
       redirect('/agenda.html');
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
