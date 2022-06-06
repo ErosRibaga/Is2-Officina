@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Operation = require('./models/operation');
 const mongoose = require('mongoose');
-const { scopedOperations, canViewOperation } = require('./permissions');
+const { scopedOperations, canViewOperation, isAdmin } = require('./permissions');
 
 /**
  * @swagger

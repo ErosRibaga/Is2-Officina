@@ -34,7 +34,7 @@ function loadCustomers() {
 
 function changeLocation() {
   if (selecteditemid != -1) {
-    window.location.href = '/frontend/add-customer.html?id=' + selecteditemid;
+    window.location.href = '/add-customer.html?id=' + selecteditemid;
   } else {
     alert('No customer selected');
   }
@@ -42,7 +42,7 @@ function changeLocation() {
 
 function seeCars() {
   if (selecteditemid != -1) {
-    window.location.href = '/frontend/customer-cars.html?id=' + selecteditemid;
+    window.location.href = '/customer-cars.html?id=' + selecteditemid;
   } else {
     alert('No customer selected');
   }
@@ -54,7 +54,7 @@ $(document).ready(function () {
   console.log(cookieToken);
 
   document.getElementById('addClient').onclick = function () {
-    location.href = '/frontend/add-customer.html'; //add link to addPage
+    location.href = '/add-customer.html'; //add link to addPage
   };
 
   document.getElementById('remClient').onclick = function () {

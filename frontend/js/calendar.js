@@ -45,7 +45,7 @@ function calendar() {
       var id = info.event.extendedProps.self.substring(
         info.event.extendedProps.self.lastIndexOf('/') + 1
       );
-      window.location.href = '/frontend/operation.html?id=' + id;
+      window.location.href = '/operation.html?id=' + id;
     },
   });
 

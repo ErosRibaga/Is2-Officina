@@ -44,7 +44,7 @@ function loadCars() {
 
 function changeLocation() {
   if (selecteditemid != undefined) {
-    window.location.href = '/frontend/add-car.html?id=' + selecteditemid;
+    window.location.href = '/add-car.html?id=' + selecteditemid;
   } else {
     alert('Prima seleziona un cliente');
   }

@@ -25,7 +25,7 @@ function insertCar() {
     })
       .then((resp) => {
         console.log(resp);
-        redirect('/frontend/cars.html');
+        redirect('/cars.html');
         return;
       })
       .catch((error) => console.error(error)); // If there is any error you will catch them here
@@ -48,7 +48,7 @@ function insertCar() {
     })
       .then((data) => {
         console.log(data);
-        redirect('/frontend/cars.html');
+        redirect('/cars.html');
       })
       .catch((error) => console.error(error));
   }

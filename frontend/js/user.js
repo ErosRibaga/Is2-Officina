@@ -44,7 +44,7 @@ function loadUsers() {
 
 function changeLocation() {
   if (selecteditemid != undefined) {
-    window.location.href = '/frontend/add-user.html?id=' + selecteditemid;
+    window.location.href = '/add-user.html?id=' + selecteditemid;
   } else {
     alert('Prima seleziona un utente');
   }
@@ -52,7 +52,7 @@ function changeLocation() {
 
 function seeOperations() {
   if (selecteditemid != -1) {
-    window.location.href = '/frontend/user-operations.html?id=' + selecteditemid;
+    window.location.href = '/user-operations.html?id=' + selecteditemid;
   } else {
     alert('No user selected');
   }
