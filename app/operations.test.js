@@ -97,8 +97,8 @@ describe('GET /api/v2/operations', () => {
         var operation = new Operation({
             title: 'test1',
             description: 'test1',
-            startDate: new Date('1995-12-17T03:24:00'),
-            endDate: new Date('1995-12-17T05:24:00'),
+            startDate: '1995-12-17T02:24:00.000Z',
+            endDate: '1995-12-17T04:24:00.000Z',
             employee: userId,
             car: carId,
         });
@@ -109,8 +109,8 @@ describe('GET /api/v2/operations', () => {
         var operation2 = new Operation({
             title: 'test1',
             description: 'test1',
-            startDate: new Date('1995-12-17T03:24:00'),
-            endDate: new Date('1995-12-17T05:24:00'),
+            startDate: '1995-12-17T02:24:00.000Z',
+            endDate: '1995-12-17T04:24:00.000Z',
             employee: userId2,
             car: carId,
         });
