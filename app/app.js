@@ -74,22 +74,22 @@ app.use(express.json());
 /**
  * Authentication routing and middleware
  */
-app.use('/api/v1/authentication', authentication);
+app.use('/api/v2/authentication', authentication);
 
 // Protect booklendings endpoint
 // access is restricted only to authenticated users
 // a valid token must be provided in the request
-app.use('/api/v1/operations', tokenChecker);
-app.use('/api/v1/customers', tokenChecker);
-app.use('/api/v1/cars', tokenChecker);
-app.use('/api/v1/users', tokenChecker);
+app.use('/api/v2/operations', tokenChecker);
+app.use('/api/v2/customers', tokenChecker);
+app.use('/api/v2/cars', tokenChecker);
+app.use('/api/v2/users', tokenChecker);
 
 
 //use express as middleware to run the specific requests and make the code more flexible
-app.use('/api/v1/operations', operations);
-app.use('/api/v1/customers', customers);
-app.use('/api/v1/cars', cars);
-app.use('/api/v1/users', users);
+app.use('/api/v2/operations', operations);
+app.use('/api/v2/customers', customers);
+app.use('/api/v2/cars', cars);
+app.use('/api/v2/users', users);
 
 //Default 404 handler 
 app.use((req, res) => {

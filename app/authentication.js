@@ -49,7 +49,7 @@ router.post('/login', async function (req, res) {
     email: user.email,
     id: user._id,
     admin: user.admin,
-    self: 'api/v1/users/' + user._id,
+    self: 'api/v2/users/' + user._id,
   });
 });
 

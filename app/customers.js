@@ -57,7 +57,7 @@ const { isAdmin } = require('./permissions');
     await customer.save();
 
     return res
-      .location('/api/v1/customers/' + customer.id)
+      .location('/api/v2/customers/' + customer.id)
       .status(201)
       .send();
   } catch (err) {
@@ -87,7 +87,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 
   customers = customers.map((customer) => {
     return {
-      self: '/api/v1/customers/' + customer.id,
+      self: '/api/v2/customers/' + customer.id,
       name: customer.name,
       surname: customer.surname,
       phone: customer.phone,
@@ -117,7 +117,7 @@ router.get('/', isAdmin(true), async (req, res) => {
 router.get('/:id', isAdmin(true), async (req, res) => {
   let customer = await Customer.findById(req.params.id);
   res.status(200).json({
-    self: '/api/v1/customers/' + customer.id,
+    self: '/api/v2/customers/' + customer.id,
     name: customer.name,
     surname: customer.surname,
     phone: customer.phone,
@@ -200,7 +200,7 @@ router.post('', isAdmin(true), async (req, res, next) => {
     await customer.save();
 
     return res
-      .location('/api/v1/customers/' + customer.id)
+      .location('/api/v2/customers/' + customer.id)
       .status(201)
       .send();
   } catch (err) {

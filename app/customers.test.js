@@ -29,7 +29,7 @@ const userToken = jwt.sign(
 
 var mongod;
 
-describe('GET /api/v1/customers', () => {
+describe('GET /api/v2/customers', () => {
   var customerId;
 
   beforeAll(async () => {
@@ -51,14 +51,14 @@ describe('GET /api/v1/customers', () => {
     await mongoose.connection.close();
   });
 
-  test('GET /api/v1/customers with admin user should respond with an array of customers', async () => {
+  test('GET /api/v2/customers with admin user should respond with an array of customers', async () => {
     return request(app)
-      .get('/api/v1/customers')
+      .get('/api/v2/customers')
       .set('x-access-token', adminToken)
       .expect('Content-Type', /json/)
       .expect(200, [
         {
-          self: '/api/v1/customers/' + customerId,
+          self: '/api/v2/customers/' + customerId,
           name: 'Dario',
           surname: 'Maghi',
           phone: '1234567899',
@@ -66,29 +66,29 @@ describe('GET /api/v1/customers', () => {
       ]);
   });
 
-  test('GET /api/v1/customers/:id with admin user should respond with an array of customers', async () => {
+  test('GET /api/v2/customers/:id with admin user should respond with an array of customers', async () => {
     return request(app)
-      .get('/api/v1/customers/' + customerId)
+      .get('/api/v2/customers/' + customerId)
       .set('x-access-token', adminToken)
       .expect('Content-Type', /json/)
       .expect(200, {
-        self: '/api/v1/customers/' + customerId,
+        self: '/api/v2/customers/' + customerId,
         name: 'Dario',
         surname: 'Maghi',
         phone: '1234567899',
       });
   });
 
-  test('GET /api/v1/customers with normal user should respond with status code 401', async () => {
+  test('GET /api/v2/customers with normal user should respond with status code 401', async () => {
     return request(app)
-      .get('/api/v1/customers')
+      .get('/api/v2/customers')
       .set('x-access-token', userToken)
       .expect('Content-Type', /json/)
       .expect(401, { error: 'Not allowed' });
   });
 });
 
-describe('POST /api/v1/customers', () => {
+describe('POST /api/v2/customers', () => {
   beforeAll(async () => {
     // This will create an new instance of "MongoMemoryServer" and automatically start it
     app.locals.db = await mongoose.connect(mongod.getUri());
@@ -99,57 +99,57 @@ describe('POST /api/v1/customers', () => {
     await mongod.stop();
   });
 
-  test('POST /api/v1/customers with name not specified', async () => {
+  test('POST /api/v2/customers with name not specified', async () => {
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .expect(400, { error: 'Some fields are empty or undefined' });
   });
 
-  test('POST /api/v1/customers with surname not specified', () => {
+  test('POST /api/v2/customers with surname not specified', () => {
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({ name: 'name' })
       .expect(400, { error: 'Some fields are empty or undefined' });
   });
 
-  test('POST /api/v1/customers with phone not specified', () => {
+  test('POST /api/v2/customers with phone not specified', () => {
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({ name: 'name', surname: 'surname' })
       .expect(400, { error: 'Some fields are empty or undefined' });
   });
 
-  test('POST /api/v1/customers with phone duplicate', async () => {
+  test('POST /api/v2/customers with phone duplicate', async () => {
     await request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .send({ name: 'name1', surname: 'surname1', phone: '1234567890' });
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({ name: 'name2', surname: 'surname2', phone: '1234567890' })
       .expect(409, { error: 'Phone already exists' });
   });
 
-  test('POST /api/v1/customers with non admin user', () => {
+  test('POST /api/v2/customers with non admin user', () => {
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', userToken)
       .set('Accept', 'application/json')
       .send({ name: 'name', surname: 'surname', phone: '1324567899' })
       .expect(401, { error: 'Not allowed' });
   });
 
-  test('POST /api/v1/customers with valid data', () => {
+  test('POST /api/v2/customers with valid data', () => {
     return request(app)
-      .post('/api/v1/customers')
+      .post('/api/v2/customers')
       .set('x-access-token', adminToken)
       .set('Accept', 'application/json')
       .send({ name: 'name', surname: 'surname', phone: '1324567899' })

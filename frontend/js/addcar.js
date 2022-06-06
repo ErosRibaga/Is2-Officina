@@ -9,7 +9,7 @@ function insertCar() {
 
   if (add) {
     //Insert car
-    fetch('http://localhost:8080/api/v1/cars/', {
+    fetch('http://localhost:8080/api/v2/cars/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ function insertCar() {
       .catch((error) => console.error(error)); // If there is any error you will catch them here
   } else {
     //Update car
-    fetch('http://localhost:8080/api/v1/cars/' + getID(), {
+    fetch('http://localhost:8080/api/v2/cars/' + getID(), {
       method: 'PUT',
       mode: 'cors',
       headers: {
@@ -56,7 +56,7 @@ function insertCar() {
 
 function populateSelectOwner(owner) {
   //Populate owner select box
-  fetch('http://localhost:8080/api/v1/customers/', {
+  fetch('http://localhost:8080/api/v2/customers/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -100,7 +100,7 @@ $(document).ready(function () {
     $('#title').text("Modifica auto");
     $('#actionClient').text('Salva modifiche');
 
-    fetch('http://localhost:8080/api/v1/cars/' + getID(), {
+    fetch('http://localhost:8080/api/v2/cars/' + getID(), {
       headers: {
         'x-access-token': cookieToken,
       },

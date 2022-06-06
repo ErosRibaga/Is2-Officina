@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
   operations = operations.map((operation) => {
     return {
-      self: '/api/v1/operations/' + operation.id,
+      self: '/api/v2/operations/' + operation.id,
       title: operation.title,
       description: operation.description,
       employee: operation.employee,
@@ -145,7 +145,7 @@ router.delete('/:id', isAdmin(true), async (req, res) => {
     await operation.save();
 
     return res
-      .location('/api/v1/operations/' + operation.id)
+      .location('/api/v2/operations/' + operation.id)
       .status(201)
       .send();
   }
@@ -179,7 +179,7 @@ router.get('/:id', async (req, res) => {
 
   if (canViewOperation(req.loggedUser, operation)) {
     res.status(200).json({
-      self: '/api/v1/operations/' + operation.id,
+      self: '/api/v2/operations/' + operation.id,
       title: operation.title,
       description: operation.description,
       employee: operation.employee,
@@ -267,7 +267,7 @@ router.post('', isAdmin(true), async (req, res) => {
     await operation.save();
 
     return res
-      .location('/api/v1/operations/' + operation.id)
+      .location('/api/v2/operations/' + operation.id)
       .status(201)
       .send();
   }

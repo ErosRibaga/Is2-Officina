@@ -1,5 +1,5 @@
 function loadCustomers() {
-  fetch('http://localhost:8080/api/v1/customers/', {
+  fetch('http://localhost:8080/api/v2/customers/', {
     headers: {
       'x-access-token': cookieToken,
     },
@@ -61,7 +61,7 @@ $(document).ready(function () {
     if (selecteditemid != -1) {
       //chiamare api per la rimozione dal DB
 
-      fetch('http://localhost:8080/api/v1/customers/' + selecteditemid, {
+      fetch('http://localhost:8080/api/v2/customers/' + selecteditemid, {
         method: 'DELETE',
         headers : {
           'x-access-token': cookieToken

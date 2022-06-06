@@ -54,7 +54,7 @@ function createSideBar(activeId) {
 }
 
 function logout() {
-  fetch('http://localhost:8080/api/v1/authentication/logout', {
+  fetch('http://localhost:8080/api/v2/authentication/logout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({}),
