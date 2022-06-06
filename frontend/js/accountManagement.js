@@ -21,7 +21,7 @@ function login() {
                 document.cookie = "token=" + data.token;
                 document.cookie = "admin=" + data.admin;
                 if (data.token != undefined || data.admin != undefined) {
-                    redirect('/frontend/agenda.html');
+                    redirect('/agenda.html');
                 }
             } else {
                 throw Error(data.message);

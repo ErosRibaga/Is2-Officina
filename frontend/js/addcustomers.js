@@ -35,7 +35,7 @@ function actionCustomer() {
       }),
     })
       .then((resp) => {
-        redirect('/frontend/customers.html');
+        redirect('/customers.html');
       })
       .catch((error) => console.error(error)); // If there is any error you will catch them here
   } else {
@@ -53,7 +53,7 @@ function actionCustomer() {
       mode: 'cors',
     })
       .then((data) => {
-        redirect('/frontend/customers.html');
+        redirect('/customers.html');
       })
       .catch((error) => console.error(error));
   }

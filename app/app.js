@@ -38,9 +38,13 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 //Abilitate cors
 app.use(cors());
 
+app.use('/', express.static(process.env.FRONTEND || 'frontend'));
+// If process.env.FRONTEND folder does not contain index.html then use the one from static
+app.use('/', express.static('frontend')); // expose also this folder
+
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8080');
 
   // Request methods you wish to allow
   res.setHeader(

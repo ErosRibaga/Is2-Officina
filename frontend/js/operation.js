@@ -148,7 +148,7 @@ function updateOperation() {
   })
     .then((data) => {
       console.log(data);
-      redirect('/frontend/operation.html?id=' + getID());
+      redirect('/operation.html?id=' + getID());
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }
@@ -162,7 +162,7 @@ function deleteOperation() {
   })
     .then((data) => {
       console.log(data);
-      redirect('/frontend/agenda.html');
+      redirect('/agenda.html');
     })
     .catch((error) => console.error(error)); // If there is any error you will catch them here
 }

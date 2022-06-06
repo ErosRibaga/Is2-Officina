@@ -22,7 +22,7 @@ function createUser() {
     }),
   })
     .then((resp) => {
-      redirect('/frontend/users.html');
+      redirect('/users.html');
     })
     .catch((error) => console.error(error));
 }
@@ -51,7 +51,7 @@ function updateUser() {
   })
     .then((data) => {
       console.log(data);
-      redirect('/frontend/users.html');
+      redirect('/users.html');
     })
     .catch((error) => console.error(error));
 }

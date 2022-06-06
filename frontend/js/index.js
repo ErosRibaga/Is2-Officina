@@ -36,13 +36,13 @@ function createSideBar(activeId) {
   var sidebar;
 
   sidebar =
-    '<a id="sideAgenda" href="/frontend/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
+    '<a id="sideAgenda" href="/agenda.html"><i class="fa-solid fa-calendar"></i>Agenda</a>';
 
   if (isAdmin === 'true') {
     sidebar += `
-    <a id="sideCustomers" href="/frontend/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
-    <a id="sideCars" href="/frontend/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
-    <a id="sideUsers" href="/frontend/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
+    <a id="sideCustomers" href="/customers.html"><i class="fa-solid fa-user"></i>Customers</a>
+    <a id="sideCars" href="/cars.html"><i class="fa-solid fa-car"></i>Cars</a>
+    <a id="sideUsers" href="/users.html"><i class="fa-solid fa-list"></i>Users</a>`;
   }
 
   sidebar += '<hr>';
@@ -63,13 +63,13 @@ function logout() {
     .then((data) => {
       document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       document.cookie = 'admin=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      window.location.href = '/frontend/login.html';
+      window.location.href = '/login.html';
     });
 }
 
 $(document).ready(function () {
-  if ((!cookieToken || cookieToken == undefined) && window.location.pathname != '/frontend/login.html')
-    redirect('/frontend/login.html');
+  if ((!cookieToken || cookieToken == undefined) && window.location.pathname != '/login.html')
+    redirect('/login.html');
 });
 
 document.addEventListener('DOMContentLoaded', () => {
