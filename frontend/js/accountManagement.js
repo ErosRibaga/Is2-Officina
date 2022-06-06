@@ -10,7 +10,7 @@ function login() {
     })
         .then((resp) => resp.json()) // Transform the data into json
         .then(function (data) { // Here you get the data to modify as you please
-
+            console.log(data)
             if (data.success) {
                 var loggedUser = {};
                 loggedUser.token = data.token;
@@ -24,14 +24,11 @@ function login() {
                     redirect('/frontend/agenda.html');
                 }
             } else {
-                $('#error').text(data.message);
+                throw Error(data.message);
             }
-            console.log(data);
-            return;
         })
         .catch(error => {
-            /*console.error(error);
-            throw error;*/
+            $('#error').text(error.message);
         });
 
 
