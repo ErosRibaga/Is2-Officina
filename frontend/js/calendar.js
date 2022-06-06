@@ -5,10 +5,12 @@ var calendarEl;
 document.addEventListener('DOMContentLoaded', function () {
   calendarEl = document.getElementById('calendar');
 
-  if(calendarEl == null) {
-    calendarEl = document.getElementById('userCalendar');
+  if (calendarEl == null) calendarEl = document.getElementById('userCalendar');
+
+  if (calendarEl == null || getCookie('admin') == 'false') {
     calendar = userCalendar();
   } else {
+    $('#agendaDescription').text('Seleziona un data o un periodo per aggiungere un evento');
     calendar = calendar();
   }
 
@@ -59,7 +61,6 @@ function userCalendar() {
     displayEventTime: false,
     firstDay: 1, //set monday as the first day of the week
     height: 650,
-    selectable: true,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
