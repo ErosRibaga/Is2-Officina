@@ -8,6 +8,8 @@ swagger: '2.0'
 paths:
   '/cars/{id}':
     put:
+      tags:
+        - cars
       description: Use to update a car's data.
       parameters:
         - in: path
@@ -55,6 +57,8 @@ paths:
         '404':
           description: Car not found
     get:
+      tags:
+        - cars
       description: Use to get a car by its id
       parameters:
         - in: path
@@ -68,6 +72,8 @@ paths:
         '404':
           description: Car not found
     delete:
+      tags:
+        - cars
       description: Use to delete a car
       parameters:
         - in: path
@@ -84,6 +90,8 @@ paths:
           description: Car not found
   '/cars':
     post:
+      tags:
+        - cars
       description: Use to insert a new car.
       parameters:
         - in: body
@@ -126,12 +134,58 @@ paths:
         '409':
           description: Plate already exists
     get:
+      tags:
+        - cars
       description: Use to request all cars
       responses:
         '200':
           description: A successful response
-  '/customer/{id}':
+  '/customers':
+    get:
+      tags:
+        - customers
+      description: Use to request all customers
+      responses:
+        '200':
+          description: A successful response
+    post:
+      tags:
+        - customers
+      description: Use to insert a new customer.
+      parameters:
+        - in: body
+          name: body
+          description: The customer to create
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - phone
+            properties:
+              name:
+                type: string
+                description: The customer's name.
+                example: Paolo
+              surname:
+                type: string
+                description: The customer's surname.
+                example: Frinzi
+              phone:
+                type: string
+                description: The customer's phone number.
+                example: 3483493698
+      responses:
+        '201':
+          description: Customer successfully inserted
+        '400':
+          description: Some fields are empty or undefined
+        '409':
+          description: Phone already exists
+  '/customers/{id}':
     put:
+      tags:
+        - customers
       description: Use to update a customer data.
       parameters:
         - in: path
@@ -168,46 +222,9 @@ paths:
           description: Customer not found
         '409':
           description: Phone number already exists
-  '/customers':
     get:
-      description: Use to request all customers
-      responses:
-        '200':
-          description: A successful response
-    post:
-      description: Use to insert a new customer.
-      parameters:
-        - in: body
-          name: body
-          description: The customer to create
-          schema:
-            type: object
-            required:
-              - name
-              - surname
-              - phone
-            properties:
-              name:
-                type: string
-                description: The customer's name.
-                example: Paolo
-              surname:
-                type: string
-                description: The customer's surname.
-                example: Frinzi
-              phone:
-                type: string
-                description: The customer's phone number.
-                example: 3483493698
-      responses:
-        '201':
-          description: Customer successfully inserted
-        '400':
-          description: Some fields are empty or undefined
-        '409':
-          description: Phone already exists
-  '/customers/{id}':
-    get:
+      tags:
+        - customers
       description: Use to get a customer by its id
       parameters:
         - in: path
@@ -221,6 +238,8 @@ paths:
         '404':
           description: Customer not found
     delete:
+      tags:
+        - customers
       description: Use to delete a customer
       parameters:
         - in: path
@@ -235,6 +254,8 @@ paths:
           description: Customer not found
   '/customers/{id}/cars':
     get:
+      tags:
+        - customers
       description: Use to get a the car associated to a customer
       parameters:
         - in: path
@@ -249,11 +270,15 @@ paths:
           description: Customer not found
   '/operations':
     get:
+      tags:
+        - operations
       description: Use to request all operations
       responses:
         '200':
           description: A successful response
     post:
+      tags:
+        - operations
       description: Use to insert a new operation.
       parameters:
         - in: body
@@ -304,6 +329,8 @@ paths:
           description: Start date must be before end date
   '/operations/{id}':
     delete:
+      tags:
+        - operations
       description: Use to delete an operation
       parameters:
         - in: path
@@ -317,6 +344,8 @@ paths:
         '404':
           description: Operation not found
     put:
+      tags:
+        - operations
       description: Use to update an operation.
       parameters:
         - in: path
@@ -373,6 +402,8 @@ paths:
         '427':
           description: Start date must be before end date
     get:
+      tags:
+        - operations
       description: Use to get an operation by its id
       parameters:
         - in: path
@@ -387,6 +418,8 @@ paths:
           description: Operation not found
   /users:
     get:
+      tags:
+        - users
       description: Use to request all users
       responses:
         '200':
@@ -439,6 +472,8 @@ paths:
           description: Some fields are empty or undefined
   '/users/{id}':
     get:
+      tags:
+        - users
       description: Use to get an user by its id
       parameters:
         - in: path
@@ -452,6 +487,8 @@ paths:
         '404':
           description: User not found
     put:
+      tags:
+        - users
       description: Use to update an user.
       parameters:
         - in: path
@@ -501,6 +538,8 @@ paths:
         '409':
           description: Email already exists
     delete:
+      tags:
+        - users
       description: Use to delete an user
       parameters:
         - in: path
@@ -517,6 +556,8 @@ paths:
           description: User not found
   '/users/{id}/operations':
     get:
+      tags:
+        - users
       description: Use to get all the operation made by a user.
       parameters:
         - in: path
