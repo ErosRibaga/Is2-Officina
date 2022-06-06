@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
  *      '404':
  *        description: Operation not found
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', isAdmin(true), async (req, res) => {
   let operation = await Operation.findById(req.params.id).exec();
   if (!operation) {
     res.status(404).send();
@@ -120,7 +120,7 @@ router.delete('/:id', async (req, res) => {
  *      '404':
  *        description: Operation not found
  */
- router.put('/:id', async (req, res) => {
+ router.put('/:id', isAdmin(true), async (req, res) => {
   try {
     if (req.body.employee == undefined || req.body.car == undefined || req.body.title == "" || req.body.description == "") {
       return res
@@ -242,7 +242,7 @@ router.get('/:id', async (req, res) => {
  *      '427':
  *        description: Start date must be before end date
  */
-router.post('', async (req, res) => {
+router.post('', isAdmin(true), async (req, res) => {
   let operation = new Operation({
     title: req.body.title,
     description: req.body.description,
