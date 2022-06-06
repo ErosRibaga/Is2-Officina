@@ -64,7 +64,9 @@ function populateSelectOwner(owner) {
       return customers.map((customer) => {
         var id = customer.self.substring(customer.self.lastIndexOf('/') + 1);
 
-        if (id == owner._id)
+        console.log(owner);
+
+        if (owner && id == owner._id)
           $('#selectOwner').append(
             '<option selected="selected" value="' +
               id +
@@ -108,6 +110,7 @@ $(document).ready(function () {
         $('#textBrand').val(data.brand);
         $('#textModel').val(data.model);
         $('#textDescription').val(data.description);
+        console.log(data)
         populateSelectOwner(data.owner);
       })
       .catch((error) => console.error(error)); // If there is any error you will catch them here
