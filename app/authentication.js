@@ -8,23 +8,27 @@ const jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 // ---------------------------------------------------------
 // route to authenticate and get a new token
 // ---------------------------------------------------------
-router.post('', async function(req, res) {
-	
+router.post('', async function (req, res) {
+
 	// find the user
 	let user = await User.findOne({
 		email: req.body.email
 	}).exec();
 
 	// user not found
-	if (!user) {
-		res.json({ success: false, message: 'Authentication failed. User not found.' });
+	if (!user || user == null) {
+		return res
+			.status(401)
+			.json({ success: false, message: 'Authentication failed. User not found.' });
 	}
-	
+
 	// check if password matches
 	if (user.password != req.body.password) {
-		res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+		return res
+			.status(401)
+			.json({ success: false, message: 'Authentication failed. Wrong password.' });
 	}
-	
+
 	// if user is found and password is right create a token
 	var payload = {
 		email: user.email,
@@ -38,7 +42,7 @@ router.post('', async function(req, res) {
 		expiresIn: 86400 // expires in 24 hours
 	}
 
-    //process.env.SUPER_SECRET (process.env.SUPER_SECRET) --> token che serve per la criptazione e decriptazione
+	//process.env.SUPER_SECRET (process.env.SUPER_SECRET) --> token che serve per la criptazione e decriptazione
 	var token = jwt.sign(payload, process.env.SUPER_SECRET, options);
 
 	res.json({
